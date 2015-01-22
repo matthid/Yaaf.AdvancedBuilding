@@ -1,0 +1,148 @@
+Concepts:
+
+You need multiple builds (net40, net45, portable-...)
+Global configuration of the build (DefineConstants, ... IN FAKE!)
+\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+Target "PrepareProjectFiles" (fun _ ->
+  let runGeneratorFile file =
+    file
+    |> ProjectGenerator.runGeneratorFile (fun projectInfo ->
+      { projectInfo with
+          BuildTemplates = 
+            [ "net40", "template_net40"
+              "net45", "template_net45"
+              "portable-net45+netcore45+wpa81+MonoAndroid1+MonoTouch1", "portable-net45+netcore45+wpa81+MonoAndroid1+MonoTouch1" ]
+          DefineConstants = []
+      })
+  !! "src/**/*._proj"
+  |> Seq.iter runGeneratorFile
+      
+)
+
+/////////////////////////////////////////////
+
+
+Project settings (Test.Yaaf.DependencyInjection._proj)
+(for example when this is a test-project and can't be portable because of test dependencies)
+\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+module ProjectData
+open Yaaf.AdvancedBuilding
+let generateProjectInfo (projectInfo) =
+// START FILE
+      { projectInfo with
+        BuildTemplates = 
+          [ "net40", ("template_net40"
+            "net45", "template_net45"
+            // for example test project (run two times when on portable, for net40 and net45!
+            "net45.portable-net45+netcore45+wpa81+MonoAndroid1+MonoTouch1", "template_net45"
+            "net40.portable-net45+netcore45+wpa81+MonoAndroid1+MonoTouch1", "template_net40" ]
+        TemplateData = (fun (data,buildName) ->
+          { projectInfo(data, buildName) with
+            IncludeFiles =
+              [ Compile("Library.fs")
+                Compile("File.fs")
+                Compile("Test.fs")
+                Link(Compile("Properties\SharedAssemblyInfo.cs"), @"..\..\SharedAssemblyInfo.cs") ]
+            References = 
+              [ Reference() ] } }
+// END FILE
+  }
+  
+/////////////////////////////////////////////
+
+
+
+
+templateData:
+\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+<MSBuildTemplateData>
+
+  <INCLUDEFILES>
+    <ItemGroup>
+      <Compile Include="Library.fs" />
+      <Compile Include="File.fs" />
+      <Compile Include="Test.fs" />
+      <None Include="Script.fsx" />
+    </ItemGroup>
+  </INCLUDEFILES>
+</MSBuildTemplateData>
+/////////////////////////////////////////////
+
+
+template:
+\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>74cd69fa-7d48-4fc4-a478-a1f00a08e963</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <RootNamespace>Yaaf.AdvancedBuilding</RootNamespace>
+    <AssemblyName>Yaaf.AdvancedBuilding</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <TargetFSharpCoreVersion>4.3.0.0</TargetFSharpCoreVersion>
+    <Name>Yaaf.AdvancedBuilding</Name>
+    <TargetFrameworkProfile />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <Tailcalls>false</Tailcalls>
+    <OutputPath>..\..\bin</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <WarningLevel>3</WarningLevel>
+    <DocumentationFile>..\..\bin\Yaaf.AdvancedBuilding.xml</DocumentationFile>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <Tailcalls>true</Tailcalls>
+    <OutputPath>..\..\bin</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <WarningLevel>3</WarningLevel>
+    <DocumentationFile>..\..\bin\Yaaf.AdvancedBuilding.xml</DocumentationFile>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="mscorlib" />
+    <Reference Include="FSharp.Core, Version=$(TargetFSharpCoreVersion), Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Numerics" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Library.fs" />
+    <None Include="Script.fsx" />
+  </ItemGroup>
+  <PropertyGroup>
+    <MinimumVisualStudioVersion Condition="'$(MinimumVisualStudioVersion)' == ''">11</MinimumVisualStudioVersion>
+  </PropertyGroup>
+  <Choose>
+    <When Condition="'$(VisualStudioVersion)' == '11.0'">
+      <PropertyGroup Condition="Exists('$(MSBuildExtensionsPath32)\..\Microsoft SDKs\F#\3.0\Framework\v4.0\Microsoft.FSharp.Targets')">
+        <FSharpTargetsPath>$(MSBuildExtensionsPath32)\..\Microsoft SDKs\F#\3.0\Framework\v4.0\Microsoft.FSharp.Targets</FSharpTargetsPath>
+      </PropertyGroup>
+    </When>
+    <Otherwise>
+      <PropertyGroup Condition="Exists('$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\FSharp\Microsoft.FSharp.Targets')">
+        <FSharpTargetsPath>$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\FSharp\Microsoft.FSharp.Targets</FSharpTargetsPath>
+      </PropertyGroup>
+    </Otherwise>
+  </Choose>
+  <Import Project="$(FSharpTargetsPath)" Condition="Exists('$(FSharpTargetsPath)')" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it.
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+  <Import Project="..\..\.paket\paket.targets" />
+</Project>
+
+/////////////////////////////////////////////
