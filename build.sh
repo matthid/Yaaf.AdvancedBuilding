@@ -1,3 +1,3 @@
 #!/bin/bash
 export buildFile=build.fsx
-"packages/Yaaf.AdvancedBuilding/tools/build.sh" $@
+"packages/Yaaf.AdvancedBuilding/content/build.sh" $@

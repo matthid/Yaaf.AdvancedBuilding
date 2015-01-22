@@ -13,9 +13,8 @@
 *)
 
 
-// Supended until FAKE supports custom mono parameters
-#I @"packages/FAKE/tools/" // FAKE
-#r @"FakeLib.dll"  //FAKE
+#I @"packages/FAKE/tools/"
+#r @"FakeLib.dll"
 
 open System.Collections.Generic
 open System.IO
@@ -47,10 +46,8 @@ let nuget_url = "https://www.nuget.org/packages/Yaaf.AdvancedBuilding/"
 let tags = "building C# F# dotnet .net"
 
 let generated_file_list =
-  [ "Yaaf.Sasl.dll"
-    "Yaaf.Sasl.xml"
-    "Yaaf.Sasl.Ldap.dll"
-    "Yaaf.Sasl.Ldap.xml" ]
+  [ "Yaaf.AdvancedBuilding.dll"
+    "Yaaf.AdvancedBuilding.xml" ]
 
 type BuildParams =
     {
@@ -58,9 +55,9 @@ type BuildParams =
         CustomBuildName : string
     }
 
+//let profile111Params = { SimpleBuildName = "profile111"; CustomBuildName = "portable-net45+netcore45+wpa81+MonoAndroid1+MonoTouch1" }
 let emptyParams = { SimpleBuildName = ""; CustomBuildName = "" }
 //let net45Params = { SimpleBuildName = "net45"; CustomBuildName = "net45" }
-//let profile111Params = { SimpleBuildName = "profile111"; CustomBuildName = "portable-net45+netcore45+wpa81+MonoAndroid1+MonoTouch1" }
 
 let allParams = [ emptyParams ]
 
@@ -75,16 +72,16 @@ let testDir  = "./test/"
 
 let buildMode = "Release" // if isMono then "Release" else "Debug"
 
-// Where to look for *.cshtml templates (in this order)
-let layoutRoots =
-    [ docTemplatesDir; 
-      docTemplatesDir @@ "reference" ]
+let github_url = sprintf "https://github.com/%s/%s" github_user github_project
 
 if isMono then
     monoArguments <- "--runtime=v4.0 --debug"
     //monoArguments <- "--runtime=v4.0"
 
-let github_url = sprintf "https://github.com/%s/%s" github_user github_project
+// Where to look for *.cshtml templates (in this order)
+let layoutRoots =
+    [ docTemplatesDir; 
+      docTemplatesDir @@ "reference" ]
 
 let setVersion () = 
   let info =
@@ -97,7 +94,7 @@ let setVersion () =
   CreateFSharpAssemblyInfo "./src/SharedAssemblyInfo.fs" info
   
 let nugetPackages =
-  [ "Yaaf.Sasl.nuspec", (fun p ->
+  [ "Yaaf.AdvancedBuilding.nuspec", (fun p ->
       { p with
           Authors = authors
           Project = projectName
@@ -106,7 +103,11 @@ let nugetPackages =
           Version = version_nuget
           ReleaseNotes = toLines release.Notes
           Tags = tags
-          Dependencies = [ ] }) ]
+          Dependencies = 
+            [ "Yaaf.FSharp.Scripting", "1.0.0"
+              "FSharp.Formatting", "2.6.3"
+              "FSharp.Compiler.Service", "0.0.82"
+              "FAKE", "3.14.7" ] }) ]
     
 let findProjectFiles (buildParams:BuildParams) =
     !! (sprintf "src/source/**/*.fsproj")

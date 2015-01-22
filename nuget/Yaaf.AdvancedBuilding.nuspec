@@ -2,22 +2,25 @@
 <package xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
   <metadata xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
     <id>@project@</id>
+    <title>@project@</title>
     <version>@build.number@</version>
     <authors>@authors@</authors>
     <owners>@authors@</owners>
-    <licenseUrl>http://github.com/fsprojects/Yaaf.AdvancedBuilding/blob/master/LICENSE.txt</licenseUrl>
-    <projectUrl>http://fsprojects.github.com/Yaaf.AdvancedBuilding</projectUrl>
+    <licenseUrl>http://github.com/matthid/Yaaf.AdvancedBuilding/blob/develop/doc/LICENSE.md</licenseUrl>
+    <projectUrl>http://matthid.github.com/Yaaf.AdvancedBuilding</projectUrl>
     <iconUrl>https://raw.githubusercontent.com/fsprojects/ProjectScaffold/master/docs/files/img/logo.png</iconUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <summary>@summary@</summary>
     <description>@description@</description>
     <releaseNotes>@releaseNotes@</releaseNotes>
-    <copyright>Copyright 2013</copyright>
+    <copyright>Copyright 2015</copyright>
     <tags>@tags@</tags>
-    <dependencies />
+    @dependencies@
   </metadata>
   <files>
-    <file src="bin/Yaaf.AdvancedBuilding.dll" target="lib/net40" />
-    <file src="bin/Yaaf.AdvancedBuilding.xml" target="lib/net40" />
+    <file src="release/lib/Yaaf.AdvancedBuilding.dll" target="lib/net40/Yaaf.AdvancedBuilding.dll" />
+    <file src="release/lib/Yaaf.AdvancedBuilding.xml" target="lib/net40/Yaaf.AdvancedBuilding.xml" />
+    <file src="packages/Yaaf.AdvancedBuilding/content/*" target="content" />
+    <file src="doc/LICENSE.md" target="LICENSE.md" />
   </files>
 </package>

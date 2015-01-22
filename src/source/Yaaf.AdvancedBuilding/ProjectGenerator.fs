@@ -106,7 +106,6 @@ module ProjectGenerator =
     
   let setGlobalSetting (g:GlobalProjectInfo) =
     session.Let "projectInfo" g
-    //fsiSession.EvalInteraction (sprintf "let projectInfo = \n %s" ((sprintf "%A" g).Replace("\n", "\n ")))
 
   let getGlobalSetting () =
     session.EvalExpression<GlobalProjectInfo> ("projectInfo")
