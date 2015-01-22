@@ -22,5 +22,6 @@
     <file src="release/lib/Yaaf.AdvancedBuilding.xml" target="lib/net40/Yaaf.AdvancedBuilding.xml" />
     <file src="packages/Yaaf.AdvancedBuilding/content/*" target="content" />
     <file src="doc/LICENSE.md" target="LICENSE.md" />
+    <file src="README.md" target="README.md" />
   </files>
 </package>

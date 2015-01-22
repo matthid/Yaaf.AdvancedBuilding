@@ -167,6 +167,8 @@ packages/*
 packages/Yaaf.AdvancedBuilding/*
 !packages/Yaaf.AdvancedBuilding/content
 
+gh-pages/
+
 # Generated documentation folder
 docs/output/
 

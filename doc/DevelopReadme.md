@@ -1,4 +1,4 @@
-﻿# Yaaf.Sasl implementation documentation 
+﻿# Yaaf.AdvancedBuilding implementation documentation 
 
 ## Building
 
@@ -12,9 +12,9 @@ This project aims to be a very flexible, extendable and good performing IRC impl
 
 ### Issues / Features / TODOs
 
-New features are accepted via github pull requests (so just fork away right now!):  https://github.com/matthid/Yaaf.Sasl.
+New features are accepted via github pull requests (so just fork away right now!):  https://github.com/matthid/Yaaf.AdvancedBuilding.
 
-Issues and TODOs are tracked on github, see: https://github.com/matthid/Yaaf.Sasl/issues.
+Issues and TODOs are tracked on github, see: https://github.com/matthid/Yaaf.AdvancedBuilding/issues.
 
 Discussions/Forums are on IRC. 
 
@@ -24,8 +24,7 @@ http://semver.org/
 
 ### High level documentation ordered by project.
 
-- `Yaaf.Sasl`: The Core abstraction and implementation of SASL.
-- `Yaaf.Sasl.Ldap`: A LDAP backend for SASL PLAIN authentication.
+- `Yaaf.AdvancedBuilding`: For one a project to test the building infrastructure, in the future a helper to generate fsproj and csproj files.
 
 ### The Project structure:
 
@@ -92,9 +91,7 @@ First `build.sh` and `build.cmd` restore build dependencies and `nuget.exe`, the
  - `Clean`: cleans the directories (previous builds)
  - `RestorePackages`: restores nuget packages
  - `SetVersions`: sets the current version
- - `Build_net40`: build/test for net40
- - `Build_net45`: build/test for net45
- - `Build_profile111`: build/test the tests for profile111 (portable-net45+netcore45+wpa81+MonoAndroid1+MonoTouch1)
+ - `Build_`: build/test for net40
  - `CopyToRelease`: copy the generated .dlls to release/lib
  - `LocalDoc`: create the local documentation you can view that locally
  - `All`: this does nothing itself but is used as a marker (executed by default when no parameter is given to ./build)
@@ -104,7 +101,7 @@ First `build.sh` and `build.cmd` restore build dependencies and `nuget.exe`, the
  - `ReleaseGithubDoc`: pushes the documentation to github
  - `Release`: a marker like "All"
 
-You can execute all steps until a given point with `./build #Step#` (replace #Step# with `Build_net40` to execute `Clean`, `RestorePackages`, `SetVersions`, `Build_net40`)
+You can execute all steps until a given point with `./build #Step#` (replace #Step# with `Build_` to execute `Clean`, `RestorePackages`, `SetVersions`, `Build_`)
 
 You can execute a single step with `build #Step#_single`: For example to build the nuget packages you can just invoke `./build NuGet_single` 
 
