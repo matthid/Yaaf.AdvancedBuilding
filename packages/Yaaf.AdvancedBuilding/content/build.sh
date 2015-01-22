@@ -22,7 +22,7 @@ nuget_path="NuGet.CommandLine/tools/NuGet.exe"
 fake_path="FAKE/tools/FAKE.exe"
 
 # Restore paket build dependencies
-if [ -f ".paket\paket.bootstrapper.exe" ];
+if [ -f ".paket/paket.bootstrapper.exe" ];
 then
   echo "Bootstrap paket"
   $MONO .paket/paket.bootstrapper.exe
