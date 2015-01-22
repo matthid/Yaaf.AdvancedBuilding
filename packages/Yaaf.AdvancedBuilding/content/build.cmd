@@ -39,7 +39,7 @@ if exist packages.config (
     echo Resolve build dependencies
     "%nuget%" "install" "packages.config" "-OutputDirectory" %nuget_packages% "-ExcludeVersion"
   ) else (
-    echo NuGet build dependencies file found but no NuGet.exe could be found!.
+    echo NuGet build dependencies file found but no NuGet.exe could be found, either add downloadNuget.fsx or add Nuget.Commandline as paket dependency!.
   )
 )
 

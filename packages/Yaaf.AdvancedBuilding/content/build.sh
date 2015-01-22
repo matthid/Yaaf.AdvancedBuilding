@@ -4,10 +4,12 @@ then
   # use .Net
   MONO=""
   DEFINE="WIN64"
+  FSI="C:\Program Files (x86)\Microsoft SDKs\F#\3.1\Framework\v4.0\fsi.exe"
 else
   # use mono
   command -v mono >/dev/null 2>&1 || { echo >&2 "Please install mono dependency."; exit 1; }
   myMono="mono --debug --runtime=v4.0"
+  FSI="fsharpi"
 
   MONO="$myMono"
   DEFINE="MONO"
@@ -46,8 +48,8 @@ then
   then
     if [ ! -f "$nuget_packages/$nuget_path" ]; then
       echo "Bootstrap Nuget"
-      command -v fsharpi >/dev/null 2>&1 || { echo >&2 "Please install fsharpi or download a NuGet.exe to $nuget_packages/$nuget_path"; exit 1; }
-      fsharpi downloadNuget.fsx
+      command -v "$FSI" >/dev/null 2>&1 || { echo >&2 "Please install fsharpi or download a NuGet.exe to $nuget_packages/$nuget_path"; exit 1; }
+      "$FSI" downloadNuget.fsx
     fi
     nuget="$nuget_packages/$nuget_path"
   fi
@@ -61,7 +63,7 @@ then
     echo "restore NuGet build dependencies."
     $MONO $nuget "install" "packages.config" "-OutputDirectory" "$nuget_packages" "-ExcludeVersion"
   else
-    echo "NuGet build dependencies file found but no NuGet.exe could be found!."
+    echo "NuGet build dependencies file found but no NuGet.exe could be found, either add downloadNuget.fsx or add Nuget.Commandline as paket dependency!."
   fi
 fi
 

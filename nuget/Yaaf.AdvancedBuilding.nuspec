@@ -18,9 +18,22 @@
     @dependencies@
   </metadata>
   <files>
-    <file src="release/lib/Yaaf.AdvancedBuilding.dll" target="lib/net40/Yaaf.AdvancedBuilding.dll" />
-    <file src="release/lib/Yaaf.AdvancedBuilding.xml" target="lib/net40/Yaaf.AdvancedBuilding.xml" />
-    <file src="packages/Yaaf.AdvancedBuilding/content/*" target="content" />
+    <file src="release/lib/Yaaf.AdvancedBuilding.dll" target="lib\net40\Yaaf.AdvancedBuilding.dll" />
+    <file src="release/lib/Yaaf.AdvancedBuilding.xml" target="lib\net40\Yaaf.AdvancedBuilding.xml" />
+    <file src="packages/Yaaf.AdvancedBuilding/content/build.cmd" target="content/build.cmd" />
+    <file src="packages/Yaaf.AdvancedBuilding/content/build.sh" target="content/build.sh" />
+    <file src="packages/Yaaf.AdvancedBuilding/content/buildInclude.fsx" target="content/buildInclude.fsx" />
+    <file src="packages/Yaaf.AdvancedBuilding/content/downloadNugetInclude.fsx" target="content/downloadNugetInclude.fsx" />
+    <file src="packages/Yaaf.AdvancedBuilding/content/generateDocsInclude.fsx" target="content/generateDocsInclude.fsx" />
+    <file src="buildConfig.fsx" target="examples\buildConfig.fsx" />
+    <file src="build.cmd" target="scaffold\build.cmd" />
+    <file src="downloadNuget.fsx" target="scaffold\downloadNuget.fsx" />
+    <file src="build.sh" target="scaffold\build.sh" />
+    <file src="build.sh" target="scaffold\build.sh" />
+    <file src=".gitignore" target="scaffold\.gitignore" />
+    <file src=".gitattributes" target="scaffold\.gitattributes" />
+    <file src="src/.gitignore" target="scaffold\src\.gitattribute" />
+    <file src="src/nuget.config" target="scaffold\src\nuget.config" />
     <file src="doc/LICENSE.md" target="LICENSE.md" />
     <file src="README.md" target="README.md" />
   </files>
