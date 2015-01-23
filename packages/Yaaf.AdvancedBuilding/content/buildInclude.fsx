@@ -200,7 +200,7 @@ Target "All" (fun _ ->
 )
 
 MyTarget "VersionBump" (fun _ ->
-    // Build updates the SharedAssemblyInfo.cs files.
+    // Commit updates the SharedAssemblyInfo.cs files.
     let changedFiles = Fake.Git.FileStatus.getChangedFilesInWorkingCopy "" "HEAD" |> Seq.toList
     if changedFiles |> Seq.isEmpty |> not then
         for (status, file) in changedFiles do
@@ -241,12 +241,12 @@ allParams
 // Dependencies
 "Clean" 
   ==> "CopyToRelease"
+  ==> "NuGet"
   ==> "LocalDoc"
   ==> "All"
  
 "All" 
   ==> "VersionBump"
-  ==> "NuGet"
   ==> "GithubDoc"
   ==> "ReleaseGithubDoc"
   ==> "Release"

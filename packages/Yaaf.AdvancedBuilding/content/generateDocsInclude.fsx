@@ -120,10 +120,10 @@ let buildAllDocumentation outDocDir website_root =
 
       
     let processDocumentationFiles(outputKind) =
-      let indexTemplate, template, outDirName, indexName = 
+      let indexTemplate, template, outDirName, indexName, extension =
         match outputKind with
-        | OutputKind.Html -> docTemplatesDir @@ "docpage-index.cshtml", docTemplatesDir @@ "docpage.cshtml", "html", "index.html"
-        | OutputKind.Latex -> docTemplatesDir @@ "template-color.tex", docTemplatesDir @@ "template-color.tex", "latex", "Readme.tex"
+        | OutputKind.Html -> docTemplatesDir @@ "docpage-index.cshtml", docTemplatesDir @@ "docpage.cshtml", "html", "index.html", ".html"
+        | OutputKind.Latex -> docTemplatesDir @@ "template-color.tex", docTemplatesDir @@ "template-color.tex", "latex", "Readme.tex", ".tex"
       let outDir = outDocDir @@ outDirName
       let handleDoc template (doc:LiterateDocument) outfile =
         // prismjs support
@@ -158,14 +158,21 @@ let buildAllDocumentation outDocDir website_root =
           if changeTime > generateTime then
             printfn "Generating '%s/%s.%s'" dir name ext
             func file output
-      
+
         for d in Directory.EnumerateDirectories(indir) do
           let name = Path.GetFileName(d)
           processDirectory template (Path.Combine(indir, name)) (Path.Combine(outdir, name))
-          
-          
+
       processDirectory template "./doc" outDir
-      processMarkdown indexTemplate "./README.md" (outDir @@ indexName)
+      let processFile template inFile outFile =
+        if File.Exists inFile then
+          processMarkdown template inFile outFile
+        else
+          trace (sprintf "File %s was not found so %s was not created!" inFile outFile)
+
+      processFile indexTemplate "./README.md" (outDir @@ indexName)
+      processFile template "./CONTRIBUTING.md" (outDir @@ "Contributing" + extension)
+      processFile template "./LICENSE.md" (outDir @@ "License" + extension)
   
 
     // Build API reference from XML comments
