@@ -134,7 +134,7 @@ MyTarget "CopyToRelease" (fun _ ->
     CleanDirs [ outLibDir ]
     System.IO.Directory.CreateDirectory(outLibDir) |> ignore
 
-    // Copy RazorEngine.dll to release directory
+    // Copy files to release directory
     allParams 
         |> Seq.map (fun buildParam -> buildParam.CustomBuildName)
         |> Seq.map (fun t -> buildDir @@ t, t)
@@ -200,7 +200,7 @@ Target "All" (fun _ ->
 )
 
 MyTarget "VersionBump" (fun _ ->
-    // Build updates the SharedAssemblyInfo.cs files.
+    // Commit updates the SharedAssemblyInfo.cs files.
     let changedFiles = Fake.Git.FileStatus.getChangedFilesInWorkingCopy "" "HEAD" |> Seq.toList
     if changedFiles |> Seq.isEmpty |> not then
         for (status, file) in changedFiles do
@@ -241,12 +241,12 @@ allParams
 // Dependencies
 "Clean" 
   ==> "CopyToRelease"
+  ==> "NuGet"
   ==> "LocalDoc"
   ==> "All"
  
 "All" 
   ==> "VersionBump"
-  ==> "NuGet"
   ==> "GithubDoc"
   ==> "ReleaseGithubDoc"
   ==> "Release"
