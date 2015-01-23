@@ -211,31 +211,6 @@ MyTarget "VersionBump" (fun _ ->
         if line = "y" then
             StageAll ""
             Commit "" (sprintf "Bump version to %s" release.NugetVersion)
-        
-            printf "create tags? (y,n): "
-            let line = System.Console.ReadLine()
-            if line = "y" then
-                let doSafe msg f =
-                    try
-                        f()
-                    with exn -> 
-                        trace (sprintf "Error (%s): %A" msg exn)
-
-                doSafe "delete_tag version_nuget" 
-                    (fun () -> Branches.deleteTag "" version_nuget)
-                
-                doSafe "create_tag version_nuget" 
-                    (fun () -> Branches.tag "" version_nuget)
-
-                printf "push tags? (y,n): "
-                let line = System.Console.ReadLine()
-                if line = "y" then
-                    Branches.pushTag "" "origin" version_nuget
-
-            printf "push branch? (y,n): "
-            let line = System.Console.ReadLine()
-            if line = "y" then
-                Branches.push ""
 )
 
 Target "Release" (fun _ ->
