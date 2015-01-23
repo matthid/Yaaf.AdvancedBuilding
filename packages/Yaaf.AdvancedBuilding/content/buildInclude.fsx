@@ -26,12 +26,13 @@ open Fake.Git
 open Fake.FSharpFormatting
 open AssemblyInfoFile
 
+let globalPackagesDir = "./packages"
 let nugetDir  = "./packages/.nuget/"
 let packageDir  = "./packages/.nuget/packages"
 
 if use_nuget then
     // Ensure the ./src/.nuget/NuGet.exe file exists (required by xbuild)
-    let nuget = findToolInSubPath "NuGet.exe" "./.nuget/Build/NuGet.CommandLine/tools/NuGet.exe"
+    let nuget = findToolInSubPath "NuGet.exe" "./packages/NuGet.CommandLine/tools/NuGet.exe"
     System.IO.File.Copy(nuget, "./src/.nuget/NuGet.exe", true)
 
 let buildWithFiles msg dir projectFileFinder (buildParams:BuildParams) =
@@ -97,17 +98,11 @@ MyTarget "Clean" (fun _ ->
 
 MyTarget "CleanAll" (fun _ ->
     // Only done when we want to redownload all.
-    Directory.EnumerateDirectories nugetDir
-    |> Seq.collect (fun dir -> 
-        let name = Path.GetFileName dir
-        if name = "Build" then
-            Directory.EnumerateDirectories dir
-            |> Seq.filter (fun buildDepDir ->
-                let buildDepName = Path.GetFileName buildDepDir
-                // We can't delete the FAKE directory (as it is used currently)
-                buildDepName <> "FAKE")
-        else
-            Seq.singleton dir)
+    Directory.EnumerateDirectories globalPackagesDir
+    |> Seq.filter (fun buildDepDir ->
+        let buildDepName = Path.GetFileName buildDepDir
+        // We can't delete the FAKE directory (as it is used currently)
+        buildDepName <> "FAKE")
     |> Seq.iter (fun dir ->
         try
             DeleteDir dir
@@ -216,31 +211,6 @@ MyTarget "VersionBump" (fun _ ->
         if line = "y" then
             StageAll ""
             Commit "" (sprintf "Bump version to %s" release.NugetVersion)
-        
-            printf "create tags? (y,n): "
-            let line = System.Console.ReadLine()
-            if line = "y" then
-                let doSafe msg f =
-                    try
-                        f()
-                    with exn -> 
-                        trace (sprintf "Error (%s): %A" msg exn)
-
-                doSafe "delete_tag version_nuget" 
-                    (fun () -> Branches.deleteTag "" version_nuget)
-                
-                doSafe "create_tag version_nuget" 
-                    (fun () -> Branches.tag "" version_nuget)
-
-                printf "push tags? (y,n): "
-                let line = System.Console.ReadLine()
-                if line = "y" then
-                    Branches.pushTag "" "origin" version_nuget
-
-            printf "push branch? (y,n): "
-            let line = System.Console.ReadLine()
-            if line = "y" then
-                Branches.push ""
 )
 
 Target "Release" (fun _ ->
