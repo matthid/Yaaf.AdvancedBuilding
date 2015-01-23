@@ -1,4 +1,4 @@
-﻿### 0.1.1
+﻿### 0.1.2
 
  * a CONTRIBUTION.md file is now assumed in project dir (instead of doc/Contributing.md)
  * we assume a LICENSE.md now
