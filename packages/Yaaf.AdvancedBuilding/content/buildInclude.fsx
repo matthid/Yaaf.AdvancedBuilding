@@ -134,7 +134,7 @@ MyTarget "CopyToRelease" (fun _ ->
     CleanDirs [ outLibDir ]
     System.IO.Directory.CreateDirectory(outLibDir) |> ignore
 
-    // Copy RazorEngine.dll to release directory
+    // Copy files to release directory
     allParams 
         |> Seq.map (fun buildParam -> buildParam.CustomBuildName)
         |> Seq.map (fun t -> buildDir @@ t, t)
