@@ -1,4 +1,8 @@
-﻿### 0.1.3
+﻿### 0.1.4
+
+ * fix some broken links in scaffold files.
+
+ ### 0.1.3
 
  * add build.fsx as well.
  * fixed some problems with use_nuget=false.
