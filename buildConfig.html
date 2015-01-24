@@ -1,0 +1,538 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>Yaaf.AdvancedBuilding buildConfig.fsx configuration
+</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Yaaf.AdvancedBuilding provides several build scripts for you to use.">
+    <meta name="author" content="Matthias Dittrich">
+
+    <script src="https://code.jquery.com/jquery-1.8.0.js"></script>
+    <script src="https://code.jquery.com/ui/1.8.23/jquery-ui.js"></script>
+    <script src="https://netdna.bootstrapcdn.com/twitter-bootstrap/2.2.1/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <link href="https://netdna.bootstrapcdn.com/twitter-bootstrap/2.2.1/css/bootstrap-combined.min.css" rel="stylesheet">
+
+    <link type="text/css" rel="stylesheet" href="https://matthid.github.io/Yaaf.AdvancedBuilding/content/style.css" />
+    <link type="text/css" rel="stylesheet" href="https://matthid.github.io/Yaaf.AdvancedBuilding/content/prism.css" />
+    <script type="text/javascript" src="https://matthid.github.io/Yaaf.AdvancedBuilding/content/tips.js"></script>
+	<script type="text/javascript" src="https://matthid.github.io/Yaaf.AdvancedBuilding/content/prism.js"></script>
+    <!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
+    <!--[if lt IE 9]>
+      <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+  </head>
+  <body>
+    <div class="container">
+      <div class="masthead">
+        <ul class="nav nav-pills pull-right">
+          <li><a href="http://fsharp.org">fsharp.org</a></li>
+          <li><a href="http://tpetricek.github.io/FSharp.Formatting/"><img height="16" width="16" src="http://fsharp.org/images/thumbs/FSharp.Formatting.png" /> F# Formatting</a></li>
+        </ul>
+        <h3 class="muted"><a href="https://matthid.github.io/Yaaf.AdvancedBuilding/index.html">Yaaf.AdvancedBuilding</a></h3>
+      </div>
+      <hr />
+      <div class="row">
+        <div class="span9" id="main">
+          
+<table class="pre"><tr><td class="lines"><pre class="fssnip">
+<span class="l">1: </span>
+<span class="l">2: </span>
+<span class="l">3: </span>
+<span class="l">4: </span>
+</pre>
+</td>
+<td class="snippet"><pre class="fssnip">
+<span class="c">// ----------------------------------------------------------------------------</span>
+<span class="c">// This file is subject to the terms and conditions defined in</span>
+<span class="c">// file &#39;LICENSE.txt&#39;, which is part of this source code package.</span>
+<span class="c">// ----------------------------------------------------------------------------</span></pre>
+</td>
+</tr>
+</table>
+
+<h1><a name="Yaaf-AdvancedBuilding-buildConfig-fsx-configuration" class="anchor" href="#Yaaf-AdvancedBuilding-buildConfig-fsx-configuration">Yaaf.AdvancedBuilding buildConfig.fsx configuration</a></h1>
+
+<p>This file handles the configuration of the Yaaf.AdvancedBuilding build script.</p>
+
+<p>The first step is handled in <code>build.sh</code> and <code>build.cmd</code> by restoring either paket dependencies or bootstrapping a NuGet.exe and
+executing NuGet to resolve all build dependencies (dependencies required for the build to work, for example FAKE).
+For details of paket look into <a href="http://fsprojects.github.io/Paket/">http://fsprojects.github.io/Paket/</a> .</p>
+
+<p>To be able to update <code>build.sh</code> and <code>build.cmd</code> with Yaaf.AdvancedBuilding the <code>build.sh</code> and <code>build.cmd</code> files in the project root directory delegate to
+<code>packages/Yaaf.AdvancedBuilding/content/build.sh</code> and <code>packages/Yaaf.AdvancedBuilding/content/build.cmd</code>, which do the actual work.</p>
+
+<p>When using NuGet instead of paket (or when using both), nuget packages from a <code>packages.config</code> file are restored.
+This only works if there is a NuGet.exe found, you can just drop the <code>downloadNuget.fsx</code> file in your project root and Yaaf.AdvancedBuilding will make sure to
+bootstrap a NuGet.exe into <code>packages/Nuget.CommandLine</code>.</p>
+
+<p>The second step is to invoke FAKE with <code>build.fsx</code> which loads the current <code>buildConfig.fsx</code> file and delegates the work to
+<code>packages/Yaaf.AdvancedBuilding/content/buildInclude.fsx</code>. For details about FAKE look into <a href="http://fsharp.github.com/FAKE">http://fsharp.github.com/FAKE</a> .</p>
+
+<p>In the remainder of this document we will explain the various configuration options for Yaaf.Configuration.</p>
+
+<h2><a name="Required-config-start" class="anchor" href="#Required-config-start">Required config start</a></h2>
+
+<p>First We need to load some dependencies and open some namespaces.</p>
+
+<table class="pre"><tr><td class="lines"><pre class="fssnip">
+<span class="l"> 1: </span>
+<span class="l"> 2: </span>
+<span class="l"> 3: </span>
+<span class="l"> 4: </span>
+<span class="l"> 5: </span>
+<span class="l"> 6: </span>
+<span class="l"> 7: </span>
+<span class="l"> 8: </span>
+<span class="l"> 9: </span>
+<span class="l">10: </span>
+</pre>
+</td>
+<td class="snippet"><pre class="fssnip">
+<span class="prep">#I</span> <span class="s">@&quot;</span><span class="s">packages</span><span class="s">/</span><span class="s">FAKE</span><span class="s">/</span><span class="s">tools</span><span class="s">/</span><span class="s">&quot;</span>
+<span class="prep">#r</span> <span class="s">@&quot;</span><span class="s">FakeLib</span><span class="s">.</span><span class="s">dll</span><span class="s">&quot;</span>
+
+<span class="k">open</span> <span onmouseout="hideTip(event, 'fs1', 1)" onmouseover="showTip(event, 'fs1', 1)" class="i">System</span><span class="o">.</span><span onmouseout="hideTip(event, 'fs2', 2)" onmouseover="showTip(event, 'fs2', 2)" class="i">Collections</span><span class="o">.</span><span onmouseout="hideTip(event, 'fs3', 3)" onmouseover="showTip(event, 'fs3', 3)" class="i">Generic</span>
+<span class="k">open</span> <span onmouseout="hideTip(event, 'fs1', 4)" onmouseover="showTip(event, 'fs1', 4)" class="i">System</span><span class="o">.</span><span onmouseout="hideTip(event, 'fs4', 5)" onmouseover="showTip(event, 'fs4', 5)" class="i">IO</span>
+
+<span class="k">open</span> <span class="i">Fake</span>
+<span class="k">open</span> <span class="i">Fake</span><span class="o">.</span><span class="i">Git</span>
+<span class="k">open</span> <span class="i">Fake</span><span class="o">.</span><span class="i">FSharpFormatting</span>
+<span class="k">open</span> <span class="i">AssemblyInfoFile</span></pre>
+</td>
+</tr>
+</table>
+
+<h2><a name="Main-project-configuration" class="anchor" href="#Main-project-configuration">Main project configuration</a></h2>
+
+<p>Then we need to set some general properties of the project.</p>
+
+<table class="pre"><tr><td class="lines"><pre class="fssnip">
+<span class="l"> 1: </span>
+<span class="l"> 2: </span>
+<span class="l"> 3: </span>
+<span class="l"> 4: </span>
+<span class="l"> 5: </span>
+<span class="l"> 6: </span>
+<span class="l"> 7: </span>
+<span class="l"> 8: </span>
+<span class="l"> 9: </span>
+<span class="l">10: </span>
+<span class="l">11: </span>
+<span class="l">12: </span>
+<span class="l">13: </span>
+<span class="l">14: </span>
+<span class="l">15: </span>
+<span class="l">16: </span>
+<span class="l">17: </span>
+<span class="l">18: </span>
+<span class="l">19: </span>
+<span class="l">20: </span>
+<span class="l">21: </span>
+<span class="l">22: </span>
+<span class="l">23: </span>
+</pre>
+</td>
+<td class="snippet"><pre class="fssnip">
+<span class="c">// properties (main)</span>
+<span class="k">let</span> <span onmouseout="hideTip(event, 'fs5', 6)" onmouseover="showTip(event, 'fs5', 6)" class="i">projectName</span> <span class="o">=</span> <span class="s">&quot;</span><span class="s">Yaaf</span><span class="s">.</span><span class="s">AdvancedBuilding</span><span class="s">&quot;</span>
+<span class="k">let</span> <span onmouseout="hideTip(event, 'fs6', 7)" onmouseover="showTip(event, 'fs6', 7)" class="i">copyrightNotice</span> <span class="o">=</span> <span class="s">&quot;</span><span class="s">Yaaf</span><span class="s">.</span><span class="s">AdvancedBuilding</span><span class="s"> </span><span class="s">Copyright</span><span class="s"> </span><span class="s">&#169;</span><span class="s"> </span><span class="s">Matthias</span><span class="s"> </span><span class="s">Dittrich</span><span class="s"> </span><span class="s">2015</span><span class="s">&quot;</span>
+<span class="k">let</span> <span onmouseout="hideTip(event, 'fs7', 8)" onmouseover="showTip(event, 'fs7', 8)" class="i">projectSummary</span> <span class="o">=</span> <span class="s">&quot;</span><span class="s">Yaaf</span><span class="s">.</span><span class="s">AdvancedBuilding</span><span class="s"> </span><span class="s">provides</span><span class="s"> </span><span class="s">several</span><span class="s"> </span><span class="s">build</span><span class="s"> </span><span class="s">scripts</span><span class="s"> </span><span class="s">for</span><span class="s"> </span><span class="s">you</span><span class="s"> </span><span class="s">to</span><span class="s"> </span><span class="s">use</span><span class="s">.</span><span class="s">&quot;</span>
+<span class="k">let</span> <span onmouseout="hideTip(event, 'fs8', 9)" onmouseover="showTip(event, 'fs8', 9)" class="i">projectDescription</span> <span class="o">=</span>
+  <span class="s">&quot;</span><span class="s">Yaaf</span><span class="s">.</span><span class="s">AdvancedBuilding</span><span class="s"> </span><span class="s">is</span><span class="s"> </span><span class="s">a</span><span class="s"> </span><span class="s">loose</span><span class="s"> </span><span class="s">collection</span><span class="s"> </span><span class="s">of</span><span class="s"> </span><span class="s">build</span><span class="s"> </span><span class="s">scripts</span><span class="s">.</span><span class="s"> </span><span class="s">&quot;</span> <span class="o">+</span>
+  <span class="s">&quot;</span><span class="s">The</span><span class="s"> </span><span class="s">benefit</span><span class="s"> </span><span class="s">is</span><span class="s"> </span><span class="s">that</span><span class="s"> </span><span class="s">you</span><span class="s"> </span><span class="s">can</span><span class="s"> </span><span class="s">automatically</span><span class="s"> </span><span class="s">update</span><span class="s"> </span><span class="s">your</span><span class="s"> </span><span class="s">build</span><span class="s"> </span><span class="s">by</span><span class="s"> </span><span class="s">updating</span><span class="s"> </span><span class="s">this</span><span class="s"> </span><span class="s">package</span><span class="s">,</span><span class="s"> </span><span class="s">&quot;</span> <span class="o">+</span>
+  <span class="s">&quot;</span><span class="s">when</span><span class="s"> </span><span class="s">you</span><span class="s"> </span><span class="s">don&#39;t</span><span class="s"> </span><span class="s">need</span><span class="s"> </span><span class="s">your</span><span class="s"> </span><span class="s">own</span><span class="s"> </span><span class="s">crazy</span><span class="s"> </span><span class="s">build</span><span class="s"> </span><span class="s">script</span><span class="s">.</span><span class="s"> </span><span class="s">But</span><span class="s"> </span><span class="s">even</span><span class="s"> </span><span class="s">than</span><span class="s"> </span><span class="s">it</span><span class="s"> </span><span class="s">is</span><span class="s"> </span><span class="s">possible</span><span class="s"> </span><span class="s">&quot;</span> <span class="o">+</span>
+  <span class="s">&quot;</span><span class="s">that</span><span class="s"> </span><span class="s">you</span><span class="s"> </span><span class="s">could</span><span class="s"> </span><span class="s">re</span><span class="s">-</span><span class="s">use</span><span class="s"> </span><span class="s">some</span><span class="s"> </span><span class="s">scripts</span><span class="s"> </span><span class="s">within</span><span class="s"> </span><span class="s">this</span><span class="s"> </span><span class="s">package</span><span class="s">.</span><span class="s">&quot;</span>
+<span class="k">let</span> <span onmouseout="hideTip(event, 'fs9', 10)" onmouseover="showTip(event, 'fs9', 10)" class="i">authors</span> <span class="o">=</span> [<span class="s">&quot;</span><span class="s">Matthias</span><span class="s"> </span><span class="s">Dittrich</span><span class="s">&quot;</span>]
+<span class="k">let</span> <span onmouseout="hideTip(event, 'fs10', 11)" onmouseover="showTip(event, 'fs10', 11)" class="i">page_author</span> <span class="o">=</span> <span class="s">&quot;</span><span class="s">Matthias</span><span class="s"> </span><span class="s">Dittrich</span><span class="s">&quot;</span>
+<span class="k">let</span> <span onmouseout="hideTip(event, 'fs11', 12)" onmouseover="showTip(event, 'fs11', 12)" class="i">mail</span> <span class="o">=</span> <span class="s">&quot;</span><span class="s">matthi</span><span class="s">.</span><span class="s">d</span><span class="s">@</span><span class="s">gmail</span><span class="s">.</span><span class="s">com</span><span class="s">&quot;</span>
+<span class="c">// Read release notes document</span>
+<span class="k">let</span> <span onmouseout="hideTip(event, 'fs12', 13)" onmouseover="showTip(event, 'fs12', 13)" class="i">release</span> <span class="o">=</span> <span class="i">ReleaseNotesHelper</span><span class="o">.</span><span class="i">parseReleaseNotes</span> (<span onmouseout="hideTip(event, 'fs13', 14)" onmouseover="showTip(event, 'fs13', 14)" class="i">File</span><span class="o">.</span><span onmouseout="hideTip(event, 'fs14', 15)" onmouseover="showTip(event, 'fs14', 15)" class="i">ReadLines</span> <span class="s">&quot;</span><span class="s">doc</span><span class="s">/</span><span class="s">ReleaseNotes</span><span class="s">.</span><span class="s">md</span><span class="s">&quot;</span>)
+<span class="k">let</span> <span onmouseout="hideTip(event, 'fs15', 16)" onmouseover="showTip(event, 'fs15', 16)" class="i">version</span> <span class="o">=</span> <span onmouseout="hideTip(event, 'fs12', 17)" onmouseover="showTip(event, 'fs12', 17)" class="i">release</span><span class="o">.</span><span class="i">AssemblyVersion</span>
+<span class="k">let</span> <span onmouseout="hideTip(event, 'fs16', 18)" onmouseover="showTip(event, 'fs16', 18)" class="i">version_nuget</span> <span class="o">=</span> <span onmouseout="hideTip(event, 'fs12', 19)" onmouseover="showTip(event, 'fs12', 19)" class="i">release</span><span class="o">.</span><span class="i">NugetVersion</span>
+
+
+<span class="k">let</span> <span onmouseout="hideTip(event, 'fs17', 20)" onmouseover="showTip(event, 'fs17', 20)" class="i">github_user</span> <span class="o">=</span> <span class="s">&quot;</span><span class="s">matthid</span><span class="s">&quot;</span>
+<span class="k">let</span> <span onmouseout="hideTip(event, 'fs18', 21)" onmouseover="showTip(event, 'fs18', 21)" class="i">github_project</span> <span class="o">=</span> <span class="s">&quot;</span><span class="s">Yaaf</span><span class="s">.</span><span class="s">AdvancedBuilding</span><span class="s">&quot;</span>
+<span class="k">let</span> <span onmouseout="hideTip(event, 'fs19', 22)" onmouseover="showTip(event, 'fs19', 22)" class="i">nuget_url</span> <span class="o">=</span> <span class="s">&quot;</span><span class="s">https</span><span class="s">:</span><span class="s">/</span><span class="s">/</span><span class="s">www</span><span class="s">.</span><span class="s">nuget</span><span class="s">.</span><span class="s">org</span><span class="s">/</span><span class="s">packages</span><span class="s">/</span><span class="s">Yaaf</span><span class="s">.</span><span class="s">AdvancedBuilding</span><span class="s">/</span><span class="s">&quot;</span>
+
+<span class="k">let</span> <span onmouseout="hideTip(event, 'fs20', 23)" onmouseover="showTip(event, 'fs20', 23)" class="i">tags</span> <span class="o">=</span> <span class="s">&quot;</span><span class="s">building</span><span class="s"> </span><span class="s">C</span><span class="s">#</span><span class="s"> </span><span class="s">F</span><span class="s">#</span><span class="s"> </span><span class="s">dotnet</span><span class="s"> </span><span class="s">.</span><span class="s">net</span><span class="s">&quot;</span></pre>
+</td>
+</tr>
+</table>
+
+<p>Setup which nuget packages are created.</p>
+
+<table class="pre"><tr><td class="lines"><pre class="fssnip">
+<span class="l"> 1: </span>
+<span class="l"> 2: </span>
+<span class="l"> 3: </span>
+<span class="l"> 4: </span>
+<span class="l"> 5: </span>
+<span class="l"> 6: </span>
+<span class="l"> 7: </span>
+<span class="l"> 8: </span>
+<span class="l"> 9: </span>
+<span class="l">10: </span>
+<span class="l">11: </span>
+<span class="l">12: </span>
+<span class="l">13: </span>
+<span class="l">14: </span>
+<span class="l">15: </span>
+<span class="l">16: </span>
+</pre>
+</td>
+<td class="snippet"><pre class="fssnip">
+<span class="k">let</span> <span onmouseout="hideTip(event, 'fs21', 24)" onmouseover="showTip(event, 'fs21', 24)" class="i">nugetPackages</span> <span class="o">=</span>
+  [ <span class="s">&quot;</span><span class="s">Yaaf</span><span class="s">.</span><span class="s">AdvancedBuilding</span><span class="s">.</span><span class="s">nuspec</span><span class="s">&quot;</span>, (<span class="k">fun</span> <span onmouseout="hideTip(event, 'fs22', 25)" onmouseover="showTip(event, 'fs22', 25)" class="i">p</span> <span class="k">-&gt;</span>
+      { <span onmouseout="hideTip(event, 'fs22', 26)" onmouseover="showTip(event, 'fs22', 26)" class="i">p</span> <span class="k">with</span>
+          <span class="i">Authors</span> <span class="o">=</span> <span onmouseout="hideTip(event, 'fs9', 27)" onmouseover="showTip(event, 'fs9', 27)" class="i">authors</span>
+          <span class="i">Project</span> <span class="o">=</span> <span onmouseout="hideTip(event, 'fs5', 28)" onmouseover="showTip(event, 'fs5', 28)" class="i">projectName</span>
+          <span class="i">Summary</span> <span class="o">=</span> <span onmouseout="hideTip(event, 'fs7', 29)" onmouseover="showTip(event, 'fs7', 29)" class="i">projectSummary</span>
+          <span class="i">Description</span> <span class="o">=</span> <span onmouseout="hideTip(event, 'fs8', 30)" onmouseover="showTip(event, 'fs8', 30)" class="i">projectDescription</span>
+          <span class="i">Version</span> <span class="o">=</span> <span onmouseout="hideTip(event, 'fs16', 31)" onmouseover="showTip(event, 'fs16', 31)" class="i">version_nuget</span>
+          <span class="i">NoDefaultExcludes</span> <span class="o">=</span> <span class="k">true</span>
+          <span class="i">ReleaseNotes</span> <span class="o">=</span> <span class="i">toLines</span> <span onmouseout="hideTip(event, 'fs12', 32)" onmouseover="showTip(event, 'fs12', 32)" class="i">release</span><span class="o">.</span><span class="i">Notes</span>
+          <span class="i">Tags</span> <span class="o">=</span> <span onmouseout="hideTip(event, 'fs20', 33)" onmouseover="showTip(event, 'fs20', 33)" class="i">tags</span>
+          <span class="i">Dependencies</span> <span class="o">=</span>
+            [ <span class="s">&quot;</span><span class="s">Yaaf</span><span class="s">.</span><span class="s">FSharp</span><span class="s">.</span><span class="s">Scripting</span><span class="s">&quot;</span>, <span class="s">&quot;</span><span class="s">1</span><span class="s">.</span><span class="s">0</span><span class="s">.</span><span class="s">0</span><span class="s">&quot;</span>
+              <span class="s">&quot;</span><span class="s">FSharp</span><span class="s">.</span><span class="s">Formatting</span><span class="s">&quot;</span>, <span class="s">&quot;</span><span class="s">2</span><span class="s">.</span><span class="s">6</span><span class="s">.</span><span class="s">3</span><span class="s">&quot;</span>
+              <span class="s">&quot;</span><span class="s">FSharp</span><span class="s">.</span><span class="s">Compiler</span><span class="s">.</span><span class="s">Service</span><span class="s">&quot;</span>, <span class="s">&quot;</span><span class="s">0</span><span class="s">.</span><span class="s">0</span><span class="s">.</span><span class="s">82</span><span class="s">&quot;</span>
+              <span class="s">&quot;</span><span class="s">FAKE</span><span class="s">&quot;</span>, <span class="s">&quot;</span><span class="s">3</span><span class="s">.</span><span class="s">14</span><span class="s">.</span><span class="s">8</span><span class="s">&quot;</span> ] }) ]</pre>
+</td>
+</tr>
+</table>
+
+<h2><a name="The-property" class="anchor" href="#The-property">The <code>generated_file_list</code> property</a></h2>
+
+<p>The <code>generated_file_list</code> list is used to specify which files are copied over to the release directory.
+This list is also used for documentation generation.</p>
+
+<table class="pre"><tr><td class="lines"><pre class="fssnip">
+<span class="l">1: </span>
+<span class="l">2: </span>
+<span class="l">3: </span>
+</pre>
+</td>
+<td class="snippet"><pre class="fssnip">
+<span class="k">let</span> <span onmouseout="hideTip(event, 'fs23', 34)" onmouseover="showTip(event, 'fs23', 34)" class="i">generated_file_list</span> <span class="o">=</span>
+  [ <span class="s">&quot;</span><span class="s">Yaaf</span><span class="s">.</span><span class="s">AdvancedBuilding</span><span class="s">.</span><span class="s">dll</span><span class="s">&quot;</span>
+    <span class="s">&quot;</span><span class="s">Yaaf</span><span class="s">.</span><span class="s">AdvancedBuilding</span><span class="s">.</span><span class="s">xml</span><span class="s">&quot;</span> ]</pre>
+</td>
+</tr>
+</table>
+
+<h2><a name="The-Type" class="anchor" href="#The-Type">The <code>BuildParams</code> Type</a></h2>
+
+<p>You can define your own type for building, the only limitation is that this type needs the <code>SimpleBuildName</code> and <code>CustomBuildName</code> properties.
+The <code>SimpleBuildName</code> property is used for the generated FAKE target for this build <code>(sprintf "Build_%s" build.SimpleBuildName)</code>.
+The <code>CustomBuildName</code> is used as a parameter for msbuild/xbuild and can be used within the fsproj and csproj files to define custom builds.
+(IE. custom defines / targets and so on).
+The <code>CustomBuildName</code> property is also used as the name of the sub-directory within the <code>buildDir</code> (see below).</p>
+
+<table class="pre"><tr><td class="lines"><pre class="fssnip">
+<span class="l">1: </span>
+<span class="l">2: </span>
+<span class="l">3: </span>
+<span class="l">4: </span>
+<span class="l">5: </span>
+</pre>
+</td>
+<td class="snippet"><pre class="fssnip">
+<span class="k">type</span> <span onmouseout="hideTip(event, 'fs24', 35)" onmouseover="showTip(event, 'fs24', 35)" class="i">BuildParams</span> <span class="o">=</span>
+    {
+        <span onmouseout="hideTip(event, 'fs25', 36)" onmouseover="showTip(event, 'fs25', 36)" class="i">SimpleBuildName</span> <span class="o">:</span> <span onmouseout="hideTip(event, 'fs26', 37)" onmouseover="showTip(event, 'fs26', 37)" class="i">string</span>
+        <span onmouseout="hideTip(event, 'fs27', 38)" onmouseover="showTip(event, 'fs27', 38)" class="i">CustomBuildName</span> <span class="o">:</span> <span onmouseout="hideTip(event, 'fs26', 39)" onmouseover="showTip(event, 'fs26', 39)" class="i">string</span>
+    }</pre>
+</td>
+</tr>
+</table>
+
+<h2><a name="Building" class="anchor" href="#Building">Building</a></h2>
+
+<p>You can define all the builds you want to do.
+If you only want to do one build use the <code>emptyParams</code> from below (and empty <code>CustomBuildName</code> means to build directly into <code>buildDir</code>).</p>
+
+<table class="pre"><tr><td class="lines"><pre class="fssnip">
+<span class="l">1: </span>
+<span class="l">2: </span>
+<span class="l">3: </span>
+</pre>
+</td>
+<td class="snippet"><pre class="fssnip">
+<span class="c">//let profile111Params = { SimpleBuildName = &quot;profile111&quot;; CustomBuildName = &quot;portable-net45+netcore45+wpa81+MonoAndroid1+MonoTouch1&quot; }</span>
+<span class="k">let</span> <span onmouseout="hideTip(event, 'fs28', 40)" onmouseover="showTip(event, 'fs28', 40)" class="i">emptyParams</span> <span class="o">=</span> { <span class="i">SimpleBuildName</span> <span class="o">=</span> <span class="s">&quot;</span><span class="s">&quot;</span>; <span class="i">CustomBuildName</span> <span class="o">=</span> <span class="s">&quot;</span><span class="s">&quot;</span> }
+<span class="c">//let net45Params = { SimpleBuildName = &quot;net45&quot;; CustomBuildName = &quot;net45&quot; }</span></pre>
+</td>
+</tr>
+</table>
+
+<p>And then add them to the <code>allParams</code> list so Yaaf.AdvancedBuilding can find them.</p>
+
+<table class="pre"><tr><td class="lines"><pre class="fssnip">
+<span class="l">1: </span>
+</pre>
+</td>
+<td class="snippet"><pre class="fssnip">
+<span class="k">let</span> <span onmouseout="hideTip(event, 'fs29', 41)" onmouseover="showTip(event, 'fs29', 41)" class="i">allParams</span> <span class="o">=</span> [ <span onmouseout="hideTip(event, 'fs28', 42)" onmouseover="showTip(event, 'fs28', 42)" class="i">emptyParams</span> ]</pre>
+</td>
+</tr>
+</table>
+
+<p>With <code>use_nuget</code> you can specify if Yaaf.AdvancedBuilding should restore nuget packages
+before running the build (if you only use paket, you can set it to false).</p>
+
+<table class="pre"><tr><td class="lines"><pre class="fssnip">
+<span class="l">1: </span>
+</pre>
+</td>
+<td class="snippet"><pre class="fssnip">
+<span class="k">let</span> <span onmouseout="hideTip(event, 'fs30', 43)" onmouseover="showTip(event, 'fs30', 43)" class="i">use_nuget</span> <span class="o">=</span> <span class="k">true</span></pre>
+</td>
+</tr>
+</table>
+
+<p>Some general build directories you can setup.</p>
+
+<table class="pre"><tr><td class="lines"><pre class="fssnip">
+<span class="l">1: </span>
+<span class="l">2: </span>
+<span class="l">3: </span>
+<span class="l">4: </span>
+<span class="l">5: </span>
+<span class="l">6: </span>
+<span class="l">7: </span>
+<span class="l">8: </span>
+</pre>
+</td>
+<td class="snippet"><pre class="fssnip">
+<span class="k">let</span> <span onmouseout="hideTip(event, 'fs31', 44)" onmouseover="showTip(event, 'fs31', 44)" class="i">buildDir</span> <span class="o">=</span> <span class="s">&quot;</span><span class="s">.</span><span class="s">/</span><span class="s">build</span><span class="s">/</span><span class="s">&quot;</span>
+<span class="k">let</span> <span onmouseout="hideTip(event, 'fs32', 45)" onmouseover="showTip(event, 'fs32', 45)" class="i">outLibDir</span> <span class="o">=</span> <span class="s">&quot;</span><span class="s">.</span><span class="s">/</span><span class="s">release</span><span class="s">/</span><span class="s">lib</span><span class="s">/</span><span class="s">&quot;</span>
+<span class="k">let</span> <span onmouseout="hideTip(event, 'fs33', 46)" onmouseover="showTip(event, 'fs33', 46)" class="i">outDocDir</span> <span class="o">=</span> <span class="s">&quot;</span><span class="s">.</span><span class="s">/</span><span class="s">release</span><span class="s">/</span><span class="s">documentation</span><span class="s">/</span><span class="s">&quot;</span>
+<span class="k">let</span> <span onmouseout="hideTip(event, 'fs34', 47)" onmouseover="showTip(event, 'fs34', 47)" class="i">outNugetDir</span> <span class="o">=</span> <span class="s">&quot;</span><span class="s">.</span><span class="s">/</span><span class="s">release</span><span class="s">/</span><span class="s">nuget</span><span class="s">/</span><span class="s">&quot;</span>
+<span class="k">let</span> <span onmouseout="hideTip(event, 'fs35', 48)" onmouseover="showTip(event, 'fs35', 48)" class="i">docTemplatesDir</span> <span class="o">=</span> <span class="s">&quot;</span><span class="s">.</span><span class="s">/</span><span class="s">doc</span><span class="s">/</span><span class="s">templates</span><span class="s">/</span><span class="s">&quot;</span>
+<span class="k">let</span> <span onmouseout="hideTip(event, 'fs36', 49)" onmouseover="showTip(event, 'fs36', 49)" class="i">testDir</span>  <span class="o">=</span> <span class="s">&quot;</span><span class="s">.</span><span class="s">/</span><span class="s">test</span><span class="s">/</span><span class="s">&quot;</span>
+
+<span class="k">let</span> <span onmouseout="hideTip(event, 'fs37', 50)" onmouseover="showTip(event, 'fs37', 50)" class="i">buildMode</span> <span class="o">=</span> <span class="s">&quot;</span><span class="s">Release</span><span class="s">&quot;</span> <span class="c">// if isMono then &quot;Release&quot; else &quot;Debug&quot;</span></pre>
+</td>
+</tr>
+</table>
+
+<h2><a name="More-settings" class="anchor" href="#More-settings">More settings</a></h2>
+
+<p>In this section you don't normally need to change anything</p>
+
+<table class="pre"><tr><td class="lines"><pre class="fssnip">
+<span class="l">1: </span>
+<span class="l">2: </span>
+<span class="l">3: </span>
+<span class="l">4: </span>
+<span class="l">5: </span>
+</pre>
+</td>
+<td class="snippet"><pre class="fssnip">
+<span class="k">let</span> <span onmouseout="hideTip(event, 'fs38', 51)" onmouseover="showTip(event, 'fs38', 51)" class="i">github_url</span> <span class="o">=</span> <span onmouseout="hideTip(event, 'fs39', 52)" onmouseover="showTip(event, 'fs39', 52)" class="i">sprintf</span> <span class="s">&quot;</span><span class="s">https</span><span class="s">:</span><span class="s">/</span><span class="s">/</span><span class="s">github</span><span class="s">.</span><span class="s">com</span><span class="s">/</span><span class="s">%</span><span class="s">s</span><span class="s">/</span><span class="s">%</span><span class="s">s</span><span class="s">&quot;</span> <span onmouseout="hideTip(event, 'fs17', 53)" onmouseover="showTip(event, 'fs17', 53)" class="i">github_user</span> <span onmouseout="hideTip(event, 'fs18', 54)" onmouseover="showTip(event, 'fs18', 54)" class="i">github_project</span>
+
+<span class="k">if</span> <span class="i">isMono</span> <span class="k">then</span>
+    <span class="i">monoArguments</span> <span class="o">&lt;-</span> <span class="s">&quot;</span><span class="s">-</span><span class="s">-</span><span class="s">runtime</span><span class="s">=</span><span class="s">v4</span><span class="s">.</span><span class="s">0</span><span class="s"> </span><span class="s">-</span><span class="s">-</span><span class="s">debug</span><span class="s">&quot;</span>
+    <span class="c">//monoArguments &lt;- &quot;--runtime=v4.0&quot;</span></pre>
+</td>
+</tr>
+</table>
+
+<p>You can change where Yaaf.AdvancedBuilding tries to find templates (for the documentation generation)</p>
+
+<table class="pre"><tr><td class="lines"><pre class="fssnip">
+<span class="l">1: </span>
+<span class="l">2: </span>
+<span class="l">3: </span>
+</pre>
+</td>
+<td class="snippet"><pre class="fssnip">
+<span class="k">let</span> <span onmouseout="hideTip(event, 'fs40', 55)" onmouseover="showTip(event, 'fs40', 55)" class="i">layoutRoots</span> <span class="o">=</span>
+    [ <span onmouseout="hideTip(event, 'fs35', 56)" onmouseover="showTip(event, 'fs35', 56)" class="i">docTemplatesDir</span>; 
+      <span onmouseout="hideTip(event, 'fs35', 57)" onmouseover="showTip(event, 'fs35', 57)" class="i">docTemplatesDir</span> <span class="o">@@</span> <span class="s">&quot;</span><span class="s">reference</span><span class="s">&quot;</span> ]</pre>
+</td>
+</tr>
+</table>
+
+<p>You can change which AssemblyInfo files are generated for you.</p>
+
+<table class="pre"><tr><td class="lines"><pre class="fssnip">
+<span class="l"> 1: </span>
+<span class="l"> 2: </span>
+<span class="l"> 3: </span>
+<span class="l"> 4: </span>
+<span class="l"> 5: </span>
+<span class="l"> 6: </span>
+<span class="l"> 7: </span>
+<span class="l"> 8: </span>
+<span class="l"> 9: </span>
+<span class="l">10: </span>
+<span class="l">11: </span>
+<span class="l">12: </span>
+<span class="l">13: </span>
+<span class="l">14: </span>
+<span class="l">15: </span>
+<span class="l">16: </span>
+<span class="l">17: </span>
+</pre>
+</td>
+<td class="snippet"><pre class="fssnip">
+<span class="k">let</span> <span onmouseout="hideTip(event, 'fs41', 58)" onmouseover="showTip(event, 'fs41', 58)" class="i">setVersion</span> () <span class="o">=</span> 
+  <span class="k">let</span> <span onmouseout="hideTip(event, 'fs42', 59)" onmouseover="showTip(event, 'fs42', 59)" class="i">info</span> <span class="o">=</span>
+      [<span class="i">Attribute</span><span class="o">.</span><span class="i">Company</span> <span onmouseout="hideTip(event, 'fs5', 60)" onmouseover="showTip(event, 'fs5', 60)" class="i">projectName</span>
+       <span class="i">Attribute</span><span class="o">.</span><span class="i">Product</span> <span onmouseout="hideTip(event, 'fs5', 61)" onmouseover="showTip(event, 'fs5', 61)" class="i">projectName</span>
+       <span class="i">Attribute</span><span class="o">.</span><span class="i">Copyright</span> <span onmouseout="hideTip(event, 'fs6', 62)" onmouseover="showTip(event, 'fs6', 62)" class="i">copyrightNotice</span>
+       <span class="i">Attribute</span><span class="o">.</span><span class="i">Version</span> <span onmouseout="hideTip(event, 'fs15', 63)" onmouseover="showTip(event, 'fs15', 63)" class="i">version</span>
+       <span class="i">Attribute</span><span class="o">.</span><span class="i">FileVersion</span> <span onmouseout="hideTip(event, 'fs15', 64)" onmouseover="showTip(event, 'fs15', 64)" class="i">version</span>
+       <span class="i">Attribute</span><span class="o">.</span><span class="i">InformationalVersion</span> <span onmouseout="hideTip(event, 'fs16', 65)" onmouseover="showTip(event, 'fs16', 65)" class="i">version_nuget</span>]
+  <span class="i">CreateFSharpAssemblyInfo</span> <span class="s">&quot;</span><span class="s">.</span><span class="s">/</span><span class="s">src</span><span class="s">/</span><span class="s">SharedAssemblyInfo</span><span class="s">.</span><span class="s">fs</span><span class="s">&quot;</span> <span onmouseout="hideTip(event, 'fs42', 66)" onmouseover="showTip(event, 'fs42', 66)" class="i">info</span>
+  <span class="k">let</span> <span onmouseout="hideTip(event, 'fs42', 67)" onmouseover="showTip(event, 'fs42', 67)" class="i">info</span> <span class="o">=</span>
+      [<span class="i">Attribute</span><span class="o">.</span><span class="i">Company</span> <span onmouseout="hideTip(event, 'fs5', 68)" onmouseover="showTip(event, 'fs5', 68)" class="i">projectName</span>
+       <span class="i">Attribute</span><span class="o">.</span><span class="i">Product</span> <span onmouseout="hideTip(event, 'fs5', 69)" onmouseover="showTip(event, 'fs5', 69)" class="i">projectName</span>
+       <span class="i">Attribute</span><span class="o">.</span><span class="i">Copyright</span> <span onmouseout="hideTip(event, 'fs6', 70)" onmouseover="showTip(event, 'fs6', 70)" class="i">copyrightNotice</span>
+       <span class="i">Attribute</span><span class="o">.</span><span class="i">Version</span> <span onmouseout="hideTip(event, 'fs15', 71)" onmouseover="showTip(event, 'fs15', 71)" class="i">version</span>
+       <span class="i">Attribute</span><span class="o">.</span><span class="i">FileVersion</span> <span onmouseout="hideTip(event, 'fs15', 72)" onmouseover="showTip(event, 'fs15', 72)" class="i">version</span>
+       <span class="i">Attribute</span><span class="o">.</span><span class="i">InformationalVersion</span> <span onmouseout="hideTip(event, 'fs16', 73)" onmouseover="showTip(event, 'fs16', 73)" class="i">version_nuget</span>]
+  <span class="i">CreateCSharpAssemblyInfo</span> <span class="s">&quot;</span><span class="s">.</span><span class="s">/</span><span class="s">src</span><span class="s">/</span><span class="s">SharedAssemblyInfo</span><span class="s">.</span><span class="s">cs</span><span class="s">&quot;</span> <span onmouseout="hideTip(event, 'fs42', 74)" onmouseover="showTip(event, 'fs42', 74)" class="i">info</span></pre>
+</td>
+</tr>
+</table>
+
+<p>The following functions tell Yaaf.AdvancedBuilding where it needs to look for project files.</p>
+
+<table class="pre"><tr><td class="lines"><pre class="fssnip">
+<span class="l"> 1: </span>
+<span class="l"> 2: </span>
+<span class="l"> 3: </span>
+<span class="l"> 4: </span>
+<span class="l"> 5: </span>
+<span class="l"> 6: </span>
+<span class="l"> 7: </span>
+<span class="l"> 8: </span>
+<span class="l"> 9: </span>
+<span class="l">10: </span>
+</pre>
+</td>
+<td class="snippet"><pre class="fssnip">
+<span class="k">let</span> <span onmouseout="hideTip(event, 'fs43', 75)" onmouseover="showTip(event, 'fs43', 75)" class="i">findProjectFiles</span> (<span onmouseout="hideTip(event, 'fs44', 76)" onmouseover="showTip(event, 'fs44', 76)" class="i">buildParams</span><span class="o">:</span><span onmouseout="hideTip(event, 'fs24', 77)" onmouseover="showTip(event, 'fs24', 77)" class="i">BuildParams</span>) <span class="o">=</span>
+    <span class="o">!!</span> (<span onmouseout="hideTip(event, 'fs39', 78)" onmouseover="showTip(event, 'fs39', 78)" class="i">sprintf</span> <span class="s">&quot;</span><span class="s">src</span><span class="s">/</span><span class="s">source</span><span class="s">/</span><span class="s">*</span><span class="s">*</span><span class="s">/</span><span class="s">*</span><span class="s">.</span><span class="s">fsproj</span><span class="s">&quot;</span>)
+    <span class="o">++</span> (<span onmouseout="hideTip(event, 'fs39', 79)" onmouseover="showTip(event, 'fs39', 79)" class="i">sprintf</span> <span class="s">&quot;</span><span class="s">src</span><span class="s">/</span><span class="s">source</span><span class="s">/</span><span class="s">*</span><span class="s">*</span><span class="s">/</span><span class="s">*</span><span class="s">.</span><span class="s">csproj</span><span class="s">&quot;</span>)
+
+<span class="k">let</span> <span onmouseout="hideTip(event, 'fs45', 80)" onmouseover="showTip(event, 'fs45', 80)" class="i">findTestFiles</span> (<span onmouseout="hideTip(event, 'fs44', 81)" onmouseover="showTip(event, 'fs44', 81)" class="i">buildParams</span><span class="o">:</span><span onmouseout="hideTip(event, 'fs24', 82)" onmouseover="showTip(event, 'fs24', 82)" class="i">BuildParams</span>) <span class="o">=</span>
+    <span class="o">!!</span> (<span onmouseout="hideTip(event, 'fs39', 83)" onmouseover="showTip(event, 'fs39', 83)" class="i">sprintf</span> <span class="s">&quot;</span><span class="s">src</span><span class="s">/</span><span class="s">test</span><span class="s">/</span><span class="s">*</span><span class="s">*</span><span class="s">/</span><span class="s">Test</span><span class="s">.</span><span class="s">*</span><span class="s">.</span><span class="s">fsproj</span><span class="s">&quot;</span>)
+    <span class="o">++</span> (<span onmouseout="hideTip(event, 'fs39', 84)" onmouseover="showTip(event, 'fs39', 84)" class="i">sprintf</span> <span class="s">&quot;</span><span class="s">src</span><span class="s">/</span><span class="s">test</span><span class="s">/</span><span class="s">*</span><span class="s">*</span><span class="s">/</span><span class="s">Test</span><span class="s">.</span><span class="s">*</span><span class="s">.</span><span class="s">csproj</span><span class="s">&quot;</span>)
+
+<span class="k">let</span> <span class="i">unitTestDlls</span> <span onmouseout="hideTip(event, 'fs46', 85)" onmouseover="showTip(event, 'fs46', 85)" class="i">testDir</span> (<span onmouseout="hideTip(event, 'fs44', 86)" onmouseover="showTip(event, 'fs44', 86)" class="i">buildParams</span><span class="o">:</span><span onmouseout="hideTip(event, 'fs24', 87)" onmouseover="showTip(event, 'fs24', 87)" class="i">BuildParams</span>) <span class="o">=</span>
+    <span class="o">!!</span> (<span onmouseout="hideTip(event, 'fs46', 88)" onmouseover="showTip(event, 'fs46', 88)" class="i">testDir</span> <span class="o">+</span> <span class="s">&quot;</span><span class="s">/</span><span class="s">Test</span><span class="s">.</span><span class="s">*</span><span class="s">.</span><span class="s">dll</span><span class="s">&quot;</span>)</pre>
+</td>
+</tr>
+</table>
+
+<h2><a name="Remove-ME" class="anchor" href="#Remove-ME">Remove ME!</a></h2>
+
+<p>This is specific to the Yaaf.AdvancedBuilding project, you can safely remove everything below.</p>
+
+<table class="pre"><tr><td class="lines"><pre class="fssnip">
+<span class="l">1: </span>
+<span class="l">2: </span>
+<span class="l">3: </span>
+<span class="l">4: </span>
+</pre>
+</td>
+<td class="snippet"><pre class="fssnip">
+<span class="k">if</span> <span onmouseout="hideTip(event, 'fs5', 89)" onmouseover="showTip(event, 'fs5', 89)" class="i">projectName</span> <span class="o">=</span> <span class="s">&quot;</span><span class="s">Yaaf</span><span class="s">.</span><span class="s">AdvancedBuilding</span><span class="s">&quot;</span> <span class="k">then</span>
+  <span class="k">if</span> <span onmouseout="hideTip(event, 'fs13', 90)" onmouseover="showTip(event, 'fs13', 90)" class="i">File</span><span class="o">.</span><span onmouseout="hideTip(event, 'fs47', 91)" onmouseover="showTip(event, 'fs47', 91)" class="i">Exists</span> <span class="s">&quot;</span><span class="s">.</span><span class="s">/</span><span class="s">buildConfig</span><span class="s">.</span><span class="s">fsx</span><span class="s">&quot;</span> <span class="k">then</span>
+    <span class="c">// We copy the buildConfig to ./doc so that we can generate a html page from this file</span>
+    <span onmouseout="hideTip(event, 'fs13', 92)" onmouseover="showTip(event, 'fs13', 92)" class="i">File</span><span class="o">.</span><span onmouseout="hideTip(event, 'fs48', 93)" onmouseover="showTip(event, 'fs48', 93)" class="i">Copy</span> (<span class="s">&quot;</span><span class="s">.</span><span class="s">/</span><span class="s">buildConfig</span><span class="s">.</span><span class="s">fsx</span><span class="s">&quot;</span>, <span class="s">&quot;</span><span class="s">.</span><span class="s">/</span><span class="s">doc</span><span class="s">/</span><span class="s">buildConfig</span><span class="s">.</span><span class="s">fsx</span><span class="s">&quot;</span>, <span class="k">true</span>)</pre>
+</td>
+</tr>
+</table>
+
+<div class="tip" id="fs1">namespace System</div>
+<div class="tip" id="fs2">namespace System.Collections</div>
+<div class="tip" id="fs3">namespace System.Collections.Generic</div>
+<div class="tip" id="fs4">namespace System.IO</div>
+<div class="tip" id="fs5">val projectName : string<br /><br />Full name: BuildConfig.projectName</div>
+<div class="tip" id="fs6">val copyrightNotice : string<br /><br />Full name: BuildConfig.copyrightNotice</div>
+<div class="tip" id="fs7">val projectSummary : string<br /><br />Full name: BuildConfig.projectSummary</div>
+<div class="tip" id="fs8">val projectDescription : string<br /><br />Full name: BuildConfig.projectDescription</div>
+<div class="tip" id="fs9">val authors : string list<br /><br />Full name: BuildConfig.authors</div>
+<div class="tip" id="fs10">val page_author : string<br /><br />Full name: BuildConfig.page_author</div>
+<div class="tip" id="fs11">val mail : string<br /><br />Full name: BuildConfig.mail</div>
+<div class="tip" id="fs12">val release : obj<br /><br />Full name: BuildConfig.release</div>
+<div class="tip" id="fs13">type File =<br />&#160;&#160;static member AppendAllLines : path:string * contents:IEnumerable&lt;string&gt; -&gt; unit + 1 overload<br />&#160;&#160;static member AppendAllText : path:string * contents:string -&gt; unit + 1 overload<br />&#160;&#160;static member AppendText : path:string -&gt; StreamWriter<br />&#160;&#160;static member Copy : sourceFileName:string * destFileName:string -&gt; unit + 1 overload<br />&#160;&#160;static member Create : path:string -&gt; FileStream + 3 overloads<br />&#160;&#160;static member CreateText : path:string -&gt; StreamWriter<br />&#160;&#160;static member Decrypt : path:string -&gt; unit<br />&#160;&#160;static member Delete : path:string -&gt; unit<br />&#160;&#160;static member Encrypt : path:string -&gt; unit<br />&#160;&#160;static member Exists : path:string -&gt; bool<br />&#160;&#160;...<br /><br />Full name: System.IO.File</div>
+<div class="tip" id="fs14">File.ReadLines(path: string) : IEnumerable&lt;string&gt;<br />File.ReadLines(path: string, encoding: System.Text.Encoding) : IEnumerable&lt;string&gt;</div>
+<div class="tip" id="fs15">val version : obj<br /><br />Full name: BuildConfig.version</div>
+<div class="tip" id="fs16">val version_nuget : obj<br /><br />Full name: BuildConfig.version_nuget</div>
+<div class="tip" id="fs17">val github_user : string<br /><br />Full name: BuildConfig.github_user</div>
+<div class="tip" id="fs18">val github_project : string<br /><br />Full name: BuildConfig.github_project</div>
+<div class="tip" id="fs19">val nuget_url : string<br /><br />Full name: BuildConfig.nuget_url</div>
+<div class="tip" id="fs20">val tags : string<br /><br />Full name: BuildConfig.tags</div>
+<div class="tip" id="fs21">val nugetPackages : (string * (&#39;a -&gt; &#39;a)) list<br /><br />Full name: BuildConfig.nugetPackages</div>
+<div class="tip" id="fs22">val p : &#39;a</div>
+<div class="tip" id="fs23">val generated_file_list : string list<br /><br />Full name: BuildConfig.generated_file_list</div>
+<div class="tip" id="fs24">type BuildParams =<br />&#160;&#160;{SimpleBuildName: string;<br />&#160;&#160;&#160;CustomBuildName: string;}<br /><br />Full name: BuildConfig.BuildParams</div>
+<div class="tip" id="fs25">BuildParams.SimpleBuildName: string</div>
+<div class="tip" id="fs26">Multiple items<br />val string : value:&#39;T -&gt; string<br /><br />Full name: Microsoft.FSharp.Core.Operators.string<br /><br />--------------------<br />type string = System.String<br /><br />Full name: Microsoft.FSharp.Core.string</div>
+<div class="tip" id="fs27">BuildParams.CustomBuildName: string</div>
+<div class="tip" id="fs28">val emptyParams : BuildParams<br /><br />Full name: BuildConfig.emptyParams</div>
+<div class="tip" id="fs29">val allParams : BuildParams list<br /><br />Full name: BuildConfig.allParams</div>
+<div class="tip" id="fs30">val use_nuget : bool<br /><br />Full name: BuildConfig.use_nuget</div>
+<div class="tip" id="fs31">val buildDir : string<br /><br />Full name: BuildConfig.buildDir</div>
+<div class="tip" id="fs32">val outLibDir : string<br /><br />Full name: BuildConfig.outLibDir</div>
+<div class="tip" id="fs33">val outDocDir : string<br /><br />Full name: BuildConfig.outDocDir</div>
+<div class="tip" id="fs34">val outNugetDir : string<br /><br />Full name: BuildConfig.outNugetDir</div>
+<div class="tip" id="fs35">val docTemplatesDir : string<br /><br />Full name: BuildConfig.docTemplatesDir</div>
+<div class="tip" id="fs36">val testDir : string<br /><br />Full name: BuildConfig.testDir</div>
+<div class="tip" id="fs37">val buildMode : string<br /><br />Full name: BuildConfig.buildMode</div>
+<div class="tip" id="fs38">val github_url : string<br /><br />Full name: BuildConfig.github_url</div>
+<div class="tip" id="fs39">val sprintf : format:Printf.StringFormat&lt;&#39;T&gt; -&gt; &#39;T<br /><br />Full name: Microsoft.FSharp.Core.ExtraTopLevelOperators.sprintf</div>
+<div class="tip" id="fs40">val layoutRoots : string list<br /><br />Full name: BuildConfig.layoutRoots</div>
+<div class="tip" id="fs41">val setVersion : unit -&gt; &#39;a<br /><br />Full name: BuildConfig.setVersion</div>
+<div class="tip" id="fs42">val info : obj list</div>
+<div class="tip" id="fs43">val findProjectFiles : buildParams:BuildParams -&gt; obj<br /><br />Full name: BuildConfig.findProjectFiles</div>
+<div class="tip" id="fs44">val buildParams : BuildParams</div>
+<div class="tip" id="fs45">val findTestFiles : buildParams:BuildParams -&gt; &#39;_arg3<br /><br />Full name: BuildConfig.findTestFiles</div>
+<div class="tip" id="fs46">val testDir : string</div>
+<div class="tip" id="fs47">File.Exists(path: string) : bool</div>
+<div class="tip" id="fs48">File.Copy(sourceFileName: string, destFileName: string) : unit<br />File.Copy(sourceFileName: string, destFileName: string, overwrite: bool) : unit</div>
+
+        </div>
+        <div class="span3">
+          <a href="https://matthid.github.io/Yaaf.AdvancedBuilding/index.html">
+            <img src="https://matthid.github.io/Yaaf.AdvancedBuilding/content/img/logo.png" style="width:140px;height:140px;margin:10px 0px 0px 35px;border-style:none;" />
+          </a>
+
+          <ul class="nav nav-list" id="menu">
+
+            <li class="nav-header">Yaaf.AdvancedBuilding</li>
+
+            <li class="divider"></li>
+            <li><a href="https://www.nuget.org/packages/Yaaf.AdvancedBuilding/">Get Yaaf.AdvancedBuilding package via NuGet</a></li>
+            <li><a href="https://github.com/matthid/Yaaf.AdvancedBuilding">Source Code</a></li>
+            <li><a href="https://github.com/matthid/Yaaf.AdvancedBuilding/issues">Open bugs and feature requests</a></li>
+            <li><a href="https://github.com/matthid/Yaaf.AdvancedBuilding/issues/new">Report Issue or Request Feature</a></li>
+            <li><a href="https://github.com/matthid/Yaaf.AdvancedBuilding/blob/develop/LICENSE.md">License (Apache 2)</a></li>
+            <li><a href="https://matthid.github.io/Yaaf.AdvancedBuilding/Contributing.html">Contributing</a></li>
+            
+            <li class="nav-header">Documentation</li>
+              
+            <li><a href="https://matthid.github.io/Yaaf.AdvancedBuilding/index.html">Quick Intro</a></li>
+            <li><a href="https://matthid.github.io/Yaaf.AdvancedBuilding/ReleaseNotes.html">Release Notes</a></li>
+            <li><a href="https://matthid.github.io/Yaaf.AdvancedBuilding/DevelopReadme.html">Development Intro</a></li>
+            <li><a href="https://matthid.github.io/Yaaf.AdvancedBuilding/buildConfig.html">An example build configuration</a></li>
+
+            <li class="nav-header">Reference</li>
+              
+            <li><a href="https://matthid.github.io/Yaaf.AdvancedBuilding/references/index.html">API Reference</a></li>
+
+          </ul>
+        </div>
+      </div>
+    </div>
+      <a href="https://github.com/matthid/Yaaf.AdvancedBuilding"><img style="position: absolute; top: 0; right: 0; border: 0;" src="https://s3.amazonaws.com/github/ribbons/forkme_right_gray_6d6d6d.png" alt="Fork me on GitHub"></a>
+    </body>
+  </html>

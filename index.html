@@ -36,7 +36,7 @@
       <div class="row">
         <div class="span9" id="main">
           
-<!-- GENERATED FROM COMMIT: bda7b2e8ed05b99bdb49fbf308d8ea70c53a6567 -->
+<!-- GENERATED FROM COMMIT: 5f00a879f19e33f2031423c7cf7761426cff13ac -->
 <h1><a name="Yaaf-AdvancedBuilding" class="anchor" href="#Yaaf-AdvancedBuilding">Yaaf.AdvancedBuilding</a></h1>
 
 <h2><a name="Documentation" class="anchor" href="#Documentation"><a href="https://matthid.github.io/Yaaf.AdvancedBuilding/">Documentation</a></a></h2>
@@ -68,7 +68,119 @@
 
 <h2><a name="Quick-intro" class="anchor" href="#Quick-intro">Quick intro</a></h2>
 
-<p>This project can be used to simplify the build process by replacing your build scripts with this nuget package.</p>
+<p>This project can be used to simplify the build process by replacing your build scripts with this nuget package.
+It should especially help/simplify the process of building projects for multiple targets (net40, net45 and portable profiles).</p>
+
+<p>The setup for this is not trivial and having an idea of FAKE (<a href="http://fsharp.github.com/FAKE)">http://fsharp.github.com/FAKE)</a> and paket (<a href="http://fsprojects.github.io/Paket/)">http://fsprojects.github.io/Paket/)</a> helps.
+We assume in this quick intro guide that you are able to setup a simple project with FAKE (without ProjectScaffold).</p>
+
+<p>We also assume that you have a project named <code>Yaaf.Project</code> already setup with <code>FAKE</code> and paket with the following folder structure:</p>
+
+<table class="pre"><tr><td class="lines"><pre class="fssnip">
+<span class="l"> 1: </span>
+<span class="l"> 2: </span>
+<span class="l"> 3: </span>
+<span class="l"> 4: </span>
+<span class="l"> 5: </span>
+<span class="l"> 6: </span>
+<span class="l"> 7: </span>
+<span class="l"> 8: </span>
+<span class="l"> 9: </span>
+<span class="l">10: </span>
+<span class="l">11: </span>
+</pre>
+</td>
+<td class="snippet"><pre class="fssnip">
+<span class="o">-</span> <span class="o">.</span><span class="i">paket</span> (<span class="i">paket</span> <span class="i">folder</span>)
+<span class="o">-</span> <span class="i">src</span>
+  <span class="o">-</span> <span class="i">test</span> (<span class="i">Directory</span> <span class="k">for</span> <span class="i">test</span> <span class="i">projects</span>)
+    <span class="o">-</span> <span class="i">Test</span><span class="o">.</span><span class="i">Yaaf</span><span class="o">.</span><span class="i">Project</span> (<span class="i">test</span> <span class="i">projects</span> <span class="i">start</span> <span class="k">with</span> <span class="s">&quot;</span><span class="s">Test</span><span class="s">.</span><span class="s">&quot;</span> <span class="k">and</span> <span class="i">produce</span> <span class="i">equally</span> <span class="i">named</span> <span class="s">&quot;</span><span class="s">.</span><span class="s">dll</span><span class="s">&quot;</span> <span class="i">files</span>)
+  <span class="o">-</span> <span class="i">source</span> (<span class="i">Directort</span> <span class="k">for</span> <span class="i">source</span> <span class="i">projects</span>)
+  <span class="o">-</span> <span class="i">Yaaf</span><span class="o">.</span><span class="i">Project</span><span class="o">.</span><span class="i">sln</span>
+<span class="o">-</span> <span class="i">build</span><span class="o">.</span><span class="i">cmd</span>
+<span class="o">-</span> <span class="i">build</span><span class="o">.</span><span class="i">sh</span>
+<span class="o">-</span> <span class="i">build</span><span class="o">.</span><span class="i">fsx</span>
+<span class="o">-</span> <span class="i">paket</span><span class="o">.</span><span class="i">dependencies</span>
+</pre>
+</td>
+</tr>
+</table>
+
+<blockquote>
+  <p>Note other layouts are possible but this is the recommended layout which requires a minimal configuration later on.
+Paket is also not strictly required! You can get away with a <code>packages.config</code> nuget file and have your dependencies there.</p>
+</blockquote>
+
+<h3><a name="Getting-Yaaf-AdvancedBuilding" class="anchor" href="#Getting-Yaaf-AdvancedBuilding">Getting Yaaf.AdvancedBuilding</a></h3>
+
+<p>Now we first add Yaaf.AdvancedBuilding to our dependencies</p>
+
+<table class="pre"><tr><td class="lines"><pre class="fssnip">
+<span class="l">1: </span>
+<span class="l">2: </span>
+<span class="l">3: </span>
+<span class="l">4: </span>
+<span class="l">5: </span>
+</pre>
+</td>
+<td class="snippet"><pre class="fssnip">
+<span class="i">source</span> <span class="i">https</span><span class="o">:</span><span class="c">//nuget.org/api/v2</span>
+
+<span class="i">nuget</span> <span class="i">MyDependency</span>
+<span class="i">nuget</span> <span class="i">Yaaf</span><span class="o">.</span><span class="i">AdvancedBuilding</span>
+</pre>
+</td>
+</tr>
+</table>
+
+<blockquote>
+  <p>You can basically remove all other build dependencies now and only keep Yaaf.AdvancedBuilding,
+because Yaaf.AdvancedBuilding will itself depend on all things it needs, and paket will install all of them.
+Paket's <code>internalize</code> feature isn't supported! If you have your own additional build dependencies you need to add them.</p>
+</blockquote>
+
+<p>Now we update our dependencies:</p>
+
+<pre class="line-numbers language-bash"><code class="language-bash">.paket/paket.exe update
+</code></pre>
+
+<blockquote>
+  <p>Note when using NuGet you now need to manually download and extract Yaaf.AdvancedBuilding to <code>./packages/Yaaf.AdvancedBuilding</code>.
+You also need to specify all dependencies in <code>packages.config</code> instead of only Yaaf.AdvancedBuilding.</p>
+</blockquote>
+
+<h3><a name="Setting-up-Yaaf-AdvancedBuilding" class="anchor" href="#Setting-up-Yaaf-AdvancedBuilding">Setting up Yaaf.AdvancedBuilding</a></h3>
+
+<blockquote>
+  <p>Note we assume you are using any kind of VCS system, because we will REPLACE some files and then tell you to look into their old versions later on!
+please commit/backup any unsaved changes now (excluding the changes from above)!</p>
+</blockquote>
+
+<p>Now you can start setting up the project with:</p>
+
+<pre class="line-numbers language-bash"><code class="language-bash"># delegating build scripts
+cp -r packages/Yaaf.AdvancedBuilding/scaffold/build/* ./
+# Some initial files for your repro 
+#(not required if you already have CONTRIBUTING.md, README.md and so forth in place)
+# includes a .travis.yml and appveyor.yml for Travis and AppVeyor support
+cp -r packages/Yaaf.AdvancedBuilding/scaffold/initial/* ./
+# required if you want support for nuget in your project files 
+# (not required if you use paket only)
+cp -r packages/Yaaf.AdvancedBuilding/scaffold/nuget/* ./
+# Some content files for the documentation
+cp -r packages/Yaaf.AdvancedBuilding/scaffold/content/* ./
+# copies some templates for the documentation
+cp -r packages/Yaaf.AdvancedBuilding/scaffold/templates/* ./
+
+# copies an build configuration to your project root
+cp packages/Yaaf.AdvancedBuilding/examples/buildConfig/buildConfig.Yaaf.AdvancedBuilding.fsx ./buildConfig.fsx
+</code></pre>
+
+<h3><a name="Setting-up-the-file" class="anchor" href="#Setting-up-the-file">Setting up the <code>buildConfig.fsx</code> file</a></h3>
+
+<p>Now you need to setup the <code>buildConfig.fsx</code> file! 
+Most settings can be taken from your old <code>build.fsx</code> file (which was overwritten above).
+This step is documented in an extra documentation page: <a href="https://matthid.github.io/Yaaf.AdvancedBuilding/buildConfig.html">https://matthid.github.io/Yaaf.AdvancedBuilding/buildConfig.html</a></p>
 
 
         </div>
@@ -94,6 +206,7 @@
             <li><a href="https://matthid.github.io/Yaaf.AdvancedBuilding/index.html">Quick Intro</a></li>
             <li><a href="https://matthid.github.io/Yaaf.AdvancedBuilding/ReleaseNotes.html">Release Notes</a></li>
             <li><a href="https://matthid.github.io/Yaaf.AdvancedBuilding/DevelopReadme.html">Development Intro</a></li>
+            <li><a href="https://matthid.github.io/Yaaf.AdvancedBuilding/buildConfig.html">An example build configuration</a></li>
 
             <li class="nav-header">Reference</li>
               
