@@ -1,6 +1,11 @@
 ﻿### 0.1.4
 
+ * `releaseDir` Configuration is no longer required.
+ * BREAKING: You can/must specify `outNugetDir` after updating!
  * fix some broken links in scaffold files.
+ * add missing generateDocs.fsx scaffold file.
+ * fix reference templates ending up in the wrong folder.
+ * add chmod +x to default build.sh (because we can't add that to the nuget package)
 
  ### 0.1.3
 

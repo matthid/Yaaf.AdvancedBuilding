@@ -47,6 +47,7 @@
     <file src=".gitattributes" target="scaffold\build\.gitattributes" />
     <file src="src/.gitignore" target="scaffold\build\src\.gitignore" />
     <file src="downloadNuget.fsx" target="scaffold\build\downloadNuget.fsx" />
+    <file src="generateDocs.fsx" target="scaffold\build\generateDocs.fsx" />
 
     <!-- Required when using NuGet -->
     <file src="src/nuget.config" target="scaffold\nuget\src\nuget.config" />
@@ -59,11 +60,11 @@
     <file src="doc/templates/template.cshtml" target="scaffold\templates\doc\templates\template.cshtml" />
     <file src="doc/templates/template-color.tex" target="scaffold\templates\doc\templates\template-color.tex" />
     <file src="doc/templates/template-math.tex" target="scaffold\templates\doc\templates\template-math.tex" />
-    <file src="doc/templates/reference/module.cshtml" target="scaffold\templates\doc\reference\module.cshtml" />
-    <file src="doc/templates/reference/namespaces.cshtml" target="scaffold\templates\doc\reference\namespaces.cshtml" />
-    <file src="doc/templates/reference/part-members.cshtml" target="scaffold\templates\doc\reference\part-members.cshtml" />
-    <file src="doc/templates/reference/part-nested.cshtml" target="scaffold\templates\doc\reference\part-nested.cshtml" />
-    <file src="doc/templates/reference/type.cshtml" target="scaffold\templates\doc\reference\type.cshtml" />
+    <file src="doc/templates/reference/module.cshtml" target="scaffold\templates\doc\templates\reference\module.cshtml" />
+    <file src="doc/templates/reference/namespaces.cshtml" target="scaffold\templates\doc\templates\reference\namespaces.cshtml" />
+    <file src="doc/templates/reference/part-members.cshtml" target="scaffold\templates\doc\templates\reference\part-members.cshtml" />
+    <file src="doc/templates/reference/part-nested.cshtml" target="scaffold\templates\doc\templates\reference\part-nested.cshtml" />
+    <file src="doc/templates/reference/type.cshtml" target="scaffold\templates\doc\templates\reference\type.cshtml" />
 
     <!-- content files -->
     <file src="doc/content/prism.css" target="scaffold\content\doc\content\prism.css" />
