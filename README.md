@@ -68,13 +68,13 @@ nuget Yaaf.AdvancedBuilding
 > because Yaaf.AdvancedBuilding will itself depend on all things it needs, and paket will install all of them.
 > Paket's `internalize` feature isn't supported! If you have your own additional build dependencies you need to add them.
 
-Now we update out dependencies:
+Now we update our dependencies:
 
-```
+```bash
 .paket/paket.exe update
 ```
 
-> Note when using NuGet you now need to manually download and extract Yaaf.AdvancedBuilding to ./packages/Yaaf.AdvancedBuilding.
+> Note when using NuGet you now need to manually download and extract Yaaf.AdvancedBuilding to `./packages/Yaaf.AdvancedBuilding`.
 > You also need to specify all dependencies in `packages.config` instead of only Yaaf.AdvancedBuilding.
 
 ### Setting up Yaaf.AdvancedBuilding
@@ -84,7 +84,7 @@ Now we update out dependencies:
 
 Now you can start setting up the project with:
 
-```
+```bash
 # delegating build scripts
 cp -r packages/Yaaf.AdvancedBuilding/scaffold/build/* ./
 # Some initial files for your repro 
