@@ -101,6 +101,7 @@ let nugetPackages =
           Summary = projectSummary
           Description = projectDescription
           Version = version_nuget
+          NoDefaultExcludes = true
           ReleaseNotes = toLines release.Notes
           Tags = tags
           Dependencies = 
