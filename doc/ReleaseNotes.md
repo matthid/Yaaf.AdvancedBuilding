@@ -1,4 +1,10 @@
-﻿### 0.1.2
+﻿### 0.1.3
+
+ * add build.fsx as well.
+ * fixed some problems with use_nuget=false.
+ * added some files to the nuget package starting with a dot (nuget removed them previously).
+
+### 0.1.2
 
  * a CONTRIBUTION.md file is now assumed in project dir (instead of doc/Contributing.md)
  * we assume a LICENSE.md now

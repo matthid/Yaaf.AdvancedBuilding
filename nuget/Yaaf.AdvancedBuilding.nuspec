@@ -41,13 +41,17 @@
 
     <!-- Build Files that can be replaced anytime -->
     <file src="build.cmd" target="scaffold\build\build.cmd" />
-    <file src="downloadNuget.fsx" target="scaffold\build\downloadNuget.fsx" />
     <file src="build.sh" target="scaffold\build\build.sh" />
-    <file src="build.sh" target="scaffold\build\build.sh" />
+    <file src="build.fsx" target="scaffold\build\build.fsx" />
     <file src=".gitignore" target="scaffold\build\.gitignore" />
     <file src=".gitattributes" target="scaffold\build\.gitattributes" />
     <file src="src/.gitignore" target="scaffold\build\src\.gitattribute" />
-    <file src="src/nuget.config" target="scaffold\build\src\nuget.config" />
+    <file src="downloadNuget.fsx" target="scaffold\build\downloadNuget.fsx" />
+
+    <!-- Required when using NuGet -->
+    <file src="src/nuget.config" target="scaffold\nuget\src\nuget.config" />
+    <file src="src/.nuget/NuGet.Config" target="scaffold\nuget\src\.nuget\NuGet.Config" />
+    <file src="src/.nuget/NuGet.targets" target="scaffold\nuget\src\.nuget\NuGet.targets" />
 
     <!-- templates -->
     <file src="doc/templates/docpage.cshtml" target="scaffold\templates\doc\templates\docpage.cshtml" />

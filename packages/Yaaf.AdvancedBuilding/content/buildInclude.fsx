@@ -33,7 +33,10 @@ let packageDir  = "./packages/.nuget/packages"
 if use_nuget then
     // Ensure the ./src/.nuget/NuGet.exe file exists (required by xbuild)
     let nuget = findToolInSubPath "NuGet.exe" "./packages/NuGet.CommandLine/tools/NuGet.exe"
-    System.IO.File.Copy(nuget, "./src/.nuget/NuGet.exe", true)
+    if Directory.Exists "./src/.nuget" then
+      File.Copy(nuget, "./src/.nuget/NuGet.exe", true)
+    else
+      failwith "you set use_nuget to true but there is no \"./src/.nuget/NuGet.targets\" or \"./src/.nuget/NuGet.Config\"! Please copy them from ./packages/Yaaf.AdvancedBuilding/scaffold/nuget"
 
 let buildWithFiles msg dir projectFileFinder (buildParams:BuildParams) =
     let buildDir = dir @@ buildParams.CustomBuildName
@@ -110,8 +113,8 @@ MyTarget "CleanAll" (fun _ ->
             traceError (sprintf "Unable to delete %s: %O" dir exn))
 )
 
-if use_nuget then
-  MyTarget "RestorePackages" (fun _ ->
+MyTarget "RestorePackages" (fun _ ->
+  if use_nuget then
     // will catch src/targetsDependencies
     !! "./src/**/packages.config"
     |> Seq.iter 
@@ -119,7 +122,7 @@ if use_nuget then
             { param with    
                 // ToolPath = ""
                 OutputPath = packageDir }))
-  )
+)
 
 MyTarget "SetVersions" (fun _ -> 
     setVersion()
