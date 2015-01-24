@@ -12,9 +12,9 @@ This project aims to be a very flexible, extendable and good performing IRC impl
 
 ### Issues / Features / TODOs
 
-New features are accepted via github pull requests (so just fork away right now!):  https://github.com/matthid/Yaaf.AdvancedBuilding.
+New features are accepted via github pull requests (so just fork away right now!):  https://github.com/matthid/Yaaf.AdvancedBuilding
 
-Issues and TODOs are tracked on github, see: https://github.com/matthid/Yaaf.AdvancedBuilding/issues.
+Issues and TODOs are tracked on github, see: https://github.com/matthid/Yaaf.AdvancedBuilding/issues
 
 Discussions/Forums are on IRC. 
 

@@ -45,7 +45,7 @@
     <file src="build.fsx" target="scaffold\build\build.fsx" />
     <file src=".gitignore" target="scaffold\build\.gitignore" />
     <file src=".gitattributes" target="scaffold\build\.gitattributes" />
-    <file src="src/.gitignore" target="scaffold\build\src\.gitattribute" />
+    <file src="src/.gitignore" target="scaffold\build\src\.gitignore" />
     <file src="downloadNuget.fsx" target="scaffold\build\downloadNuget.fsx" />
 
     <!-- Required when using NuGet -->

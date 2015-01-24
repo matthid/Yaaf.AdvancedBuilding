@@ -177,7 +177,7 @@ temp/
 # Where binaries get build into
 build/
 # Where test binaries get build into
-test/
+/test/
 
 # Test results produced by build
 TestResults.xml
