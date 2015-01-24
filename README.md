@@ -27,6 +27,24 @@ Yaaf.AdvancedBuilding
   <div class="span1"></div>
 </div>
 
+## Why AdvancedBuilding?
+
+After setting up some projects with FAKE and paket I often find the need to edit the `build.fsx` and add new features.
+And most of the time after adding a feature I wanted that feature on other projects as well.
+
+Because of this I introduced Yaaf.AdvancedBuilding a nuget package containing a general FAKE build script, which can be configured.
+Whenever I introduce a new feature into the build script I only need to update Yaaf.AdvancedBuilding to be able to use it.
+
+Features:
+
+- Your build can be updated.
+- Extendible with own FAKE Targets.
+- Additional support for building projects for multiple targets (net40, net45 and portable profiles)
+  (This is not completed but will come with an update; 
+  I did not settle for a design jet... look into ./doc/IDEA.txt or the source code if interested)
+   * Feature to specify fsproj and csproj templates and generate profile specific fsproj and csproj templates out of these
+   * You will have FAKE targets for this
+
 ## Quick intro
 
 This project can be used to simplify the build process by replacing your build scripts with this nuget package.
