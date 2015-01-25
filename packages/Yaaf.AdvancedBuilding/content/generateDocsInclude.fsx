@@ -215,5 +215,3 @@ MyTarget "LocalDoc" (fun _ ->
     buildAllDocumentation (config.OutDocDir @@ "local") ("file://" + Path.GetFullPath (config.OutDocDir @@ "local" @@ "html"))
     trace (sprintf "Local documentation has been finished, you can view it by opening %s in your browser!" (Path.GetFullPath (config.OutDocDir @@ "local" @@ "html" @@ "index.html")))
 )
-
-RunTargetOrDefault "LocalDoc"

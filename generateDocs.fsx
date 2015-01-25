@@ -5,3 +5,5 @@
 #load "packages/Yaaf.AdvancedBuilding/content/buildConfigDef.fsx"
 #load @"buildConfig.fsx"
 #load "packages/Yaaf.AdvancedBuilding/content/generateDocsInclude.fsx"
+open Fake
+RunTargetOrDefault "LocalDoc"

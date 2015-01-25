@@ -39,4 +39,6 @@ if config.ProjectName = "Yaaf.AdvancedBuilding" then
   "CopyToPackagePath"
     ==> "All"
     |> ignore
-  
+
+// start build
+RunTargetOrDefault "All"

@@ -12,9 +12,11 @@
     The secound step is executing this file which resolves all dependencies, builds the solution and executes all unit tests
 *)
 
-
 open BuildConfigDef
 let config = BuildConfig.buildConfig.FillDefaults ()
+
+#I "../lib/net40/"
+#r "Yaaf.AdvancedBuilding.dll"
 
 
 open System.Collections.Generic
@@ -229,8 +231,8 @@ Target "Release" (fun _ ->
 
 "Clean"
   ==> "RestorePackages"
-  ==> "SetVersions" 
-  
+  ==> "SetVersions"
+
 config.BuildTargets
     |> Seq.iter (fun buildParam ->
         let buildName = sprintf "Build_%s" buildParam.SimpleBuildName 
@@ -255,5 +257,3 @@ config.BuildTargets
   ==> "ReleaseGithubDoc"
   ==> "Release"
 
-// start build
-RunTargetOrDefault "All"
