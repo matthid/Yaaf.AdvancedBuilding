@@ -23,6 +23,7 @@
     <file src="packages/Yaaf.AdvancedBuilding/content/build.cmd" target="content/build.cmd" />
     <file src="packages/Yaaf.AdvancedBuilding/content/build.sh" target="content/build.sh" />
     <file src="packages/Yaaf.AdvancedBuilding/content/buildInclude.fsx" target="content/buildInclude.fsx" />
+    <file src="packages/Yaaf.AdvancedBuilding/content/buildConfigDef.fsx" target="content/buildConfigDef.fsx" />
     <file src="packages/Yaaf.AdvancedBuilding/content/downloadNugetInclude.fsx" target="content/downloadNugetInclude.fsx" />
     <file src="packages/Yaaf.AdvancedBuilding/content/generateDocsInclude.fsx" target="content/generateDocsInclude.fsx" />
 

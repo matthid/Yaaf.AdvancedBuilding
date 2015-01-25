@@ -78,21 +78,43 @@ type ProjectGenerator(templatePath, ?references) =
     session.Open ("System.Collections.Generic")
     session.Reference (System.Reflection.Assembly.GetExecutingAssembly().Location)
     session.Open ("Yaaf.AdvancedBuilding")
-  /// Returns 42
-  ///
-  /// ## Parameters
-  ///  - `num` - whatever
-  let generateProjectFiles (globalInfo:GlobalProjectInfo) (settingsFile:string) = 
-    let contents = File.ReadAllText settingsFile
+  
+  let rec getConfigFromScript (globalInfo:GlobalProjectInfo) (settingsFile:string) =
+    //let contents = File.ReadAllText settingsFile
     let baseDir = Path.GetDirectoryName settingsFile
+    let extension = Path.GetExtension (settingsFile)
+    if extension <> ".fsx" then
+        let fsxSettingsFile = settingsFile + ".fsx"
+        let name = Path.GetFileName fsxSettingsFile
+        let basePath = Path.GetDirectoryName fsxSettingsFile
+        let name = 
+            if name.StartsWith (".") then name.Substring(1) else name
+        let fsxSettingsFile = Path.Combine (basePath, name)
+        File.Copy(settingsFile, fsxSettingsFile)
+        try
+            getConfigFromScript globalInfo fsxSettingsFile
+        finally
+            File.Delete(fsxSettingsFile)
+    else
+    let settingsFileFullPath = Path.GetFullPath settingsFile
     let oldDir = System.Environment.CurrentDirectory
     ProjectGeneratorModule.setGlobalSetting session globalInfo
-    let config = 
-      try
+    try
         System.Environment.CurrentDirectory <- Path.GetFullPath(baseDir)
-        ProjectGeneratorModule.projectFileFromExpression session contents
-      finally
+        session.EvalScript settingsFileFullPath
+        let fileName = Path.GetFileNameWithoutExtension settingsFileFullPath
+        let fileName =
+            if fileName.StartsWith (".") then fileName.Substring(1) else fileName
+        let moduleName = new StringBuilder(fileName)
+        moduleName.[0] <- System.Char.ToUpperInvariant moduleName.[0]
+        let moduleName = moduleName.ToString()
+
+        ProjectGeneratorModule.projectFileFromExpression session (sprintf "%s.%s" moduleName "generatorConfig") 
+    finally
         System.Environment.CurrentDirectory <- oldDir
+
+  let rec generateProjectFiles (globalInfo:GlobalProjectInfo) (settingsFile:string) =
+    let config = getConfigFromScript globalInfo settingsFile
     for buildFilename, templateData in config.BuildFileList do
       let outFile = ProjectGeneratorModule.getProjectFileName settingsFile buildFilename
       razorManager.CreateProjectFile(templateData, outFile)

@@ -141,7 +141,8 @@ type ProjectGeneratorTests() =
       let files = 
         [ "net40_template.fsproj", "@Model.ProjectName"
           "setting._proj", """
-{ BuildFileList =
+let generatorConfig =
+ { BuildFileList =
     [ "net40.fsproj", 
         { projectInfo.DefaultTemplateData "net40" with 
             TemplateName = "net40_template.fsproj" } ] }""" ]
@@ -171,11 +172,12 @@ type ProjectGeneratorTests() =
 </Project>"""
           "._proj", """
 let readItems = MsBuildHelper.readContentItems "MyProject.fsproj"
-{ BuildFileList =
+let generatorConfig =
+ { BuildFileList =
     [ "MyProject.net40.fsproj", 
-        { projectInfo.DefaultTemplateData "net40" with 
-            Includes = readItems
-            TemplateName = "net40_template" } ] }""" ]
+       { projectInfo.DefaultTemplateData "net40" with 
+          Includes = readItems
+          TemplateName = "net40_template" } ] }""" ]
       razorEngineTestHelper files (fun () ->
         generator.GenerateProjectFiles({GlobalProjectInfo.Empty with ProjectName = "testProject"}, Path.Combine(templatePath, "._proj"))
         let text = File.ReadAllText(Path.Combine(templatePath, "MyProject.net40.fsproj"))
