@@ -100,8 +100,10 @@
   </Target>
   <ItemGroup>
     <Compile Include="Model.fs" />
+    <Compile Include="SolutionModel.fs" />
     <Compile Include="RazorHelper.fs" />
     <Compile Include="ProjectGenerator.fs" />
+    <Compile Include="SolutionGenerator.fs" />
     <None Include="Script.fsx" />
     <None Include="paket.references" />
     <Content Include="packages.config" />

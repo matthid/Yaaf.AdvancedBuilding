@@ -18,7 +18,9 @@ let testFailed =
                         (if additionalInfo |> String.IsNullOrWhiteSpace then "" else sprintf "\n%s\n" additionalInfo)
                         (reducedExprs |> List.map decompile |> String.concat "\n")    
                 outputTestFailedMsg msg
-    let outputNonFsiTestFailedMsg = (fun msg -> NUnit.Framework.Assert.Fail(msg))
+    let outputNonFsiTestFailedMsg = (fun msg ->
+        printfn "%s" msg
+        NUnit.Framework.Assert.Fail(msg))
     outputReducedExprsMsg outputNonFsiTestFailedMsg
 
 let reduceFullyAndGetLast expr =
