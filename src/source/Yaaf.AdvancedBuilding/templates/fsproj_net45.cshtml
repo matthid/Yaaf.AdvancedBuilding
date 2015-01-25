@@ -10,7 +10,7 @@
         <OutputType>Library</OutputType>
         <RootNamespace>@Model.ProjectName</RootNamespace>
         <AssemblyName>@Model.ProjectName</AssemblyName>
-        <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+        <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
         <TargetFsharpCoreVersion>4.3.1.0</TargetFsharpCoreVersion>
         <Name>@Model.ProjectName</Name>
         <TargetFrameworkProfile />
@@ -23,7 +23,7 @@
         <Optimize>false</Optimize>
         <Tailcalls>false</Tailcalls>
         <OutputPath>bin</OutputPath>
-        <DefineConstants>@(string.Join(";", Model.DefineConstants));NET40;NO_PCL;TRACE;DEBUG</DefineConstants>
+        <DefineConstants>@(string.Join(";", Model.DefineConstants));NET45;NO_PCL;TRACE;DEBUG</DefineConstants>
         <WarningLevel>3</WarningLevel>
     </PropertyGroup>
     <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
@@ -31,7 +31,7 @@
         <Optimize>true</Optimize>
         <Tailcalls>true</Tailcalls>
         <OutputPath>bin</OutputPath>
-        <DefineConstants>@(string.Join(";", Model.DefineConstants));NET40;NO_PCL;TRACE</DefineConstants>
+        <DefineConstants>@(string.Join(";", Model.DefineConstants));NET45;NO_PCL;TRACE</DefineConstants>
         <WarningLevel>3</WarningLevel>
     </PropertyGroup>
     <PropertyGroup>

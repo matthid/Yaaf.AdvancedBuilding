@@ -106,7 +106,8 @@
     <None Include="paket.references" />
     <Content Include="packages.config" />
     <None Include="templates\fsproj_net40.cshtml" />
-    <Content Include="templates\TextFile1.txt" />
+    <None Include="templates\fsproj_net45.cshtml" />
+    <None Include="templates\fsproj_portable111.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="mscorlib" />

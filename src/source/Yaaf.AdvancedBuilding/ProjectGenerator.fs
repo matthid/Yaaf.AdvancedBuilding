@@ -104,6 +104,7 @@ type MsBuildInfo =
     ProjectName : string
     ProjectGuid : string }
     member x.ContentIncludes = x.Includes |> List.filter (fun (item : ItemGroupItem) -> item.IsAnyItem)
+    member x.ReferenceIncludes = x.Includes |> List.filter (fun (item : ItemGroupItem) -> item.IsAnyReference)
 
 module MsBuildHelper =
   let private msbuildNamespace = "http://schemas.microsoft.com/developer/msbuild/2003"
