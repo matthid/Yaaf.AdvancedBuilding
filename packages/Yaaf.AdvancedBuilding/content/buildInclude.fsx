@@ -17,7 +17,7 @@ let config = BuildConfig.buildConfig.FillDefaults ()
 
 #I "../lib/net40/"
 #r "Yaaf.AdvancedBuilding.dll"
-
+open Yaaf.AdvancedBuilding
 
 open System.Collections.Generic
 open System.IO
@@ -125,6 +125,15 @@ MyTarget "SetVersions" (fun _ ->
     config.SetAssemblyFileVersions config
 )
 
+MyTarget "CreateProjectFiles" (fun _ ->
+  ()
+  if config.EnableProjectFileCreation then
+    let generator = new ProjectGenerator("./src/templates")
+    !! "./src/**/*._proj"
+    |> Seq.iter (fun file ->
+      trace (sprintf "Starting project file generation for: %s" file)
+      generator.GenerateProjectFiles(GlobalProjectInfo.Empty, file))
+)
 config.BuildTargets
     |> Seq.iter (fun buildParam -> 
         MyTarget (sprintf "Build_%s" buildParam.SimpleBuildName) (fun _ -> buildAll buildParam))
@@ -232,11 +241,12 @@ Target "Release" (fun _ ->
 "Clean"
   ==> "RestorePackages"
   ==> "SetVersions"
+  ==> "CreateProjectFiles"
 
 config.BuildTargets
     |> Seq.iter (fun buildParam ->
         let buildName = sprintf "Build_%s" buildParam.SimpleBuildName 
-        "SetVersions"
+        "CreateProjectFiles"
           ==> buildName
           |> ignore
         buildName

@@ -76,6 +76,7 @@ type BuildConfiguration =
     Version : string
     /// Defaults to setting up a "./src/SharedAssemblyInfo.fs" and "./src/SharedAssemblyInfo.cs"
     SetAssemblyFileVersions : BuildConfiguration -> unit
+    EnableProjectFileCreation : bool
     
     // Build configuration
     /// Defaults to [ x.ProjectName + ".dll"; x.ProjectName + ".xml" ]
@@ -107,6 +108,7 @@ type BuildConfiguration =
       CopyrightNotice = ""
       ProjectDescription = ""
       UseNuget = false
+      EnableProjectFileCreation = false
       ProjectAuthors = []
       BuildTargets = [ BuildParams.Empty ]
       NugetUrl = ""

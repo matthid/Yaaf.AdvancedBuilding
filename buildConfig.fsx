@@ -130,3 +130,9 @@ if buildConfig.ProjectName = "Yaaf.AdvancedBuilding" then
   if File.Exists "./buildConfig.fsx" then
     // We copy the buildConfig to ./doc so that we can generate a html page from this file
     File.Copy ("./buildConfig.fsx", "./doc/buildConfig.fsx", true)
+  // Copy templates to their normal path.
+  CopyRecursive "./src/source/Yaaf.AdvancedBuilding/templates" "./src/templates"
+  |> ignore
+    
+    
+    
