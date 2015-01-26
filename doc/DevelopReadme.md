@@ -1,7 +1,6 @@
 ﻿# Yaaf.AdvancedBuilding implementation documentation 
 
 ## Building
-
 Open the ``.sln`` file or run ``./build``.
 
 > NOTE: It is possible that you can only build the ``.sln`` file AFTER doing an initial ``./build`` (because nuget dependencies have to be resolved).
