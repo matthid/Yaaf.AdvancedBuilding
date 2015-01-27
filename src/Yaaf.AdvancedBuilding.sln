@@ -4,14 +4,17 @@ VisualStudioVersion = 12.0.31101.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".paket", ".paket", "{63297B98-5CED-492C-A5B7-A5B4F73CF142}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "docs", "docs", "{A6A6AF7D-D6E3-442D-9B1E-58CC91879BE1}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "doc", "doc", "{A6A6AF7D-D6E3-442D-9B1E-58CC91879BE1}"
+	ProjectSection(SolutionItems) = preProject
+		..\doc\ReleaseNotes.md = ..\doc\ReleaseNotes.md
+	EndProjectSection
 EndProject
 Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "Yaaf.AdvancedBuilding", "source\Yaaf.AdvancedBuilding\Yaaf.AdvancedBuilding.fsproj", "{74CD69FA-7D48-4FC4-A478-A1F00A08E963}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "project", "project", "{BF60BC93-E09B-4E5F-9D85-95A519479D54}"
 	ProjectSection(SolutionItems) = preProject
-		build.fsx = build.fsx
-		README.md = README.md
+		..\buildConfig.fsx = ..\buildConfig.fsx
+		..\paket.dependencies = ..\paket.dependencies
 		..\doc\ReleaseNotes.md = ..\doc\ReleaseNotes.md
 		..\nuget\Yaaf.AdvancedBuilding.nuspec = ..\nuget\Yaaf.AdvancedBuilding.nuspec
 	EndProjectSection
@@ -25,6 +28,16 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "content", "content", "{8E6D
 	EndProjectSection
 EndProject
 Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "Test.Yaaf.AdvancedBuilding", "test\Test.Yaaf.AdvancedBuilding\Test.Yaaf.AdvancedBuilding.fsproj", "{A01FB502-0A1D-4745-9313-EFAA85207866}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "build", "build", "{2DFFAF1A-4E58-43B2-985E-77907735A98B}"
+	ProjectSection(SolutionItems) = preProject
+		..\packages\Yaaf.AdvancedBuilding\content\build.cmd = ..\packages\Yaaf.AdvancedBuilding\content\build.cmd
+		..\packages\Yaaf.AdvancedBuilding\content\build.sh = ..\packages\Yaaf.AdvancedBuilding\content\build.sh
+		..\packages\Yaaf.AdvancedBuilding\content\buildConfigDef.fsx = ..\packages\Yaaf.AdvancedBuilding\content\buildConfigDef.fsx
+		..\packages\Yaaf.AdvancedBuilding\content\buildInclude.fsx = ..\packages\Yaaf.AdvancedBuilding\content\buildInclude.fsx
+		..\packages\Yaaf.AdvancedBuilding\content\downloadNugetInclude.fsx = ..\packages\Yaaf.AdvancedBuilding\content\downloadNugetInclude.fsx
+		..\packages\Yaaf.AdvancedBuilding\content\generateDocsInclude.fsx = ..\packages\Yaaf.AdvancedBuilding\content\generateDocsInclude.fsx
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -47,5 +60,6 @@ Global
 	GlobalSection(NestedProjects) = preSolution
 		{83F16175-43B1-4C90-A1EE-8E351C33435D} = {A6A6AF7D-D6E3-442D-9B1E-58CC91879BE1}
 		{8E6D5255-776D-4B61-85F9-73C37AA1FB9A} = {A6A6AF7D-D6E3-442D-9B1E-58CC91879BE1}
+		{2DFFAF1A-4E58-43B2-985E-77907735A98B} = {BF60BC93-E09B-4E5F-9D85-95A519479D54}
 	EndGlobalSection
 EndGlobal

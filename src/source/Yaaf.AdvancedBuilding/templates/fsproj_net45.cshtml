@@ -1,6 +1,6 @@
 ﻿@inherits RazorEngine.Templating.TemplateBase<Yaaf.AdvancedBuilding.Razor_TemplateModel>
 <?xml version="1.0" encoding="utf-8" ?>
-<Project Toolsversion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+@{ var nk = "nk"; }<Project Toolsversion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
     <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
     <PropertyGroup>
         <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
@@ -14,7 +14,7 @@
         <TargetFsharpCoreVersion>4.3.1.0</TargetFsharpCoreVersion>
         <Name>@Model.ProjectName</Name>
         <TargetFrameworkProfile />
-        <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\..\</SolutionDir>
+        <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\..\..\</SolutionDir>
         <RestorePackages>true</RestorePackages>
     </PropertyGroup>
     <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
@@ -60,7 +60,7 @@
     <Target Name="AfterBuild">
     </Target>
     -->
-    <Import Project="..\..\..\.paket\paket.targets" />
+    <Import Project="..\..\..\..\.paket\paket.targets" />
     <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />
     <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
         <PropertyGroup>
@@ -73,22 +73,22 @@
         {
             if (includeItem.IsCompile)
             {
-                <Compile Include="@includeItem.Include" />
+                <Compile Include="@(includeItem.Include)" />
             }
             else if (includeItem.IsCompileLink)
             {
-                <Compile Include="@includeItem.Include">
-                    <Link>@includeItem.LinkName</Link>
+                <Compile Include="@(includeItem.Include)" >
+                    <Li@(nk)>@(includeItem.LinkName)</Li@(nk)>
                 </Compile>
             }
             else if (includeItem.IsContent)
             {
-                <Content Include="@includeItem.Include" />
+                <Content Include="@(includeItem.Include)" />
             }
             else if (includeItem.IsContentLink)
             {
-                <Content Include="@includeItem.Include">
-                    <Link />@includeItem.LinkName</Link>
+                <Content Include="@includeItem.Include" >
+                    <Li@(nk)>@includeItem.LinkName</Li@(nk)>
                 </Content>
             }
             else if (includeItem.IsNoneItem)
@@ -98,7 +98,7 @@
             else if (includeItem.IsNoneItemLink)
             {
                 <None Include="@includeItem.Include">
-                    <Link />@includeItem.LinkName</Link>
+                    <Li@(nk)>@includeItem.LinkName</Li@(nk)>
                 </None>
             }
             else if (includeItem.IsReference)

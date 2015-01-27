@@ -4,7 +4,7 @@
    Now you need to implement a BuildConfiguration record type, this helps that
    builds don't break when new features are introduced.
    This also allows us to set a lot of defaults for you
- * Implemented project and solution generation 
+ * Implemented initial project and solution generation
 
 ### 0.1.4
 

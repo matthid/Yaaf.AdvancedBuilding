@@ -41,19 +41,35 @@ module ProjectGeneratorModule =
     match opt with
     | Some i -> i
     | None -> item
-  let getProjectFileName settingsFile buildFilename = 
+  let getProjectFileName settingsFile (buildFilename:string) =
     let baseDir = Path.GetDirectoryName settingsFile
+    let settingsFile =
+        if Path.GetExtension(settingsFile) = ".fsx" then
+            Path.Combine(baseDir, Path.GetFileNameWithoutExtension settingsFile)
+        else settingsFile
     let addBaseDir baseDir file = Path.Combine(baseDir, file)
     let baseName = Path.GetFileNameWithoutExtension(settingsFile)
-    [ ".fsproj"; ".csproj"] 
+    let buildFileSplits = buildFilename.Split ([|'/'|])
+    let buildFilename = buildFileSplits |> Seq.last
+    let buildFileBaseDir =
+        buildFileSplits
+        |> Seq.take (buildFileSplits.Length - 1)
+        |> Seq.fold (fun state item -> Path.Combine(state, item)) ""
+    [ ".fsproj"; ".csproj"]
     |> Seq.tryPick (fun ext ->
       if baseName.EndsWith(ext) then
-        Some (sprintf "%s.%s%s" (baseName.Substring(0, baseName.Length - ext.Length)) buildFilename ext)
+        if String.IsNullOrEmpty buildFilename then
+            Some (sprintf "%s%s" (baseName.Substring(0, baseName.Length - ext.Length)) ext)
+        else
+            Some (sprintf "%s.%s%s" (baseName.Substring(0, baseName.Length - ext.Length)) buildFilename ext)
       else None)
-    |> ifNone (if baseName = "" then buildFilename else sprintf "%s.%s" baseName buildFilename)
+    |> ifNone (
+        if  String.IsNullOrEmpty(baseName) then buildFilename
+        elif String.IsNullOrEmpty(Path.GetFileNameWithoutExtension buildFilename) then sprintf "%s%s" baseName buildFilename
+        else sprintf "%s.%s" baseName buildFilename)
+    |> addBaseDir buildFileBaseDir
     |> addBaseDir baseDir
-  
-    
+
   let setGlobalSetting (session:IFsiSession) (g:GlobalProjectInfo) =
     session.Let "projectInfo" g
 
@@ -63,6 +79,24 @@ module ProjectGeneratorModule =
   let projectFileFromExpression (session:IFsiSession) contents =
     session.EvalExpression<ProjectGeneratorConfig> (contents)
   
+  let fixInclude (relPath:string) item =
+    let fixPath path =
+        sprintf "%s\\%s" (relPath.Replace("/","\\")) path
+    match item with
+    | ItemGroupItem.Compile inc ->
+        ItemGroupItem.Compile (fixPath inc)
+    | ItemGroupItem.CompileLink (name, inc) ->
+        ItemGroupItem.CompileLink (name, fixPath inc)
+    | ItemGroupItem.Content inc ->
+        ItemGroupItem.Content (fixPath inc)
+    | ItemGroupItem.ContentLink (name, inc) ->
+        ItemGroupItem.ContentLink (name, fixPath inc)
+    | ItemGroupItem.NoneItem inc ->
+        ItemGroupItem.NoneItem (fixPath inc)
+    | ItemGroupItem.NoneItemLink (name, inc) ->
+        ItemGroupItem.NoneItemLink (name, fixPath inc)
+    | _ -> item
+
 /// Documentation for my library
 ///
 /// ## Example
@@ -71,7 +105,7 @@ module ProjectGeneratorModule =
 ///     printfn "%d" h
 ///
 type ProjectGenerator(templatePath, ?references) = 
-  let session = ScriptHost.CreateNew()
+  let session = ScriptHost.CreateNew(["PROJGEN"])
   let razorManager = new RazorManager(templatePath, ?references = references)
   do
     session.Open ("System")
@@ -117,6 +151,9 @@ type ProjectGenerator(templatePath, ?references) =
     let config = getConfigFromScript globalInfo settingsFile
     for buildFilename, templateData in config.BuildFileList do
       let outFile = ProjectGeneratorModule.getProjectFileName settingsFile buildFilename
+      let path = Path.GetDirectoryName(outFile)
+      Directory.CreateDirectory(path) |> ignore
+      if File.Exists outFile then File.Delete outFile
       razorManager.CreateProjectFile(templateData, outFile)
   member x.FsiSession = session
   member x.GenerateProjectFiles (globalInfo, settingsFile) = generateProjectFiles globalInfo settingsFile
@@ -124,9 +161,11 @@ type ProjectGenerator(templatePath, ?references) =
 type MsBuildInfo = 
   { Includes : ItemGroupItem list
     ProjectName : string
-    ProjectGuid : string }
+    ProjectGuid : Guid }
     member x.ContentIncludes = x.Includes |> List.filter (fun (item : ItemGroupItem) -> item.IsAnyItem)
-    member x.ReferenceIncludes = x.Includes |> List.filter (fun (item : ItemGroupItem) -> item.IsAnyReference)
+    member x.AnyReferenceIncludes = x.Includes |> List.filter (fun (item : ItemGroupItem) -> item.IsAnyReference)
+    member x.ReferenceIncludes = x.Includes |> List.filter (fun (item : ItemGroupItem) -> item.My_IsReference)
+    member x.ProjectReferenceIncludes = x.Includes |> List.filter (fun (item : ItemGroupItem) -> item.My_IsProjectReference)
 
 module MsBuildHelper =
   let private msbuildNamespace = "http://schemas.microsoft.com/developer/msbuild/2003"
@@ -200,10 +239,14 @@ module MsBuildHelper =
     { MsBuildInfo.Includes = readItemGroupItemsFromDocument doc
       MsBuildInfo.ProjectGuid = 
         match tryFindProperty "ProjectGuid" doc with
-        | Some v -> v
+        | Some v ->  Guid.Parse v
         |  _ -> failwith "ProjectGuid not found!"
       MsBuildInfo.ProjectName =
         match tryFindProperty "AssemblyName" doc with
         | Some v -> v
         | _ -> failwith "AssemblyName not found!" }
   let readMsBuildInfo (file:string) = readMsBuildInfoFromDocument (XDocument.Load file)
+
+  let fixIncludes relPath msBuildInfo =
+    { msBuildInfo with
+        MsBuildInfo.Includes = msBuildInfo.Includes |> List.map (ProjectGeneratorModule.fixInclude relPath) }

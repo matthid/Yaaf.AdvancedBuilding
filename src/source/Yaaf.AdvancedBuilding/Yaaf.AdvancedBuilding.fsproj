@@ -79,6 +79,7 @@
     <None Include="templates\fsproj_net40.cshtml" />
     <None Include="templates\fsproj_net45.cshtml" />
     <None Include="templates\fsproj_portable111.cshtml" />
+    <None Include="Yaaf.AdvancedBuilding._proj.fsx" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="mscorlib" />

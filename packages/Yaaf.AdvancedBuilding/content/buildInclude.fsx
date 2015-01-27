@@ -12,13 +12,22 @@
     The secound step is executing this file which resolves all dependencies, builds the solution and executes all unit tests
 *)
 
+#if FAKE
+#else
+// Support when file is opened in Visual Studio
+#load "buildConfigDef.fsx"
+#endif
+
 open BuildConfigDef
 let config = BuildConfig.buildConfig.FillDefaults ()
 
-#I "../lib/net40/"
+// NOTE: We want to add that to buildConfigDef.fsx sometimes in the future
+#I @"../../FSharp.Compiler.Service/lib/net40/"
+#I @"../../Yaaf.FSharp.Scripting/lib/net40/"
+#I "../tools/"
 #r "Yaaf.AdvancedBuilding.dll"
-open Yaaf.AdvancedBuilding
 
+open Yaaf.AdvancedBuilding
 open System.Collections.Generic
 open System.IO
 
@@ -36,7 +45,7 @@ if config.UseNuget then
       failwith "you set UseNuget to true but there is no \"./src/.nuget/NuGet.targets\" or \"./src/.nuget/NuGet.Config\"! Please copy them from ./packages/Yaaf.AdvancedBuilding/scaffold/nuget"
 
 let buildWithFiles msg dir projectFileFinder (buildParams:BuildParams) =
-    let buildDir = dir @@ buildParams.CustomBuildName
+    let buildDir = dir @@ buildParams.SimpleBuildName
     CleanDirs [ buildDir ]
     // build app
     projectFileFinder buildParams
@@ -45,14 +54,14 @@ let buildWithFiles msg dir projectFileFinder (buildParams:BuildParams) =
                 "CustomBuildName", buildParams.CustomBuildName ]
         |> Log msg
 
-let buildApp = buildWithFiles "AppBuild-Output: " config.BuildDir (fun buildParams -> buildParams.FindProjectFiles ())
-let buildTests = buildWithFiles "TestBuild-Output: " config.TestDir (fun buildParams -> buildParams.FindTestFiles ())
+let buildApp = buildWithFiles "AppBuild-Output: " config.BuildDir (fun buildParams -> buildParams.FindProjectFiles buildParams)
+let buildTests = buildWithFiles "TestBuild-Output: " config.TestDir (fun buildParams -> buildParams.FindTestFiles buildParams)
 
 let runTests (buildParams:BuildParams) =
-    let testDir = config.TestDir @@ buildParams.CustomBuildName
+    let testDir = config.TestDir @@ buildParams.SimpleBuildName
     let logs = System.IO.Path.Combine(testDir, "logs")
     System.IO.Directory.CreateDirectory(logs) |> ignore
-    let files = buildParams.FindUnitTestDlls testDir
+    let files = buildParams.FindUnitTestDlls (testDir, buildParams)
     if files |> Seq.isEmpty then
       traceError (sprintf "NO test found in %s" testDir)
     else
@@ -126,13 +135,19 @@ MyTarget "SetVersions" (fun _ ->
 )
 
 MyTarget "CreateProjectFiles" (fun _ ->
-  ()
   if config.EnableProjectFileCreation then
     let generator = new ProjectGenerator("./src/templates")
+    let createdFile = ref false
     !! "./src/**/*._proj"
+    ++ "./src/**/*._proj.fsx"
     |> Seq.iter (fun file ->
       trace (sprintf "Starting project file generation for: %s" file)
-      generator.GenerateProjectFiles(GlobalProjectInfo.Empty, file))
+      generator.GenerateProjectFiles(GlobalProjectInfo.Empty, file)
+      createdFile := true)
+
+    if !createdFile then
+      let exitCode = Shell.Exec(".paket/paket.exe", "install")
+      if exitCode <> 0 then failwithf "paket.exe update failed with exit code: %d" exitCode
 )
 config.BuildTargets
     |> Seq.iter (fun buildParam -> 
@@ -146,7 +161,7 @@ MyTarget "CopyToRelease" (fun _ ->
 
     // Copy files to release directory
     config.BuildTargets
-        |> Seq.map (fun buildParam -> buildParam.CustomBuildName)
+        |> Seq.map (fun buildParam -> buildParam.SimpleBuildName)
         |> Seq.map (fun t -> config.BuildDir @@ t, t)
         |> Seq.filter (fun (p, t) -> Directory.Exists p)
         |> Seq.iter (fun (source, buildName) ->
@@ -245,7 +260,7 @@ Target "Release" (fun _ ->
 
 config.BuildTargets
     |> Seq.iter (fun buildParam ->
-        let buildName = sprintf "Build_%s" buildParam.SimpleBuildName 
+        let buildName = sprintf "Build_%s" buildParam.SimpleBuildName
         "CreateProjectFiles"
           ==> buildName
           |> ignore

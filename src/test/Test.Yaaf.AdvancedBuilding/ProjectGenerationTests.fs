@@ -8,7 +8,7 @@ open System.Xml
 open System.Xml.Linq
 
 [<TestFixture>]
-type ProjectGeneratorTests() = 
+type ProjectGeneratorTests() =
     let (@@) a b = Path.Combine(a, b)
     let simpleData =
         { BuildTemplates = []
@@ -16,10 +16,10 @@ type ProjectGeneratorTests() =
           Includes = []
           GlobalData = []
         }
-    let data = 
+    let data =
       { BuildTemplates = [ ("test", "blub")]
         ProjectName = "ProjectName"
-        Includes = 
+        Includes =
           [ Content("test")
             ContentLink("blub", "../test")
             NoneItem("none")
@@ -39,8 +39,8 @@ type ProjectGeneratorTests() =
     let templatePath = "templatePath"
     let generator = new ProjectGenerator(templatePath)
     let session = generator.FsiSession
-    
-    let razorEngineTestHelper files f = 
+
+    let razorEngineTestHelper files f =
       try
         Directory.CreateDirectory(templatePath) |> ignore
         for name, content in files do
@@ -55,14 +55,14 @@ type ProjectGeneratorTests() =
       ProjectGeneratorModule.setGlobalSetting session data
       let result = ProjectGeneratorModule.getGlobalSetting session
       test <@ result.ProjectName = data.ProjectName @>
-  
+
     [<Test>]
     member x.``getting the global settings with advanced data into the fsi works`` () =
       ProjectGeneratorModule.setGlobalSetting session data
       let v = ProjectGeneratorModule.getGlobalSetting session
       test <@ v.ProjectName = data.ProjectName @>
       test <@ v.Includes = data.Includes @>
-  
+
     [<Test>]
     member x.``check that simple project settings work`` () =
       ProjectGeneratorModule.setGlobalSetting session data
@@ -71,7 +71,6 @@ type ProjectGeneratorTests() =
       let expect = { BuildFileList = [ "blub.test", data.DefaultTemplateData "test" ] }
       test <@ generatorConfig = expect @>
 
-  
     [<Test>]
     member x.``check that we can extract items`` () =
       let projectXml = """<?xml version="1.0" encoding="utf-8"?>
@@ -113,7 +112,7 @@ type ProjectGeneratorTests() =
 </Project>"""
       let doc = XDocument.Parse(projectXml)
       let resultList = MsBuildHelper.readItemGroupItemsFromDocument doc
-      let expectedList = 
+      let expectedList =
         [ CompileLink ("SharedAssemblyInfo.Ldap.fs", @"..\..\SharedAssemblyInfo.Ldap.fs")
           Compile("AssemblyInfo.fs")
           Compile("LdapUserSource.fs")
@@ -132,28 +131,52 @@ type ProjectGeneratorTests() =
       test <@ ProjectGeneratorModule.getProjectFileName "test.fsproj._proj" "moretest" = "test.moretest.fsproj" @>
       test <@ ProjectGeneratorModule.getProjectFileName "test.fsproj._proj" "net.fsproj" = "test.net.fsproj.fsproj" @>
       test <@ ProjectGeneratorModule.getProjectFileName "test._proj" "net.fsproj" = "test.net.fsproj" @>
+      test <@ ProjectGeneratorModule.getProjectFileName "test._proj" ".fsproj" = "test.fsproj" @>
       test <@ ProjectGeneratorModule.getProjectFileName "._proj" "MyProject.net40.fsproj" = "MyProject.net40.fsproj" @>
       Assert.AreEqual(("subdir" @@ "test.net.fsproj"), ProjectGeneratorModule.getProjectFileName ("subdir" @@ "test._proj") "net.fsproj")
+
+      // We ignore exisiting fsx extensions
+      test <@ ProjectGeneratorModule.getProjectFileName "test._proj.fsx" "moretest" = "test.moretest" @>
+      test <@ ProjectGeneratorModule.getProjectFileName "test.fsproj._proj.fsx" "moretest" = "test.moretest.fsproj" @>
+      test <@ ProjectGeneratorModule.getProjectFileName "test.fsproj._proj.fsx" "net.fsproj" = "test.net.fsproj.fsproj" @>
+      test <@ ProjectGeneratorModule.getProjectFileName "test._proj.fsx" "net.fsproj" = "test.net.fsproj" @>
+      test <@ ProjectGeneratorModule.getProjectFileName "test._proj.fsx" ".fsproj" = "test.fsproj" @>
+      test <@ ProjectGeneratorModule.getProjectFileName "._proj.fsx" "MyProject.net40.fsproj" = "MyProject.net40.fsproj" @>
+      Assert.AreEqual(("subdir" @@ "test.net.fsproj"), ProjectGeneratorModule.getProjectFileName ("subdir" @@ "test._proj.fsx") "net.fsproj")
+
+    [<Test>]
+    member x.``test getprojectfilename resulting folder`` () =
+      Assert.AreEqual(".." @@ "test.moretest", ProjectGeneratorModule.getProjectFileName "test._proj" "../moretest")
+      Assert.AreEqual(
+        ".." @@ ".." @@ "source_net40" @@ "Project_net40" @@ "test.net40.fsproj",
+        ProjectGeneratorModule.getProjectFileName "test._proj" "../../source_net40/Project_net40/net40.fsproj")
+
+      Assert.AreEqual(
+        "subdir" @@ ".." @@ ".." @@ "source_net40" @@ "Project_net40" @@ "test.net40.fsproj",
+        ProjectGeneratorModule.getProjectFileName ("subdir" @@ "test._proj") "../../source_net40/Project_net40/net40.fsproj")
+      Assert.AreEqual(
+        ".." @@ ".." @@ ".." @@ "source_net40" @@ "Project_net40" @@ "test.net40.fsproj",
+        ProjectGeneratorModule.getProjectFileName (".." @@ "test._proj") "../../source_net40/Project_net40/net40.fsproj")
 
 
     [<Test>]
     member x.``test razorengine`` () =
-      let files = 
+      let files =
         [ "net40_template.fsproj", "@Model.ProjectName"
           "setting._proj", """
 let generatorConfig =
  { BuildFileList =
-    [ "net40.fsproj", 
-        { projectInfo.DefaultTemplateData "net40" with 
+    [ "net40.fsproj",
+        { projectInfo.DefaultTemplateData "net40" with
             TemplateName = "net40_template.fsproj" } ] }""" ]
       razorEngineTestHelper files (fun () ->
         generator.GenerateProjectFiles({GlobalProjectInfo.Empty with ProjectName = "testProject"}, Path.Combine(templatePath, "setting._proj"))
         let text = File.ReadAllText(Path.Combine(templatePath, "setting.net40.fsproj"))
         test <@ text = "testProject" @>)
-    
+
     [<Test>]
     member x.``test that we can parse MSBuild files in the settings file`` () =
-      let files = 
+      let files =
         [ "net40_template", """@foreach (var includeItem in Model.Includes)
 {
     if (includeItem.IsCompile)
@@ -174,8 +197,8 @@ let generatorConfig =
 let readItems = MsBuildHelper.readContentItems "MyProject.fsproj"
 let generatorConfig =
  { BuildFileList =
-    [ "MyProject.net40.fsproj", 
-       { projectInfo.DefaultTemplateData "net40" with 
+    [ "MyProject.net40.fsproj",
+       { projectInfo.DefaultTemplateData "net40" with
           Includes = readItems
           TemplateName = "net40_template" } ] }""" ]
       razorEngineTestHelper files (fun () ->
@@ -184,8 +207,6 @@ let generatorConfig =
         let expected = """<Compile Include="AssemblyInfo.fs" /><Compile Include="LdapUserSource.fs" />"""
         Assert.AreEqual(expected, text))
 
-
-        
     [<Test>]
     member x.``check that we can extract properties`` () =
       let projectXml = """<?xml version="1.0" encoding="utf-8"?>

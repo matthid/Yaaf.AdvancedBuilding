@@ -13,5 +13,5 @@ NUGET
       Microsoft.AspNet.Razor (>= 3.0.0) - >= net45
       Microsoft.AspNet.Razor (2.0.30506.0) - >= net40 < net45
     Unquote (2.2.2)
-    Yaaf.FSharp.Scripting (1.0.1)
+    Yaaf.FSharp.Scripting (1.0.2)
       FSharp.Compiler.Service (>= 0.0.82)

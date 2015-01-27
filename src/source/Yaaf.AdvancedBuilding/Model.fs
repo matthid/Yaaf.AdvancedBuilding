@@ -39,6 +39,14 @@ type ItemGroupItem =
         | Reference _ -> true
         | ProjectReference _ -> true
         | _ -> false
+    member x.My_IsReference =
+        match x with
+        | Reference _ -> true
+        | _ -> false
+    member x.My_IsProjectReference =
+        match x with
+        | ProjectReference _ -> true
+        | _ -> false
     member x.ReferenceItem =
         match x with
         | Reference ref -> ref

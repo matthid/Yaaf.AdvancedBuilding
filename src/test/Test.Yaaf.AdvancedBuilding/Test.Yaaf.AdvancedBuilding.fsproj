@@ -67,9 +67,10 @@
   <ItemGroup>
     <Compile Include="MyTestHelper.fs" />
     <Compile Include="SolutionTests.fs" />
-    <Compile Include="Tests.fs" />
+    <Compile Include="ProjectGenerationTests.fs" />
     <None Include="paket.references" />
     <Content Include="App.config" />
+    <None Include="Test.Yaaf.AdvancedBuilding._proj.fsx" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="mscorlib" />

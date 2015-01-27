@@ -183,7 +183,7 @@ let buildAllDocumentation outDocDir website_root =
         let outDir = referenceDir @@ "references"
         ensureDirectory referenceDir
         ensureDirectory outDir
-        let libDir = config.BuildDir @@ (config.BuildTargets |> Seq.last).CustomBuildName
+        let libDir = config.BuildDir @@ (config.BuildTargets |> Seq.last).SimpleBuildName
         let binaries =
             referenceBinaries
             |> List.map (fun lib -> Path.GetFullPath( libDir @@ lib ))

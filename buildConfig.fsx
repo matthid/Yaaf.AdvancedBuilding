@@ -27,6 +27,12 @@ In the remainder of this document we will explain the various configuration opti
 
 *)
 
+#if FAKE
+#else
+// Support when file is opened in Visual Studio
+#load "packages/Yaaf.AdvancedBuilding/content/buildConfigDef.fsx"
+#endif
+
 (**
 ## Required config start
 
@@ -77,10 +83,18 @@ Setup which nuget packages are created.
               NoDefaultExcludes = true
               ReleaseNotes = toLines release.Notes
               Dependencies =
-                [ "Yaaf.FSharp.Scripting", "1.0.0"
-                  "FSharp.Formatting", "2.6.3"
+                [ "FSharp.Formatting", "2.6.3"
                   "FSharp.Compiler.Service", "0.0.82"
-                  "FAKE", "3.14.8" ] }) ]
+                  "FAKE", "3.14.8" ] })
+        "Yaaf.AdvancedBuilding.Library.nuspec", (fun config p ->
+          { p with
+              Version = config.Version
+              Project = config.ProjectName + ".Library"
+              NoDefaultExcludes = true
+              ReleaseNotes = toLines release.Notes
+              Dependencies =
+                [ "Yaaf.FSharp.Scripting", "1.0.2"
+                  "RazorEngine", "3.5.3" ] }) ]
 (**
 With `UseNuget` you can specify if Yaaf.AdvancedBuilding should restore nuget packages
 before running the build (if you only use paket, you leave the default setting = false).
@@ -110,6 +124,24 @@ On default "./src/SharedAssemblyInfo.fs" and "./src/SharedAssemblyInfo.cs" are c
           Attribute.FileVersion config.Version
           Attribute.InformationalVersion config.Version]
       CreateFSharpAssemblyInfo "./src/SharedAssemblyInfo.fs" info)
+(**
+## Yaaf.AdvancedBuilding features
+Enable project file creation from ._proj and ._proj.fsx files.
+*)
+    EnableProjectFileCreation = true
+(**
+Setup the builds
+*)
+    BuildTargets =
+     [ { BuildParams.Empty with
+          // The default build
+          CustomBuildName = ""
+          SimpleBuildName = "net40" }
+       { BuildParams.Empty with
+          // The generated templates
+          CustomBuildName = "net45"
+          SimpleBuildName = "net45" }]
+
   }
 
 (**
@@ -131,8 +163,10 @@ if buildConfig.ProjectName = "Yaaf.AdvancedBuilding" then
     // We copy the buildConfig to ./doc so that we can generate a html page from this file
     File.Copy ("./buildConfig.fsx", "./doc/buildConfig.fsx", true)
   // Copy templates to their normal path.
-  CopyRecursive "./src/source/Yaaf.AdvancedBuilding/templates" "./src/templates"
-  |> ignore
+
+  ensureDirectory "./src/templates"
+  CopyRecursive "./src/source/Yaaf.AdvancedBuilding/templates" "./src/templates" true
+  |> Seq.iter (fun f -> trace (sprintf "File %A copied" f))
     
     
     

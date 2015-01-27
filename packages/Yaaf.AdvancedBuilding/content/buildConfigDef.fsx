@@ -4,6 +4,12 @@
 // ----------------------------------------------------------------------------
 #I @"../../FAKE/tools/"
 #r @"FakeLib.dll"
+// NOTE: We cannot add those here because FSharp.Formatting requires Razor2
+//#I @"../../FSharp.Compiler.Service/lib/net40/"
+//#I @"../../Yaaf.FSharp.Scripting/lib/net40/"
+//#I "../tools/"
+//#r "Yaaf.AdvancedBuilding.dll"
+
 
 open System.Collections.Generic
 open System.IO
@@ -27,22 +33,24 @@ type BuildParams =
   { SimpleBuildName : string
     CustomBuildName : string
     BuildMode : string
-    FindProjectFiles : unit -> string seq
-    FindTestFiles : unit -> string seq
-    FindUnitTestDlls : string -> string seq }
+    FindProjectFiles : BuildParams -> string seq
+    FindTestFiles : BuildParams -> string seq
+    FindUnitTestDlls : (string * BuildParams) -> string seq }
   static member Empty = 
     { SimpleBuildName = ""
       BuildMode = "Release"
       CustomBuildName = ""
-      FindProjectFiles = (fun () -> 
-        !! (sprintf "src/source/**/*.fsproj")
-        ++ (sprintf "src/source/**/*.csproj")
+      FindProjectFiles = (fun (buildParams:BuildParams) ->
+        let buildName = if System.String.IsNullOrEmpty buildParams.CustomBuildName then "" else (buildParams.CustomBuildName + "/")
+        !! (sprintf "src/%ssource/**/*.fsproj" buildName)
+        ++ (sprintf "src/%ssource/**/*.csproj" buildName)
         :> _)
-      FindTestFiles = (fun () -> 
-        !! (sprintf "src/test/**/Test.*.fsproj")
-        ++ (sprintf "src/test/**/Test.*.csproj")
+      FindTestFiles = (fun (buildParams:BuildParams) ->
+        let buildName = if System.String.IsNullOrEmpty buildParams.CustomBuildName then "" else (buildParams.CustomBuildName + "/")
+        !! (sprintf "src/%stest/**/Test.*.fsproj" buildName)
+        ++ (sprintf "src/%stest/**/Test.*.csproj" buildName)
         :> _)
-      FindUnitTestDlls = (fun testDir -> 
+      FindUnitTestDlls = (fun (testDir, (buildParams:BuildParams)) ->
         !! (testDir + "/Test.*.dll")
         :> _) }
 
