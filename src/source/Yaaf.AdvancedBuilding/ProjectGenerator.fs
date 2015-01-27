@@ -107,10 +107,12 @@ module ProjectGeneratorModule =
 type ProjectGenerator(templatePath, ?references) = 
   let session = ScriptHost.CreateNew(["PROJGEN"])
   let razorManager = new RazorManager(templatePath, ?references = references)
+  let location = System.Reflection.Assembly.GetExecutingAssembly().Location
   do
     session.Open ("System")
     session.Open ("System.Collections.Generic")
-    session.Reference (System.Reflection.Assembly.GetExecutingAssembly().Location)
+    session.EvalInteraction (sprintf "#I \"%s\"" (Path.GetDirectoryName (location)))
+    session.Reference (location)
     session.Open ("Yaaf.AdvancedBuilding")
   
   let rec getConfigFromScript (globalInfo:GlobalProjectInfo) (settingsFile:string) =
