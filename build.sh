@@ -5,5 +5,5 @@ then
 fi
 
 build="packages/Yaaf.AdvancedBuilding/content/build.sh"
-chmod +x $"build"
+chmod +x "$build"
 "$build" $@
