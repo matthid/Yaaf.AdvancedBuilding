@@ -30,6 +30,7 @@ let config = BuildConfig.buildConfig.FillDefaults ()
 open Yaaf.AdvancedBuilding
 open System.Collections.Generic
 open System.IO
+open System
 
 open Fake
 open Fake.Git
@@ -138,14 +139,33 @@ MyTarget "CreateProjectFiles" (fun _ ->
   if config.EnableProjectFileCreation then
     let generator = new ProjectGenerator("./src/templates")
     let createdFile = ref false
-    !! "./src/**/*._proj"
-    ++ "./src/**/*._proj.fsx"
+    let projectGenFiles =
+      !! "./src/**/*._proj"
+      ++ "./src/**/*._proj.fsx"
+      |> Seq.cache
+    projectGenFiles
     |> Seq.iter (fun file ->
       trace (sprintf "Starting project file generation for: %s" file)
-      generator.GenerateProjectFiles(GlobalProjectInfo.Empty, file)
-      createdFile := true)
+      generator.GenerateProjectFiles(GlobalProjectInfo.Empty, file))
 
-    if !createdFile then
+    if projectGenFiles |> Seq.isEmpty |> not then
+      config.BuildTargets
+        |> Seq.filter (fun buildParam -> not (String.IsNullOrEmpty(buildParam.CustomBuildName)))
+        |> Seq.iter (fun buildParam ->
+          let solutionDir = sprintf "src/%s" buildParam.SimpleBuildName
+          let projectFiles =
+            buildParam.FindProjectFiles buildParam
+            |> Seq.append (buildParam.FindTestFiles buildParam)
+            |> Seq.map (fun file ->
+              { PathInSolution = ""
+                Project = SolutionGenerator.getSolutionProject solutionDir file })
+            |> Seq.toList
+          let solution = SolutionGenerator.generateSolution projectFiles []
+          let solutionFile = Path.Combine (solutionDir, config.ProjectName + ".sln")
+          use writer = new StreamWriter(File.OpenWrite (solutionFile))
+          SolutionModule.write solution writer
+          writer.Flush()
+        )
       let exitCode = Shell.Exec(".paket/paket.exe", "install")
       if exitCode <> 0 then failwithf "paket.exe update failed with exit code: %d" exitCode
 )
