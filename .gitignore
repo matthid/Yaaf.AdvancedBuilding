@@ -183,7 +183,11 @@ build/
 TestResults.xml
 
 # Nuget outputs
+*.nuspec
+!nuget/*.nuspec
 nuget/*.nupkg
+
+
 release.cmd
 release.sh
 localpackages/
