@@ -1,10 +1,16 @@
 ﻿### 0.2.0
 
- * Redesigned how `buildConfig.fsx` has to be written!
-   Now you need to implement a BuildConfiguration record type, this helps that
-   builds don't break when new features are introduced.
-   This also allows us to set a lot of defaults for you
- * Implemented initial project and solution generation
+ * BREAKING: Redesigned how `buildConfig.fsx` has to be written!
+   Now you need to implement a BuildConfiguration record type, this helps (in the future)
+   that builds don't break when new features are introduced.
+   This also allows us to set a lot of defaults for you.
+   - you need to set `buildConfig` to a BuildConfiguration instance (all other variables are now ignored).
+   - You can see the docs or look into `buildConfigDef.fsx` for a definition.
+   - You need to update your `build.fsx` and `generateDocs.fsx` and add
+     `#load "packages/Yaaf.AdvancedBuilding/content/buildConfigDef.fsx"`
+     on the top (or use the latest from the package (see Quick-start tutorial)).
+ * Implemented initial project and solution generation.
+   - Can be enabled with `EnableProjectFileCreation`
 
 ### 0.1.4
 

@@ -36,7 +36,7 @@ type BuildParams =
     FindProjectFiles : BuildParams -> string seq
     FindTestFiles : BuildParams -> string seq
     FindUnitTestDlls : (string * BuildParams) -> string seq }
-  static member Empty = 
+  static member Empty =
     { SimpleBuildName = ""
       BuildMode = "Release"
       CustomBuildName = ""
@@ -71,7 +71,7 @@ type BuildConfiguration =
     FileNewIssueUrl : string
     /// Defaults to github master branch "/blob/master/"
     SourceReproUrl : string
-    
+
     // Nuget configuration
     /// Defaults to sprintf "https://www.nuget.org/packages/%s/" x.ProjectName
     NugetUrl : string
@@ -79,13 +79,13 @@ type BuildConfiguration =
     NugetPackages : (string * (BuildConfiguration -> NuGetParams -> NuGetParams)) list
     // Defaults to "./release/nuget/"
     OutNugetDir : string
-    
+
     // Pre build
     Version : string
     /// Defaults to setting up a "./src/SharedAssemblyInfo.fs" and "./src/SharedAssemblyInfo.cs"
     SetAssemblyFileVersions : BuildConfiguration -> unit
     EnableProjectFileCreation : bool
-    
+
     // Build configuration
     /// Defaults to [ x.ProjectName + ".dll"; x.ProjectName + ".xml" ]
     GeneratedFileList : string list
@@ -98,12 +98,12 @@ type BuildConfiguration =
     OutLibDir : string
     NugetPackageDir : string
     GlobalPackagesDir : string
-    
+
     // Test
     /// Defaults to "./test/"
     TestDir : string
     SetupNUnit : (NUnitParams -> NUnitParams)
-    
+
     // Documentation generation
     /// Defaults to "./release/documentation/"
     OutDocDir : string
@@ -111,7 +111,7 @@ type BuildConfiguration =
     DocTemplatesDir : string
     LayoutRoots : string list }
   static member Defaults =
-    { ProjectName = "" 
+    { ProjectName = ""
       ProjectSummary = ""
       CopyrightNotice = ""
       ProjectDescription = ""
@@ -153,13 +153,13 @@ type BuildConfiguration =
   member x.GithubUrl = sprintf "https://github.com/%s/%s" x.GithubUser x.GithubProject
   member x.FillDefaults () =
     { x with
-        NugetUrl = 
+        NugetUrl =
           if String.IsNullOrEmpty x.NugetUrl then sprintf "https://www.nuget.org/packages/%s/" x.ProjectName else x.NugetUrl
         GithubProject = if String.IsNullOrEmpty x.GithubProject then x.ProjectName else x.GithubProject
         IssuesUrl = if String.IsNullOrEmpty x.IssuesUrl then sprintf "%s/issues" x.GithubUrl else x.IssuesUrl
-        FileNewIssueUrl = 
+        FileNewIssueUrl =
           if String.IsNullOrEmpty x.FileNewIssueUrl then sprintf "%s/issues/new" x.GithubUrl else x.FileNewIssueUrl
-        SourceReproUrl = 
+        SourceReproUrl =
           if String.IsNullOrEmpty x.SourceReproUrl then x.GithubUrl + "/blob/master/" else x.SourceReproUrl
         GeneratedFileList =
           if x.GeneratedFileList |> List.isEmpty |> not then x.GeneratedFileList

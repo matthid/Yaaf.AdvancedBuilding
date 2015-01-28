@@ -1,6 +1,6 @@
 ﻿@inherits RazorEngine.Templating.TemplateBase<Yaaf.AdvancedBuilding.Razor_TemplateModel>
 <?xml version="1.0" encoding="utf-8" ?>
-<Project Toolsversion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+@{ var nk = "nk"; }<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
     <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
     <PropertyGroup>
         <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
@@ -11,7 +11,7 @@
         <RootNamespace>@Model.ProjectName</RootNamespace>
         <AssemblyName>@Model.ProjectName</AssemblyName>
         <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
-        <TargetFsharpCoreVersion>4.3.1.0</TargetFsharpCoreVersion>
+        <TargetFSharpCoreVersion>4.3.1.0</TargetFSharpCoreVersion>
         <Name>@Model.ProjectName</Name>
         <TargetFrameworkProfile />
         <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\..\</SolutionDir>
@@ -60,35 +60,28 @@
     <Target Name="AfterBuild">
     </Target>
     -->
-    <Import Project="..\..\..\.paket\paket.targets" />
-    <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />
-    <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
-        <PropertyGroup>
-            <ErrorText>Dieses Projekt verweist auf mindestens ein NuGet-Paket, das auf diesem Computer fehlt. Aktivieren Sie die Wiederherstellung von NuGet-Paketen, um die fehlende Datei herunterzuladen. Weitere Informationen finden Sie unter "http://go.microsoft.com/fwlink/?LinkID=322105". Die fehlende Datei ist "{0}".</ErrorText>
-        </PropertyGroup>
-        <Error Condition="!Exists('$(SolutionDir)\.nuget\NuGet.targets')" Text="$([System.String]::Format('$(ErrorText)', '$(SolutionDir)\.nuget\NuGet.targets'))" />
-    </Target>
+    <Import Project="..\..\..\..\.paket\paket.targets" />
     <ItemGroup>
         @foreach (var includeItem in Model.Includes)
         {
             if (includeItem.IsCompile)
             {
-                <Compile Include="@includeItem.Include" />
+                <Compile Include="@(includeItem.Include)" />
             }
             else if (includeItem.IsCompileLink)
             {
-                <Compile Include="@includeItem.Include">
-                    <Link>@includeItem.LinkName</Link>
+                <Compile Include="@(includeItem.Include)" >
+                    <Li@(nk)>@(includeItem.LinkName)</Li@(nk)>
                 </Compile>
             }
             else if (includeItem.IsContent)
             {
-                <Content Include="@includeItem.Include" />
+                <Content Include="@(includeItem.Include)" />
             }
             else if (includeItem.IsContentLink)
             {
-                <Content Include="@includeItem.Include">
-                    <Link />@includeItem.LinkName</Link>
+                <Content Include="@includeItem.Include" >
+                    <Li@(nk)>@includeItem.LinkName</Li@(nk)>
                 </Content>
             }
             else if (includeItem.IsNoneItem)
@@ -98,15 +91,23 @@
             else if (includeItem.IsNoneItemLink)
             {
                 <None Include="@includeItem.Include">
-                    <Link />@includeItem.LinkName</Link>
+                    <Li@(nk)>@includeItem.LinkName</Li@(nk)>
                 </None>
             }
             else if (includeItem.IsReference)
             {
-                <Reference Include="@includeItem.ReferenceItem.Include">
-                    <HintPath>@includeItem.ReferenceItem.HintPath</HintPath>
-                    <Private>@(includeItem.ReferenceItem.IsPrivate ? "True" : "False")</Private>
-                </Reference>
+                if (String.IsNullOrEmpty(includeItem.ReferenceItem.HintPath) && !includeItem.ReferenceItem.IsPrivate) {
+                    <Reference Include="@includeItem.ReferenceItem.Include" />
+                } else if (String.IsNullOrEmpty(includeItem.ReferenceItem.HintPath)) {
+                    <Reference Include="@includeItem.ReferenceItem.Include">
+                        <Private>@(includeItem.ReferenceItem.IsPrivate ? "True" : "False")</Private>
+                    </Reference>
+                } else {
+                    <Reference Include="@includeItem.ReferenceItem.Include">
+                        <HintPath>@includeItem.ReferenceItem.HintPath</HintPath>
+                        <Private>@(includeItem.ReferenceItem.IsPrivate ? "True" : "False")</Private>
+                    </Reference>
+                }
             }
             else if (includeItem.IsProjectReference)
             {

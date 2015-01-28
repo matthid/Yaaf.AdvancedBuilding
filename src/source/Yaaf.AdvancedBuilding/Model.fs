@@ -30,7 +30,7 @@ type ItemGroupItem =
         | Compile _
         | CompileLink _
         | NoneItem _
-        | NoneItemLink _ 
+        | NoneItemLink _
         | Content _
         | ContentLink _ -> true
         | _ -> false
@@ -55,16 +55,16 @@ type ItemGroupItem =
         match x with
         | ProjectReference ref -> ref
         | _ -> failwith "no project reference item!"
-    member x.IsLink = 
+    member x.IsLink =
         match x with
         | CompileLink _ -> true
         | NoneItemLink _ -> true
         | ContentLink _ -> true
         | _ -> false
-    member x.Include = 
+    member x.Include =
         match x with
         | Compile name
-        | CompileLink (_, name) 
+        | CompileLink (_, name)
         | NoneItem name
         | NoneItemLink (_, name)
         | Content name
@@ -72,9 +72,9 @@ type ItemGroupItem =
         | Reference { Include = name } -> name
         | ProjectReference { Include = name } -> name
         | _ -> failwith "item has no include property!"
-    member x.LinkName = 
+    member x.LinkName =
         match x with
-        | CompileLink (linkName, _) 
+        | CompileLink (linkName, _)
         | NoneItemLink (linkName, _)
         | ContentLink (linkName, _) -> linkName
         | _ -> failwith "item is no link!"

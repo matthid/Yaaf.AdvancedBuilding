@@ -13,10 +13,10 @@ open Swensen.Utils
 let testFailed =
     let outputReducedExprsMsg =
         fun outputTestFailedMsg (reducedExprs:Expr list) additionalInfo ->
-                let msg = 
+                let msg =
                     sprintf "\n%s\n%s\n"
                         (if additionalInfo |> String.IsNullOrWhiteSpace then "" else sprintf "\n%s\n" additionalInfo)
-                        (reducedExprs |> List.map decompile |> String.concat "\n")    
+                        (reducedExprs |> List.map decompile |> String.concat "\n")
                 outputTestFailedMsg msg
     let outputNonFsiTestFailedMsg = (fun msg ->
         printfn "%s" msg
@@ -32,17 +32,16 @@ let inline test (expr:Expr<bool>) =
     let reducedExprs, lastExpr = reduceFullyAndGetLast expr
     match lastExpr with
     | DerivedPatterns.Bool(true) -> ()
-    | _ ->  
+    | _ ->
         //try
             testFailed reducedExprs ""
         //with 
         //| e -> raise e //we catch and raise e here to hide stack traces for clean test framework output
 
-        
 let inline expectedExnButWrongExnRaisedMsg ty1 ty2 = sprintf "Expected exception of type '%s', but '%s' was raised instead" ty1 ty2
 let inline expectedExnButNoExnRaisedMsg ty1 = sprintf "Expected exception of type '%s', but no exception was raised" ty1
 ///Test wether the given expr fails with the given expected exception (or a subclass thereof).
-let inline raises<'a when 'a :> exn> (expr:Expr) = 
+let inline raises<'a when 'a :> exn> (expr:Expr) =
     let reducedExprs, lastExpr = reduceFullyAndGetLast expr
     match lastExpr with
     | Patterns.Value(lastValue,lastValueTy) when lastValue <> null && typeof<exn>.IsAssignableFrom(lastValueTy) -> //it's an exception
@@ -50,16 +49,16 @@ let inline raises<'a when 'a :> exn> (expr:Expr) =
         else //it's not the correct exception
             //try
                 testFailed reducedExprs (expectedExnButWrongExnRaisedMsg typeof<'a>.Name (lastValueTy.Name))
-            //with 
+            //with
             //| e -> raise e
     | _ -> //it's not an exception
         //try
             testFailed reducedExprs (expectedExnButNoExnRaisedMsg typeof<'a>.Name)
-        //with 
+        //with
         //| e -> raise e
 
 ///Test wether the given expr fails with the given expected exception (or a subclass thereof) when the additional assertion on the exception object holds.
-let inline raisesWith<'a when 'a :> exn> (expr:Expr) (exnWhen: 'a -> Expr<bool>) = 
+let inline raisesWith<'a when 'a :> exn> (expr:Expr) (exnWhen: 'a -> Expr<bool>) =
     let reducedExprs, lastExpr = reduceFullyAndGetLast expr
     match lastExpr with
     | Patterns.Value(lastValue,lastValueTy) when lastValue <> null && typeof<exn>.IsAssignableFrom(lastValueTy) -> //it's an exception
@@ -70,23 +69,23 @@ let inline raisesWith<'a when 'a :> exn> (expr:Expr) (exnWhen: 'a -> Expr<bool>)
             let exnWhenReducedExprs, exnWhenLastExpr = reduceFullyAndGetLast exnWhenExpr
             match exnWhenLastExpr with
             | DerivedPatterns.Bool(true) -> () //the exnWhen condition is true
-            | _ ->  
+            | _ ->
                 //try
                     testFailed reducedExprs (sprintf "The expected exception was raised, but the exception assertion failed:\n\nException Assertion:\n\n%s\n\nTest Expression:" (exnWhenReducedExprs |> List.map decompile |> String.concat "\n"))
-                //with 
+                //with
                 //| e -> raise e //we catch and raise e here to hide stack traces for clean test framework output
 
         else //it's not the correct exception
             //try
                 testFailed reducedExprs (expectedExnButWrongExnRaisedMsg typeof<'a>.Name (lastValueTy.Name))
-            //with 
+            //with
             //| e -> raise e
     | _ -> //it's not an exception
         //try
             testFailed reducedExprs (expectedExnButNoExnRaisedMsg typeof<'a>.Name)
-        //with 
+        //with
         //| e -> raise e
-    
+
 let inline (=?) x y = test <@ x = y @>
 let inline (<?) x y = test <@ x < y @>
 let inline (>?) x y = test <@ x > y @>
