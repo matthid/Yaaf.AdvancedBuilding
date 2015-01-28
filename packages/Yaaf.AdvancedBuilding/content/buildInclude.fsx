@@ -204,6 +204,7 @@ MyTarget "NuGet" (fun _ ->
             Authors = config.ProjectAuthors
             Project = config.ProjectName
             Summary = config.ProjectSummary
+            Version = config.Version
             Description = config.ProjectDescription
             Tags = config.NugetTags
             WorkingDir = "."
