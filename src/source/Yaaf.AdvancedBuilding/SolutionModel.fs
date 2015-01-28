@@ -54,7 +54,7 @@ type SolutionFile =
         | None -> x
       { nestingAdded with Projects = newProject :: nestingAdded.Projects }
     member x.AddItemToProject (projectGuid:Guid) secName prePost (item:SectionItem) =
-      let project = 
+      let project =
         match x.Projects |> Seq.tryFind (fun pro -> pro.ProjectGuid = projectGuid) with
         | Some pro -> pro
         | None -> failwith "given project was not found!"
@@ -99,14 +99,14 @@ module SolutionModule =
     let parseHeaderIgnore (reader:IReader) =
         readPart reader (fun line -> not (line.Contains("Project("))) (fun reader ->
             reader.CurrentLine)
-            
+
     let parseSectionItems (reader:IReader) =
         readPart reader (fun line -> line.StartsWith("\t\t")) (fun reader ->
             reader.CurrentLine.Substring(2) : SectionItem)
     let parseSections sectionType (reader:IReader) =
         readPart reader (fun line -> line.StartsWith("\t" + sectionType)) (fun reader ->
             let line = reader.CurrentLine
-            
+
             let index = line.IndexOf('(') + 1
             let name = line.Substring(index, line.IndexOf(')', index) - index)
             let index = line.IndexOf("= ", index) + 2
@@ -121,7 +121,7 @@ module SolutionModule =
     let parseProjects (reader:IReader) =
         readPart reader (fun line -> line.StartsWith("Project(")) (fun reader ->
             let line = reader.CurrentLine
-            
+
             let index = line.IndexOf('{') + 1
             let projectTypeId = new Guid(line.Substring(index, line.IndexOf('}', index) - index))
             let index = line.LastIndexOf('{') + 1
@@ -130,16 +130,16 @@ module SolutionModule =
             let name = line.Substring(index, line.IndexOf('\"', index) - index)
             let index = line.IndexOf(", \"", index) + 3
             let path = line.Substring(index, line.IndexOf('\"', index) - index)
-            
+
             reader.MoveNext() |> ignore
             let sections = parseSections "ProjectSection" reader
-            
+
             { ProjectType = projectTypeId
               Name = name
               Path = path
               ProjectGuid = projectId
               Sections = sections })
-              
+
     let parseGlobals (reader:IReader) =
         readPart reader (fun line -> line.StartsWith("Global")) (fun reader ->
             reader.MoveNext() |> ignore
@@ -147,8 +147,8 @@ module SolutionModule =
             assert (reader.CurrentLine.StartsWith("EndGlobal"))
             globalSections)
             |> Seq.exactlyOne
-                
-    let parse (solutionReader:TextReader) = 
+
+    let parse (solutionReader:TextReader) =
         let reader =
             let currentLine = ref (solutionReader.ReadLine())
 #if DEBUG
@@ -164,7 +164,7 @@ module SolutionModule =
 #endif
                     !currentLine
                 member x.IsAtEnd = !currentLine = null}
-                
+
         let fileVersion = parseHeaderFileVersion reader
         parseHeaderIgnore reader |> ignore
         let projects = parseProjects reader
@@ -205,6 +205,6 @@ module SolutionModule =
         solution.GlobalSections |> Seq.iter (writeSection "GlobalSection")
         writer.WriteLine "EndGlobal"
         writer.Flush()
-        
+
     let addSolutionProject parent project (solution:SolutionFile) = solution.AddSolutionProject parent project
     let addSolutionItem project item (solution:SolutionFile) = solution.AddSolutionItem project item

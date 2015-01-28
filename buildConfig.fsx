@@ -104,7 +104,7 @@ before running the build (if you only use paket, you leave the default setting =
 ## The `GeneratedFileList` property
 
 The `GeneratedFileList` list is used to specify which files are copied over to the release directory.
-This list is also used for documentation generation. 
+This list is also used for documentation generation.
 Defaults to [ x.ProjectName + ".dll"; x.ProjectName + ".xml" ] which is only enough for very simple projects.
 *)
     GeneratedFileList =
@@ -167,6 +167,3 @@ if buildConfig.ProjectName = "Yaaf.AdvancedBuilding" then
   ensureDirectory "./src/templates"
   CopyRecursive "./src/source/Yaaf.AdvancedBuilding/templates" "./src/templates" true
   |> Seq.iter (fun f -> trace (sprintf "File %A copied" f))
-    
-    
-    

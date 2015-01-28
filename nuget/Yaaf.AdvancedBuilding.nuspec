@@ -53,12 +53,17 @@
     <file src="downloadNuget.fsx" target="scaffold\build\downloadNuget.fsx" />
     <file src="generateDocs.fsx" target="scaffold\build\generateDocs.fsx" />
 
+    <!-- Build templates -->
+    <file src="src/templates/fsproj_net40.cshtml" target="examples\buildtemplates\fsproj_net40.cshtml" />
+    <file src="src/templates/fsproj_net45.cshtml" target="examples\buildtemplates\fsproj_net45.cshtml" />
+    <file src="src/templates/fsproj_portable111.cshtml" target="examples\buildtemplates\fsproj_portable111.cshtml" />
+
     <!-- Required when using NuGet -->
     <file src="src/nuget.config" target="scaffold\nuget\src\nuget.config" />
     <file src="src/.nuget/NuGet.Config" target="scaffold\nuget\src\.nuget\NuGet.Config" />
     <file src="src/.nuget/NuGet.targets" target="scaffold\nuget\src\.nuget\NuGet.targets" />
 
-    <!-- templates -->
+    <!-- documentation templates -->
     <file src="doc/templates/docpage.cshtml" target="scaffold\templates\doc\templates\docpage.cshtml" />
     <file src="doc/templates/docpage-index.cshtml" target="scaffold\templates\doc\templates\docpage-index.cshtml" />
     <file src="doc/templates/template.cshtml" target="scaffold\templates\doc\templates\template.cshtml" />

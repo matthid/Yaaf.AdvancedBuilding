@@ -14,7 +14,7 @@ type SolutionProjectHelper =
 
 module SolutionGenerator =
     let makeRelative (solutionDirectory:string) projectFile =
-        let skipLast = 
+        let skipLast =
             (if solutionDirectory.EndsWith("/") then solutionDirectory.Substring(0, solutionDirectory.Length - 1) else solutionDirectory)
         let solutionUri = new Uri(Path.GetFullPath skipLast + "/")
         let projectFileUri = new Uri(Path.GetFullPath projectFile)
@@ -40,7 +40,7 @@ module SolutionGenerator =
     let generateSolution (solutionProjects:SolutionProjectHelper list) (otherItems:SolutionItemHelper list) =
         // add all folders
         let solution, pathMapping =
-            otherItems 
+            otherItems
             |> Seq.map (fun helper -> helper.PathInSolution)
             |> Seq.append (solutionProjects |> Seq.map (fun helper -> helper.PathInSolution))
             |> Seq.fold (fun (sln, (mapping:IDictionary<string,Guid>)) newItem ->
@@ -58,11 +58,11 @@ module SolutionGenerator =
                         Some folder.ProjectGuid, solution |> SolutionModule.addSolutionProject parentUid (folder)
                 (snd (addPath newItem sln), mapping)
                 ) (SolutionFile.Empty, new Dictionary<string, Guid>() :> _)
-        
+
         // add all items
         let solution =
             otherItems
-            |> Seq.fold (fun (sln:SolutionFile) (helper) -> 
+            |> Seq.fold (fun (sln:SolutionFile) (helper) ->
                 let rel = helper.PathInSolution
                 if (String.IsNullOrEmpty rel) then failwith "Solution items in root are not allowed!"
                 let pathGuid = pathMapping.[rel]

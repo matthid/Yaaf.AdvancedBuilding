@@ -1,6 +1,6 @@
 ﻿namespace Yaaf.AdvancedBuilding
 open System
-type Razor_TemplateModel = 
+type Razor_TemplateModel =
     {
        ProjectName : string
        ProjectGuid : Guid
@@ -14,9 +14,9 @@ open RazorEngine.Templating
 type RazorManager(templatePath, ?references) =
   let config = new Configuration.TemplateServiceConfiguration()
   do
-    config.TemplateManager <- 
+    config.TemplateManager <-
       { new ITemplateManager with
-        member x.Resolve key = 
+        member x.Resolve key =
           let path = Path.Combine (templatePath, key.Name)
           if File.Exists path then new LoadedTemplateSource(File.ReadAllText path, path) :> _
           else failwithf "template %s was not found" path
@@ -34,7 +34,7 @@ type RazorManager(templatePath, ?references) =
     service.RunCompile(
         data.TemplateName,
         writer,
-        typeof<Razor_TemplateModel>, 
+        typeof<Razor_TemplateModel>,
         { ProjectName = data.ProjectName
           ProjectGuid = data.ProjectGuid
           DefineConstants = data.DefineConstants |> Seq.ofList

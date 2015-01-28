@@ -13,7 +13,7 @@ type GlobalProjectInfo =
     GlobalData : (string * obj) list
 
     }
-    static member Empty = 
+    static member Empty =
       { BuildTemplates = []
         ProjectName = ""
         Includes = []
@@ -78,7 +78,7 @@ module ProjectGeneratorModule =
 
   let projectFileFromExpression (session:IFsiSession) contents =
     session.EvalExpression<ProjectGeneratorConfig> (contents)
-  
+
   let fixInclude (relPath:string) item =
     let fixPath path =
         sprintf "%s\\%s" (relPath.Replace("/","\\")) path
@@ -104,7 +104,7 @@ module ProjectGeneratorModule =
 ///     let h = Library.hello 1
 ///     printfn "%d" h
 ///
-type ProjectGenerator(templatePath, ?references) = 
+type ProjectGenerator(templatePath, ?references) =
   let session = ScriptHost.CreateNew(["PROJGEN"])
   let razorManager = new RazorManager(templatePath, ?references = references)
   let location = System.Reflection.Assembly.GetExecutingAssembly().Location
@@ -114,7 +114,7 @@ type ProjectGenerator(templatePath, ?references) =
     session.EvalInteraction (sprintf "#I \"%s\"" (Path.GetDirectoryName (location)))
     session.Reference (location)
     session.Open ("Yaaf.AdvancedBuilding")
-  
+
   let rec getConfigFromScript (globalInfo:GlobalProjectInfo) (settingsFile:string) =
     //let contents = File.ReadAllText settingsFile
     let baseDir = Path.GetDirectoryName settingsFile
@@ -123,7 +123,7 @@ type ProjectGenerator(templatePath, ?references) =
         let fsxSettingsFile = settingsFile + ".fsx"
         let name = Path.GetFileName fsxSettingsFile
         let basePath = Path.GetDirectoryName fsxSettingsFile
-        let name = 
+        let name =
             if name.StartsWith (".") then name.Substring(1) else name
         let fsxSettingsFile = Path.Combine (basePath, name)
         File.Copy(settingsFile, fsxSettingsFile)
@@ -145,7 +145,7 @@ type ProjectGenerator(templatePath, ?references) =
         moduleName.[0] <- System.Char.ToUpperInvariant moduleName.[0]
         let moduleName = moduleName.ToString()
 
-        ProjectGeneratorModule.projectFileFromExpression session (sprintf "%s.%s" moduleName "generatorConfig") 
+        ProjectGeneratorModule.projectFileFromExpression session (sprintf "%s.%s" moduleName "generatorConfig")
     finally
         System.Environment.CurrentDirectory <- oldDir
 
@@ -160,7 +160,7 @@ type ProjectGenerator(templatePath, ?references) =
   member x.FsiSession = session
   member x.GenerateProjectFiles (globalInfo, settingsFile) = generateProjectFiles globalInfo settingsFile
 
-type MsBuildInfo = 
+type MsBuildInfo =
   { Includes : ItemGroupItem list
     ProjectName : string
     ProjectGuid : Guid }
@@ -179,7 +179,7 @@ module MsBuildHelper =
         let includeAttribute = e.Attribute(XName.Get "Include")
         if includeAttribute = null then failwith "expected Include attribute on: %A" e
         let includeValue = includeAttribute.Value
-        let getElemValue elemName = 
+        let getElemValue elemName =
             e.Elements(xname elemName) |> Seq.tryPick (fun elem -> Some elem.Value)
         let linkValue = getElemValue "Link"
         // see https://msdn.microsoft.com/en-us/library/dd393574.aspx (property, item and metadata is not case-sensitive)
@@ -191,12 +191,12 @@ module MsBuildHelper =
         | "none", Some h -> NoneItemLink(h, includeValue) |> Some
         | "none", _ -> NoneItem(includeValue) |> Some
         | "reference", _ ->
-            Reference 
+            Reference
               { ReferenceItem.Include = includeValue
-                ReferenceItem.HintPath = 
+                ReferenceItem.HintPath =
                     match getElemValue "HintPath" with
                     | Some h -> h
-                    | None -> "" 
+                    | None -> ""
                 ReferenceItem.IsPrivate =
                     match getElemValue "Private" |> Option.map (fun v -> v.ToLowerInvariant()) with
                     | Some "true"
@@ -204,16 +204,16 @@ module MsBuildHelper =
                     | Some "preservenewest" -> true
                     | _ -> false } |> Some
         | "projectreference", _ ->
-            ProjectReference 
+            ProjectReference
               { ProjectReferenceItem.Include = includeValue
-                ProjectReferenceItem.ProjectGuid = 
+                ProjectReferenceItem.ProjectGuid =
                     match getElemValue "Project" with
                     | Some h -> Guid.Parse(h)
-                    | None -> failwith "expected 'Project' element in 'ProjectReference'!" 
-                ProjectReferenceItem.Name = 
+                    | None -> failwith "expected 'Project' element in 'ProjectReference'!"
+                ProjectReferenceItem.Name =
                     match getElemValue "Name" with
                     | Some h -> h
-                    | None -> failwith "expected 'Name' element in 'ProjectReference'!" 
+                    | None -> failwith "expected 'Name' element in 'ProjectReference'!"
                 ProjectReferenceItem.IsPrivate =
                     match getElemValue "Private" |> Option.map (fun v -> v.ToLowerInvariant()) with
                     | Some "true"
@@ -237,9 +237,9 @@ module MsBuildHelper =
     |> List.rev
     |> Seq.tryFind (fun _ -> true)
 
-  let readMsBuildInfoFromDocument (doc:XDocument) = 
+  let readMsBuildInfoFromDocument (doc:XDocument) =
     { MsBuildInfo.Includes = readItemGroupItemsFromDocument doc
-      MsBuildInfo.ProjectGuid = 
+      MsBuildInfo.ProjectGuid =
         match tryFindProperty "ProjectGuid" doc with
         | Some v ->  Guid.Parse v
         |  _ -> failwith "ProjectGuid not found!"

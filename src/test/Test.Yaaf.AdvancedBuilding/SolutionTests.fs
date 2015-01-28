@@ -71,7 +71,6 @@ EndGlobal
         let solution2 = SolutionModule.parse (new StringReader(written))
         test <@ solution = solution2 @>
 
-        
     [<Test>]
     member x.``check that we can generate a solution`` () =
         File.WriteAllText ("file.txt", "test")
@@ -79,15 +78,15 @@ EndGlobal
         test <@ solution.Projects |> Seq.length = 1 @>
         test <@ solution.Projects |> Seq.collect (fun pro -> pro.Sections) |> Seq.collect (fun sec -> sec.Items) |> Seq.length = 1 @>
         test <@ solution.GlobalSections |> Seq.length = 0 @>
-        
+
     [<Test>]
     member x.``check that we can generate a solution (2)`` () =
         File.WriteAllText ("file.txt", "test")
         File.WriteAllText ("file2.txt", "test2")
-        let solution = 
-            SolutionGenerator.generateSolution [] 
+        let solution =
+            SolutionGenerator.generateSolution []
                 [ { PathInSolution = "test/sub"; PathRelativeToSolutionFile = "file.txt" }
-                  { PathInSolution = "test"; PathRelativeToSolutionFile = "file.txt" } 
+                  { PathInSolution = "test"; PathRelativeToSolutionFile = "file.txt" }
                   { PathInSolution = "test"; PathRelativeToSolutionFile = "file2.txt" }
                   { PathInSolution = "test/sub"; PathRelativeToSolutionFile = "file2.txt" } ]
         test <@ solution.Projects |> Seq.length = 2 @>

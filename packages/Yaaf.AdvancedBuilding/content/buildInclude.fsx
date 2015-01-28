@@ -185,7 +185,7 @@ MyTarget "CopyToRelease" (fun _ ->
         |> Seq.map (fun t -> config.BuildDir @@ t, t)
         |> Seq.filter (fun (p, t) -> Directory.Exists p)
         |> Seq.iter (fun (source, buildName) ->
-            let outDir = outLibDir @@ buildName 
+            let outDir = outLibDir @@ buildName
             ensureDirectory outDir
             config.GeneratedFileList
             |> Seq.filter (fun (file) -> File.Exists (source @@ file))
@@ -225,7 +225,7 @@ MyTarget "LocalDoc" (fun _ ->
 
 
 MyTarget "ReleaseGithubDoc" (fun isSingle ->
-    let repro = (sprintf "git@github.com:%s/%s.git" config.GithubUser config.GithubProject)  
+    let repro = (sprintf "git@github.com:%s/%s.git" config.GithubUser config.GithubProject)
     let doAction =
         if isSingle then true
         else

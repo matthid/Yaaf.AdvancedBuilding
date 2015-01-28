@@ -14,7 +14,7 @@ open System.IO
 
 open Fake
 
-Target "Build" (fun _ -> 
+Target "Build" (fun _ ->
     let buildDir = "packages/Yaaf.AdvancedBuilding/tools"
     CleanDirs [ buildDir ]
     // build app
