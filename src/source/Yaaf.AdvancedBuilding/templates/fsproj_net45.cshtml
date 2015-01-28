@@ -94,7 +94,7 @@
             }
             else if (includeItem.IsReference)
             {
-                if (String.IsNullOrEmpty(includeItem.ReferenceItem.HintPath) && includeItem.ReferenceItem.IsPrivate) {
+                if (String.IsNullOrEmpty(includeItem.ReferenceItem.HintPath) && !includeItem.ReferenceItem.IsPrivate) {
                     <Reference Include="@includeItem.ReferenceItem.Include" />
                 } else if (String.IsNullOrEmpty(includeItem.ReferenceItem.HintPath)) {
                     <Reference Include="@includeItem.ReferenceItem.Include">
