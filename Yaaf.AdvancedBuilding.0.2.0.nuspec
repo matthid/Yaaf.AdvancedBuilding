@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="utf-8"?>
+<package xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <metadata xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
+    <id>Yaaf.AdvancedBuilding</id>
+    <title>Yaaf.AdvancedBuilding</title>
+    <version>0.2.0</version>
+    <authors>Matthias Dittrich</authors>
+    <owners>Matthias Dittrich</owners>
+    <licenseUrl>http://github.com/matthid/Yaaf.AdvancedBuilding/blob/develop/LICENSE.md</licenseUrl>
+    <projectUrl>http://matthid.github.com/Yaaf.AdvancedBuilding</projectUrl>
+    <iconUrl>https://raw.githubusercontent.com/fsprojects/ProjectScaffold/master/docs/files/img/logo.png</iconUrl>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <summary>Yaaf.AdvancedBuilding provides several build scripts for you to use.</summary>
+    <description>Yaaf.AdvancedBuilding is a loose collection of build scripts. The benefit is that you can automatically update your build by updating this package, when you don't need your own crazy build script. But even than it is possible that you could re-use some scripts within this package.</description>
+    <releaseNotes>Redesigned how `buildConfig.fsx` has to be written!
+Now you need to implement a BuildConfiguration record type, this helps that
+builds don't break when new features are introduced.
+This also allows us to set a lot of defaults for you
+Implemented initial project and solution generation</releaseNotes>
+    <copyright>Copyright 2015</copyright>
+    <tags>building C# F# dotnet .net</tags>
+    <dependencies><group><dependency id="FSharp.Formatting" version="2.6.3" />
+<dependency id="FSharp.Compiler.Service" version="0.0.82" />
+<dependency id="FAKE" version="3.14.8" /></group></dependencies>
+  </metadata>
+  <files>
+    <file src="release/lib/net40/Yaaf.AdvancedBuilding.dll" target="tools\Yaaf.AdvancedBuilding.dll" />
+    <file src="release/lib/net40/Yaaf.AdvancedBuilding.xml" target="tools\Yaaf.AdvancedBuilding.xml" />
+    <file src="packages/Microsoft.AspNet.Razor/lib/net40/System.Web.Razor.dll" target="tools\System.Web.Razor.dll" />
+    <file src="packages/RazorEngine/lib/net40/RazorEngine.dll" target="tools\RazorEngine.dll" />
+    <file src="packages/Yaaf.FSharp.Scripting/lib/net40/Yaaf.FSharp.Scripting.dll" target="tools\Yaaf.FSharp.Scripting.dll" />
+    <file src="packages/Yaaf.AdvancedBuilding/content/build.cmd" target="content/build.cmd" />
+    <file src="packages/Yaaf.AdvancedBuilding/content/build.sh" target="content/build.sh" />
+    <file src="packages/Yaaf.AdvancedBuilding/content/buildInclude.fsx" target="content/buildInclude.fsx" />
+    <file src="packages/Yaaf.AdvancedBuilding/content/buildConfigDef.fsx" target="content/buildConfigDef.fsx" />
+    <file src="packages/Yaaf.AdvancedBuilding/content/downloadNugetInclude.fsx" target="content/downloadNugetInclude.fsx" />
+    <file src="packages/Yaaf.AdvancedBuilding/content/generateDocsInclude.fsx" target="content/generateDocsInclude.fsx" />
+
+    <!-- Example files -->
+    <file src="buildConfig.fsx" target="examples\buildConfig\buildConfig.Yaaf.AdvancedBuilding.fsx" />
+
+    <!-- Files only required first time -->
+    <file src="LICENSE.md" target="scaffold\initial\LICENSE.md" />
+    <file src="CONTRIBUTING.md" target="scaffold\initial\CONTRIBUTING.md" />
+    <file src="README.md" target="scaffold\initial\README.md" />
+    <file src="paket.dependencies" target="scaffold\initial\paket.dependencies" />
+    <file src=".travis.yml" target="scaffold\initial\.travis.yml" />
+    <file src="appveyor.yml" target="scaffold\initial\appveyor.yml" />
+    <file src="doc/DevelopReadme.md" target="scaffold\initial\doc\DevelopReadme.md" />
+    <file src="doc/ReleaseNotes.md" target="scaffold\initial\doc\ReleaseNotes.md" />
+
+    <!-- Build Files that can be replaced anytime -->
+    <file src="build.cmd" target="scaffold\build\build.cmd" />
+    <file src="build.sh" target="scaffold\build\build.sh" />
+    <file src="build.fsx" target="scaffold\build\build.fsx" />
+    <file src=".gitignore" target="scaffold\build\.gitignore" />
+    <file src=".gitattributes" target="scaffold\build\.gitattributes" />
+    <file src="src/.gitignore" target="scaffold\build\src\.gitignore" />
+    <file src="downloadNuget.fsx" target="scaffold\build\downloadNuget.fsx" />
+    <file src="generateDocs.fsx" target="scaffold\build\generateDocs.fsx" />
+
+    <!-- Required when using NuGet -->
+    <file src="src/nuget.config" target="scaffold\nuget\src\nuget.config" />
+    <file src="src/.nuget/NuGet.Config" target="scaffold\nuget\src\.nuget\NuGet.Config" />
+    <file src="src/.nuget/NuGet.targets" target="scaffold\nuget\src\.nuget\NuGet.targets" />
+
+    <!-- templates -->
+    <file src="doc/templates/docpage.cshtml" target="scaffold\templates\doc\templates\docpage.cshtml" />
+    <file src="doc/templates/docpage-index.cshtml" target="scaffold\templates\doc\templates\docpage-index.cshtml" />
+    <file src="doc/templates/template.cshtml" target="scaffold\templates\doc\templates\template.cshtml" />
+    <file src="doc/templates/template-color.tex" target="scaffold\templates\doc\templates\template-color.tex" />
+    <file src="doc/templates/template-math.tex" target="scaffold\templates\doc\templates\template-math.tex" />
+    <file src="doc/templates/reference/module.cshtml" target="scaffold\templates\doc\templates\reference\module.cshtml" />
+    <file src="doc/templates/reference/namespaces.cshtml" target="scaffold\templates\doc\templates\reference\namespaces.cshtml" />
+    <file src="doc/templates/reference/part-members.cshtml" target="scaffold\templates\doc\templates\reference\part-members.cshtml" />
+    <file src="doc/templates/reference/part-nested.cshtml" target="scaffold\templates\doc\templates\reference\part-nested.cshtml" />
+    <file src="doc/templates/reference/type.cshtml" target="scaffold\templates\doc\templates\reference\type.cshtml" />
+
+    <!-- content files -->
+    <file src="doc/content/prism.css" target="scaffold\content\doc\content\prism.css" />
+    <file src="doc/content/prism.js" target="scaffold\content\doc\content\prism.js" />
+    <file src="doc/content/style.css" target="scaffold\content\doc\content\style.css" />
+    <file src="doc/content/tips.js" target="scaffold\content\doc\content\tips.js" />
+    <file src="doc/content/img/back_to_top.png" target="scaffold\content\doc\content\img\back_to_top.png" />
+    <file src="doc/content/img/github.png" target="scaffold\content\doc\content\img\github.png" />
+    <file src="doc/content/img/github-blue.png" target="scaffold\content\doc\content\img\github-blue.png" />
+    <file src="doc/content/img/logo.png" target="scaffold\content\doc\content\img\logo.png" />
+    <file src="doc/content/img/logo-template.pdn" target="scaffold\content\doc\content\img\logo-template.pdn" />
+  </files>
+</package>
