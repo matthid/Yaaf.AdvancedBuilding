@@ -3,19 +3,19 @@
 @{ var nk = "nk"; }<Project Toolsversion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
     <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
     <PropertyGroup>
+        <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\..\..\</SolutionDir>
         <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
         <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-        <ProjectGuid>@Model.ProjectGuid</ProjectGuid>
+        <ProjectGuid>@(Model.ProjectGuid.ToString("B"))</ProjectGuid>
         <OutputType>Library</OutputType>
         <RootNamespace>@Model.ProjectName</RootNamespace>
         <AssemblyName>@Model.ProjectName</AssemblyName>
-        <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+        <AppDesignerFolder>Properties</AppDesignerFolder>
         <TargetFsharpCoreVersion>4.3.1.0</TargetFsharpCoreVersion>
-        <Name>@Model.ProjectName</Name>
+        <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
         <TargetFrameworkProfile />
         <TargetFrameworkIdentifier>.NETFramework</TargetFrameworkIdentifier>
         <FileAlignment>512</FileAlignment>
-        <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\..\..\</SolutionDir>
         <RestorePackages>true</RestorePackages>
     </PropertyGroup>
     <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
@@ -37,9 +37,6 @@
     </PropertyGroup>
     <PropertyGroup>
         <DocumentationFile>$(OutputPath)\$(AssemblyName).xml</DocumentationFile>
-    </PropertyGroup>
-    <PropertyGroup>
-        <MinimumVisualStudioVersion Condition="'$(MinimumVisualStudioVersion)' == ''">11</MinimumVisualStudioVersion>
     </PropertyGroup>
     <Choose>
         <When Condition="'$(VisualStudioVersion)' == '11.0'">
