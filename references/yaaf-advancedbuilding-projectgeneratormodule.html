@@ -2,7 +2,7 @@
 <html lang="en">
   <head>
     <meta charset="utf-8">
-    <title>ReferenceItem - Yaaf.AdvancedBuilding</title>
+    <title>ProjectGeneratorModule - Yaaf.AdvancedBuilding</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="">
     <meta name="author" content="Matthias Dittrich">
@@ -38,30 +38,33 @@
 
 
 
-<h1>ReferenceItem </h1>
+<h1>ProjectGeneratorModule</h1>
 <div class="xmldoc">
     Defined in Yaaf.AdvancedBuilding.dll.
 </div>
 <div class="xmldoc">
 </div>
-  <h3>Record Fields</h3>
+
+<!-- Render nested types and modules, if there are any -->
+
+  <h3>Functions and values</h3>
   <table class="table table-bordered member-list">
     <thead>
-      <tr><td>Record Field</td><td>Description</td></tr>
+      <tr><td>Function or value</td><td>Description</td></tr>
     </thead>
     <tbody>
       <tr>
         <td class="member-name">
 
-          <code onmouseout="hideTip(event, '80', 80)" onmouseover="showTip(event, '80', 80)">
-            HintPath
+          <code onmouseout="hideTip(event, '9', 9)" onmouseover="showTip(event, '9', 9)">
+            fixInclude relPath item
           </code>
-          <div class="tip" id="80">
-            <strong>Signature:</strong> string<br />
+          <div class="tip" id="9">
+            <strong>Signature:</strong> relPath:string -&gt; item:ItemGroupItem -&gt; ItemGroupItem<br />
                       </div>
         </td>
         <td class="xmldoc">
-            <a href="https://github.com/matthid//blob/master/src/source/Yaaf.AdvancedBuilding/Model.fs#L7-7" class="github-link">
+            <a href="https://github.com/matthid//blob/master/src/source/Yaaf.AdvancedBuilding/ProjectGenerator.fs#L82-82" class="github-link">
               <img src="../content/img/github.png" class="normal" />
               <img src="../content/img/github-blue.png" class="hover" />
             </a>
@@ -71,15 +74,15 @@
       <tr>
         <td class="member-name">
 
-          <code onmouseout="hideTip(event, '81', 81)" onmouseover="showTip(event, '81', 81)">
-            Include
+          <code onmouseout="hideTip(event, '10', 10)" onmouseover="showTip(event, '10', 10)">
+            getGlobalSetting session
           </code>
-          <div class="tip" id="81">
-            <strong>Signature:</strong> string<br />
+          <div class="tip" id="10">
+            <strong>Signature:</strong> session:IFsiSession -&gt; GlobalProjectInfo<br />
                       </div>
         </td>
         <td class="xmldoc">
-            <a href="https://github.com/matthid//blob/master/src/source/Yaaf.AdvancedBuilding/Model.fs#L6-6" class="github-link">
+            <a href="https://github.com/matthid//blob/master/src/source/Yaaf.AdvancedBuilding/ProjectGenerator.fs#L76-76" class="github-link">
               <img src="../content/img/github.png" class="normal" />
               <img src="../content/img/github-blue.png" class="hover" />
             </a>
@@ -89,15 +92,69 @@
       <tr>
         <td class="member-name">
 
-          <code onmouseout="hideTip(event, '82', 82)" onmouseover="showTip(event, '82', 82)">
-            IsPrivate
+          <code onmouseout="hideTip(event, '11', 11)" onmouseover="showTip(event, '11', 11)">
+            getProjectFileName (...)
           </code>
-          <div class="tip" id="82">
-            <strong>Signature:</strong> bool<br />
+          <div class="tip" id="11">
+            <strong>Signature:</strong> settingsFile:string -&gt; buildFilename:string -&gt; string<br />
                       </div>
         </td>
         <td class="xmldoc">
-            <a href="https://github.com/matthid//blob/master/src/source/Yaaf.AdvancedBuilding/Model.fs#L8-8" class="github-link">
+            <a href="https://github.com/matthid//blob/master/src/source/Yaaf.AdvancedBuilding/ProjectGenerator.fs#L44-44" class="github-link">
+              <img src="../content/img/github.png" class="normal" />
+              <img src="../content/img/github-blue.png" class="hover" />
+            </a>
+          
+        </td>
+      </tr>
+      <tr>
+        <td class="member-name">
+
+          <code onmouseout="hideTip(event, '12', 12)" onmouseover="showTip(event, '12', 12)">
+            ifNone item opt
+          </code>
+          <div class="tip" id="12">
+            <strong>Signature:</strong> item:&#39;?54201 -&gt; opt:&#39;?54201 option -&gt; &#39;?54201<br />
+                          <strong>Type parameters:</strong> '?54201          </div>
+        </td>
+        <td class="xmldoc">
+            <a href="https://github.com/matthid//blob/master/src/source/Yaaf.AdvancedBuilding/ProjectGenerator.fs#L40-40" class="github-link">
+              <img src="../content/img/github.png" class="normal" />
+              <img src="../content/img/github-blue.png" class="hover" />
+            </a>
+          
+        </td>
+      </tr>
+      <tr>
+        <td class="member-name">
+
+          <code onmouseout="hideTip(event, '13', 13)" onmouseover="showTip(event, '13', 13)">
+            projectFileFromExpression (...)
+          </code>
+          <div class="tip" id="13">
+            <strong>Signature:</strong> session:IFsiSession -&gt; contents:string -&gt; ProjectGeneratorConfig<br />
+                      </div>
+        </td>
+        <td class="xmldoc">
+            <a href="https://github.com/matthid//blob/master/src/source/Yaaf.AdvancedBuilding/ProjectGenerator.fs#L79-79" class="github-link">
+              <img src="../content/img/github.png" class="normal" />
+              <img src="../content/img/github-blue.png" class="hover" />
+            </a>
+          
+        </td>
+      </tr>
+      <tr>
+        <td class="member-name">
+
+          <code onmouseout="hideTip(event, '14', 14)" onmouseover="showTip(event, '14', 14)">
+            setGlobalSetting session g
+          </code>
+          <div class="tip" id="14">
+            <strong>Signature:</strong> session:IFsiSession -&gt; g:GlobalProjectInfo -&gt; unit<br />
+                      </div>
+        </td>
+        <td class="xmldoc">
+            <a href="https://github.com/matthid//blob/master/src/source/Yaaf.AdvancedBuilding/ProjectGenerator.fs#L73-73" class="github-link">
               <img src="../content/img/github.png" class="normal" />
               <img src="../content/img/github-blue.png" class="hover" />
             </a>

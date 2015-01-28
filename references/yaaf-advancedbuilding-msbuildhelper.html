@@ -2,7 +2,7 @@
 <html lang="en">
   <head>
     <meta charset="utf-8">
-    <title>ReferenceItem - Yaaf.AdvancedBuilding</title>
+    <title>MsBuildHelper - Yaaf.AdvancedBuilding</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="">
     <meta name="author" content="Matthias Dittrich">
@@ -38,30 +38,33 @@
 
 
 
-<h1>ReferenceItem </h1>
+<h1>MsBuildHelper</h1>
 <div class="xmldoc">
     Defined in Yaaf.AdvancedBuilding.dll.
 </div>
 <div class="xmldoc">
 </div>
-  <h3>Record Fields</h3>
+
+<!-- Render nested types and modules, if there are any -->
+
+  <h3>Functions and values</h3>
   <table class="table table-bordered member-list">
     <thead>
-      <tr><td>Record Field</td><td>Description</td></tr>
+      <tr><td>Function or value</td><td>Description</td></tr>
     </thead>
     <tbody>
       <tr>
         <td class="member-name">
 
-          <code onmouseout="hideTip(event, '80', 80)" onmouseover="showTip(event, '80', 80)">
-            HintPath
+          <code onmouseout="hideTip(event, '1', 1)" onmouseover="showTip(event, '1', 1)">
+            filterItems items
           </code>
-          <div class="tip" id="80">
-            <strong>Signature:</strong> string<br />
+          <div class="tip" id="1">
+            <strong>Signature:</strong> items:ItemGroupItem list -&gt; ItemGroupItem list<br />
                       </div>
         </td>
         <td class="xmldoc">
-            <a href="https://github.com/matthid//blob/master/src/source/Yaaf.AdvancedBuilding/Model.fs#L7-7" class="github-link">
+            <a href="https://github.com/matthid//blob/master/src/source/Yaaf.AdvancedBuilding/ProjectGenerator.fs#L226-226" class="github-link">
               <img src="../content/img/github.png" class="normal" />
               <img src="../content/img/github-blue.png" class="hover" />
             </a>
@@ -71,15 +74,15 @@
       <tr>
         <td class="member-name">
 
-          <code onmouseout="hideTip(event, '81', 81)" onmouseover="showTip(event, '81', 81)">
-            Include
+          <code onmouseout="hideTip(event, '2', 2)" onmouseover="showTip(event, '2', 2)">
+            fixIncludes relPath msBuildInfo
           </code>
-          <div class="tip" id="81">
-            <strong>Signature:</strong> string<br />
+          <div class="tip" id="2">
+            <strong>Signature:</strong> relPath:string -&gt; msBuildInfo:MsBuildInfo -&gt; MsBuildInfo<br />
                       </div>
         </td>
         <td class="xmldoc">
-            <a href="https://github.com/matthid//blob/master/src/source/Yaaf.AdvancedBuilding/Model.fs#L6-6" class="github-link">
+            <a href="https://github.com/matthid//blob/master/src/source/Yaaf.AdvancedBuilding/ProjectGenerator.fs#L252-252" class="github-link">
               <img src="../content/img/github.png" class="normal" />
               <img src="../content/img/github-blue.png" class="hover" />
             </a>
@@ -89,15 +92,105 @@
       <tr>
         <td class="member-name">
 
-          <code onmouseout="hideTip(event, '82', 82)" onmouseover="showTip(event, '82', 82)">
-            IsPrivate
+          <code onmouseout="hideTip(event, '3', 3)" onmouseover="showTip(event, '3', 3)">
+            readContentItems file
           </code>
-          <div class="tip" id="82">
-            <strong>Signature:</strong> bool<br />
+          <div class="tip" id="3">
+            <strong>Signature:</strong> file:string -&gt; ItemGroupItem list<br />
                       </div>
         </td>
         <td class="xmldoc">
-            <a href="https://github.com/matthid//blob/master/src/source/Yaaf.AdvancedBuilding/Model.fs#L8-8" class="github-link">
+            <a href="https://github.com/matthid//blob/master/src/source/Yaaf.AdvancedBuilding/ProjectGenerator.fs#L230-230" class="github-link">
+              <img src="../content/img/github.png" class="normal" />
+              <img src="../content/img/github-blue.png" class="hover" />
+            </a>
+          
+        </td>
+      </tr>
+      <tr>
+        <td class="member-name">
+
+          <code onmouseout="hideTip(event, '4', 4)" onmouseover="showTip(event, '4', 4)">
+            readContentItemsFromDocument doc
+          </code>
+          <div class="tip" id="4">
+            <strong>Signature:</strong> doc:XDocument -&gt; ItemGroupItem list<br />
+                      </div>
+        </td>
+        <td class="xmldoc">
+            <a href="https://github.com/matthid//blob/master/src/source/Yaaf.AdvancedBuilding/ProjectGenerator.fs#L227-227" class="github-link">
+              <img src="../content/img/github.png" class="normal" />
+              <img src="../content/img/github-blue.png" class="hover" />
+            </a>
+          
+        </td>
+      </tr>
+      <tr>
+        <td class="member-name">
+
+          <code onmouseout="hideTip(event, '5', 5)" onmouseover="showTip(event, '5', 5)">
+            readItemGroupItemsFromDocument doc
+          </code>
+          <div class="tip" id="5">
+            <strong>Signature:</strong> doc:XDocument -&gt; ItemGroupItem list<br />
+                      </div>
+        </td>
+        <td class="xmldoc">
+            <a href="https://github.com/matthid//blob/master/src/source/Yaaf.AdvancedBuilding/ProjectGenerator.fs#L176-176" class="github-link">
+              <img src="../content/img/github.png" class="normal" />
+              <img src="../content/img/github-blue.png" class="hover" />
+            </a>
+          
+        </td>
+      </tr>
+      <tr>
+        <td class="member-name">
+
+          <code onmouseout="hideTip(event, '6', 6)" onmouseover="showTip(event, '6', 6)">
+            readMsBuildInfo file
+          </code>
+          <div class="tip" id="6">
+            <strong>Signature:</strong> file:string -&gt; MsBuildInfo<br />
+                      </div>
+        </td>
+        <td class="xmldoc">
+            <a href="https://github.com/matthid//blob/master/src/source/Yaaf.AdvancedBuilding/ProjectGenerator.fs#L250-250" class="github-link">
+              <img src="../content/img/github.png" class="normal" />
+              <img src="../content/img/github-blue.png" class="hover" />
+            </a>
+          
+        </td>
+      </tr>
+      <tr>
+        <td class="member-name">
+
+          <code onmouseout="hideTip(event, '7', 7)" onmouseover="showTip(event, '7', 7)">
+            readMsBuildInfoFromDocument doc
+          </code>
+          <div class="tip" id="7">
+            <strong>Signature:</strong> doc:XDocument -&gt; MsBuildInfo<br />
+                      </div>
+        </td>
+        <td class="xmldoc">
+            <a href="https://github.com/matthid//blob/master/src/source/Yaaf.AdvancedBuilding/ProjectGenerator.fs#L240-240" class="github-link">
+              <img src="../content/img/github.png" class="normal" />
+              <img src="../content/img/github-blue.png" class="hover" />
+            </a>
+          
+        </td>
+      </tr>
+      <tr>
+        <td class="member-name">
+
+          <code onmouseout="hideTip(event, '8', 8)" onmouseover="showTip(event, '8', 8)">
+            tryFindProperty name doc
+          </code>
+          <div class="tip" id="8">
+            <strong>Signature:</strong> name:string -&gt; doc:XDocument -&gt; string option<br />
+                      </div>
+        </td>
+        <td class="xmldoc">
+            <a href="https://github.com/matthid//blob/master/src/source/Yaaf.AdvancedBuilding/ProjectGenerator.fs#L232-232" class="github-link">
               <img src="../content/img/github.png" class="normal" />
               <img src="../content/img/github-blue.png" class="hover" />
             </a>

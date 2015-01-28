@@ -35,6 +35,26 @@
       <div class="row">
         <div class="span9" id="main">
           
+<h3><a name="0-2-0" class="anchor" href="#0-2-0">0.2.0</a></h3>
+
+<ul>
+<li>BREAKING: Redesigned how <code>buildConfig.fsx</code> has to be written!
+Now you need to implement a BuildConfiguration record type, this helps (in the future)
+that builds don't break when new features are introduced.
+This also allows us to set a lot of defaults for you.
+<ul>
+<li>you need to set <code>buildConfig</code> to a BuildConfiguration instance (all other variables are now ignored).</li>
+<li>You can see the docs or look into <code>buildConfigDef.fsx</code> for a definition.</li>
+<li>You need to update your <code>build.fsx</code> and <code>generateDocs.fsx</code> and add
+<code>#load "packages/Yaaf.AdvancedBuilding/content/buildConfigDef.fsx"</code>
+on the top (or use the latest from the package (see Quick-start tutorial)).</li>
+</ul></li>
+<li>Implemented initial project and solution generation.
+<ul>
+<li>Can be enabled with <code>EnableProjectFileCreation</code></li>
+</ul></li>
+</ul>
+
 <h3><a name="0-1-4" class="anchor" href="#0-1-4">0.1.4</a></h3>
 
 <ul>
@@ -86,8 +106,8 @@
             <li class="divider"></li>
             <li><a href="https://www.nuget.org/packages/Yaaf.AdvancedBuilding/">Get Yaaf.AdvancedBuilding package via NuGet</a></li>
             <li><a href="https://github.com/matthid/Yaaf.AdvancedBuilding">Source Code</a></li>
-            <li><a href="https://github.com/matthid/Yaaf.AdvancedBuilding/issues">Open bugs and feature requests</a></li>
-            <li><a href="https://github.com/matthid/Yaaf.AdvancedBuilding/issues/new">Report Issue or Request Feature</a></li>
+            <li><a href="https://github.com/matthid//issues">Open bugs and feature requests</a></li>
+            <li><a href="https://github.com/matthid//issues/new">Report Issue or Request Feature</a></li>
             <li><a href="https://github.com/matthid/Yaaf.AdvancedBuilding/blob/develop/LICENSE.md">License (Apache 2)</a></li>
             <li><a href="https://matthid.github.io/Yaaf.AdvancedBuilding/Contributing.html">Contributing</a></li>
             

@@ -43,12 +43,22 @@
 <p>Open the <code>.sln</code> file or run <code>./build</code>.</p>
 
 <blockquote>
-  <p>NOTE: It is possible that you can only build the <code>.sln</code> file AFTER doing an initial <code>./build</code> (because nuget dependencies have to be resolved).</p>
+  <p>NOTE: You can only build the <code>.sln</code> file AFTER doing an initial <code>./build</code> (because nuget dependencies have to be resolved).</p>
 </blockquote>
+
+<p>If you want to edit the build for a specific build you should look into the <code>./src/platform</code> folders for a solution file.</p>
+
+<blockquote>
+  <p>NOTE: The platform solutions are generated with the first build!</p>
+</blockquote>
+
+<p>DON'T edit those platform specific solutions/project files as they will be overwritten by the next build!
+Just edit the templates in <code>./src/source/Yaaf.AdvancedBuilding/templates</code> NOT the ones in <code>./src/templates</code> (will be overwritten)
+or the "normal" project and solution files or the project generation files (*._proj.fsx files).</p>
 
 <h2><a name="General-overview" class="anchor" href="#General-overview">General overview:</a></h2>
 
-<p>This project aims to be a very flexible, extendable and good performing IRC implementation in C#.</p>
+<p>This project tries to help you with your build setup.</p>
 
 <h3><a name="Issues-Features-TODOs" class="anchor" href="#Issues-Features-TODOs">Issues / Features / TODOs</a></h3>
 
@@ -86,8 +96,8 @@
 <ul>
 <li><p>/src/source/</p>
 <p>The root for all projects (not including unit test projects).</p></li>
-<li><p>/src/samples/</p>
-<p>The root for all sample projects.</p></li>
+<li><p>/src/templates/</p>
+<p>The root for project templates (DONT TOUCH: will be overwritten automatically with <code>/src/source/Yaaf.AdvancedBuilding/templates</code>)</p></li>
 <li><p>/src/test/</p>
 <p>The root for all unit test projects.</p></li>
 </ul></li>
@@ -97,8 +107,6 @@
 <p>This folder is ignored by git.</p></li>
 <li><p>/build.cmd, /build.sh, /build.fsx</p>
 <p>Files to directly start a build including unit tests via console (windows &amp; linux).</p></li>
-<li><p>/packages.config</p>
-<p>Nuget packages required by the build process.</p></li>
 </ul>
 
 <p>Each project should have has a corresponding project with the name <code>Test.${ProjectName}</code> in the test folder.
@@ -114,7 +122,8 @@ This test project provides unit tests for the project <code>${ProjectName}</code
 <li><code>Clean</code>: cleans the directories (previous builds)</li>
 <li><code>RestorePackages</code>: restores nuget packages</li>
 <li><code>SetVersions</code>: sets the current version</li>
-<li><code>Build_</code>: build/test for net40</li>
+<li><code>Build_net40</code>: build/test for net40</li>
+<li><code>Build_net45</code>: build/test for net45</li>
 <li><code>CopyToRelease</code>: copy the generated .dlls to release/lib</li>
 <li><code>LocalDoc</code>: create the local documentation you can view that locally</li>
 <li><code>All</code>: this does nothing itself but is used as a marker (executed by default when no parameter is given to ./build)</li>
@@ -125,12 +134,12 @@ This test project provides unit tests for the project <code>${ProjectName}</code
 <li><code>Release</code>: a marker like "All"</li>
 </ul>
 
-<p>You can execute all steps until a given point with <code>./build #Step#</code> (replace #Step# with <code>Build_</code> to execute <code>Clean</code>, <code>RestorePackages</code>, <code>SetVersions</code>, <code>Build_</code>)</p>
+<p>You can execute all steps until a given point with <code>./build #Step#</code> (replace #Step# with <code>Build_net40</code> to execute <code>Clean</code>, <code>RestorePackages</code>, <code>SetVersions</code>, <code>Build_40</code>)</p>
 
 <p>You can execute a single step with <code>build #Step#_single</code>: For example to build the nuget packages you can just invoke <code>./build NuGet_single</code></p>
 
 <blockquote>
-  <p>Of course you need to have the appropriate dlls in place (otherwise the Nuget package creation will fail); ie have build IRC.Net before.</p>
+  <p>Of course you need to have the appropriate dlls in place (otherwise the Nuget package creation will fail); ie have build the project before.</p>
 </blockquote>
 
 <p>There is another (hidden) step <code>CleanAll</code> which will clean everything up (even build dependencies and the downloaded Nuget.exe), 
@@ -162,8 +171,8 @@ solution files (<code>src/${ProjectName}.*.sln</code>) with Visual Studio / Mono
             <li class="divider"></li>
             <li><a href="https://www.nuget.org/packages/Yaaf.AdvancedBuilding/">Get Yaaf.AdvancedBuilding package via NuGet</a></li>
             <li><a href="https://github.com/matthid/Yaaf.AdvancedBuilding">Source Code</a></li>
-            <li><a href="https://github.com/matthid/Yaaf.AdvancedBuilding/issues">Open bugs and feature requests</a></li>
-            <li><a href="https://github.com/matthid/Yaaf.AdvancedBuilding/issues/new">Report Issue or Request Feature</a></li>
+            <li><a href="https://github.com/matthid//issues">Open bugs and feature requests</a></li>
+            <li><a href="https://github.com/matthid//issues/new">Report Issue or Request Feature</a></li>
             <li><a href="https://github.com/matthid/Yaaf.AdvancedBuilding/blob/develop/LICENSE.md">License (Apache 2)</a></li>
             <li><a href="https://matthid.github.io/Yaaf.AdvancedBuilding/Contributing.html">Contributing</a></li>
             

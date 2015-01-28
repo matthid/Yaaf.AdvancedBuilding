@@ -36,7 +36,7 @@
       <div class="row">
         <div class="span9" id="main">
           
-<!-- GENERATED FROM COMMIT: b7a984910f2a807945b69dbf3d631e837412a162 -->
+<!-- GENERATED FROM COMMIT: 5338a046f0d06d744bd1dc7b5d0d8e5e0ad3594e -->
 <h1><a name="Yaaf-AdvancedBuilding" class="anchor" href="#Yaaf-AdvancedBuilding">Yaaf.AdvancedBuilding</a></h1>
 
 <h2><a name="Documentation" class="anchor" href="#Documentation"><a href="https://matthid.github.io/Yaaf.AdvancedBuilding/">Documentation</a></a></h2>
@@ -74,17 +74,19 @@ And most of the time after adding a feature I wanted that feature on other proje
 <p>Because of this I introduced Yaaf.AdvancedBuilding a nuget package containing a general FAKE build script, which can be configured.
 Whenever I introduce a new feature into the build script I only need to update Yaaf.AdvancedBuilding to be able to use it.</p>
 
+<p>Another pain point is building for multiple targets... fsproj files have only limited (read "no") support for
+msbuild features like <code>&lt;Compile Include="@(CompileList)" /&gt;</code> (to extract common files/references), therefore you can only really duplicate the
+fsproj files and keep maintaining a bunch of them. This project tries to fix this by generating target specific msbuild files for you.</p>
+
 <p>Features:</p>
 
 <ul>
 <li>Your build can be updated.</li>
-<li>Extendible with own FAKE Targets.</li>
+<li>Extendible with your own FAKE targets / dependencies.</li>
 <li>Additional support for building projects for multiple targets (net40, net45 and portable profiles)
-(This is not completed but will come with an update;
-I did not settle for a design jet... look into ./doc/IDEA.txt or the source code if interested)
 <ul>
 <li>Feature to specify fsproj and csproj templates and generate profile specific fsproj and csproj templates out of these</li>
-<li>You will have FAKE targets for this</li>
+<li>You will have FAKE targets for the generated files</li>
 </ul></li>
 </ul>
 
@@ -218,8 +220,8 @@ This step is documented in an extra documentation page: <a href="https://matthid
             <li class="divider"></li>
             <li><a href="https://www.nuget.org/packages/Yaaf.AdvancedBuilding/">Get Yaaf.AdvancedBuilding package via NuGet</a></li>
             <li><a href="https://github.com/matthid/Yaaf.AdvancedBuilding">Source Code</a></li>
-            <li><a href="https://github.com/matthid/Yaaf.AdvancedBuilding/issues">Open bugs and feature requests</a></li>
-            <li><a href="https://github.com/matthid/Yaaf.AdvancedBuilding/issues/new">Report Issue or Request Feature</a></li>
+            <li><a href="https://github.com/matthid//issues">Open bugs and feature requests</a></li>
+            <li><a href="https://github.com/matthid//issues/new">Report Issue or Request Feature</a></li>
             <li><a href="https://github.com/matthid/Yaaf.AdvancedBuilding/blob/develop/LICENSE.md">License (Apache 2)</a></li>
             <li><a href="https://matthid.github.io/Yaaf.AdvancedBuilding/Contributing.html">Contributing</a></li>
             

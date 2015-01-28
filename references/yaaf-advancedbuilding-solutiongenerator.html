@@ -2,7 +2,7 @@
 <html lang="en">
   <head>
     <meta charset="utf-8">
-    <title>ReferenceItem - Yaaf.AdvancedBuilding</title>
+    <title>SolutionGenerator - Yaaf.AdvancedBuilding</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="">
     <meta name="author" content="Matthias Dittrich">
@@ -38,30 +38,33 @@
 
 
 
-<h1>ReferenceItem </h1>
+<h1>SolutionGenerator</h1>
 <div class="xmldoc">
     Defined in Yaaf.AdvancedBuilding.dll.
 </div>
 <div class="xmldoc">
 </div>
-  <h3>Record Fields</h3>
+
+<!-- Render nested types and modules, if there are any -->
+
+  <h3>Functions and values</h3>
   <table class="table table-bordered member-list">
     <thead>
-      <tr><td>Record Field</td><td>Description</td></tr>
+      <tr><td>Function or value</td><td>Description</td></tr>
     </thead>
     <tbody>
       <tr>
         <td class="member-name">
 
-          <code onmouseout="hideTip(event, '80', 80)" onmouseover="showTip(event, '80', 80)">
-            HintPath
+          <code onmouseout="hideTip(event, '19', 19)" onmouseover="showTip(event, '19', 19)">
+            generateSolution (...)
           </code>
-          <div class="tip" id="80">
-            <strong>Signature:</strong> string<br />
+          <div class="tip" id="19">
+            <strong>Signature:</strong> solutionProjects:SolutionProjectHelper list -&gt; otherItems:SolutionItemHelper list -&gt; SolutionFile<br />
                       </div>
         </td>
         <td class="xmldoc">
-            <a href="https://github.com/matthid//blob/master/src/source/Yaaf.AdvancedBuilding/Model.fs#L7-7" class="github-link">
+            <a href="https://github.com/matthid//blob/master/src/source/Yaaf.AdvancedBuilding/SolutionGenerator.fs#L40-40" class="github-link">
               <img src="../content/img/github.png" class="normal" />
               <img src="../content/img/github-blue.png" class="hover" />
             </a>
@@ -71,15 +74,15 @@
       <tr>
         <td class="member-name">
 
-          <code onmouseout="hideTip(event, '81', 81)" onmouseover="showTip(event, '81', 81)">
-            Include
+          <code onmouseout="hideTip(event, '20', 20)" onmouseover="showTip(event, '20', 20)">
+            getSolutionProject (...)
           </code>
-          <div class="tip" id="81">
-            <strong>Signature:</strong> string<br />
+          <div class="tip" id="20">
+            <strong>Signature:</strong> solutionDirectory:string -&gt; projectFile:string -&gt; SolutionProject<br />
                       </div>
         </td>
         <td class="xmldoc">
-            <a href="https://github.com/matthid//blob/master/src/source/Yaaf.AdvancedBuilding/Model.fs#L6-6" class="github-link">
+            <a href="https://github.com/matthid//blob/master/src/source/Yaaf.AdvancedBuilding/SolutionGenerator.fs#L23-23" class="github-link">
               <img src="../content/img/github.png" class="normal" />
               <img src="../content/img/github-blue.png" class="hover" />
             </a>
@@ -89,15 +92,15 @@
       <tr>
         <td class="member-name">
 
-          <code onmouseout="hideTip(event, '82', 82)" onmouseover="showTip(event, '82', 82)">
-            IsPrivate
+          <code onmouseout="hideTip(event, '21', 21)" onmouseover="showTip(event, '21', 21)">
+            makeRelative (...)
           </code>
-          <div class="tip" id="82">
-            <strong>Signature:</strong> bool<br />
+          <div class="tip" id="21">
+            <strong>Signature:</strong> solutionDirectory:string -&gt; projectFile:string -&gt; string<br />
                       </div>
         </td>
         <td class="xmldoc">
-            <a href="https://github.com/matthid//blob/master/src/source/Yaaf.AdvancedBuilding/Model.fs#L8-8" class="github-link">
+            <a href="https://github.com/matthid//blob/master/src/source/Yaaf.AdvancedBuilding/SolutionGenerator.fs#L16-16" class="github-link">
               <img src="../content/img/github.png" class="normal" />
               <img src="../content/img/github-blue.png" class="hover" />
             </a>
