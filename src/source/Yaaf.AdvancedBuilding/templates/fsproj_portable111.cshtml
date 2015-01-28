@@ -1,0 +1,120 @@
+﻿@inherits RazorEngine.Templating.TemplateBase<Yaaf.AdvancedBuilding.Razor_TemplateModel>
+<?xml version="1.0" encoding="utf-8"?>
+@{ var nk = "nk"; }<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\..\</SolutionDir>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>@Model.ProjectGuid</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <RootNamespace>@Model.ProjectName</RootNamespace>
+    <AssemblyName>@Model.ProjectName</AssemblyName>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <TargetFrameworkProfile>Profile111</TargetFrameworkProfile>
+    <Name>@Model.ProjectName</Name>
+    <TargetProfile>netcore</TargetProfile>
+    <TargetFSharpCoreVersion>3.3.1.0</TargetFSharpCoreVersion>
+    <MinimumVisualStudioVersion Condition="'$(MinimumVisualStudioVersion)' == ''">12</MinimumVisualStudioVersion>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin</OutputPath>
+    <DefineConstants>@(string.Join(";", Model.DefineConstants));NET45;PCL;PCL_111;DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin</OutputPath>
+    <DefineConstants>@(string.Join(";", Model.DefineConstants));NET45;PCL;PCL_111;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    @foreach (var includeItem in Model.Includes)
+    {
+      if (includeItem.IsCompile)
+      {
+        <Compile Include="@(includeItem.Include)" />
+      }
+      else if (includeItem.IsCompileLink)
+      {
+        <Compile Include="@(includeItem.Include)" >
+          <Li@(nk)>@(includeItem.LinkName)</Li@(nk)>
+        </Compile>
+      }
+      else if (includeItem.IsContent)
+      {
+        <Content Include="@(includeItem.Include)" />
+      }
+      else if (includeItem.IsContentLink)
+      {
+        <Content Include="@includeItem.Include" >
+          <Li@(nk)>@includeItem.LinkName</Li@(nk)>
+        </Content>
+      }
+      else if (includeItem.IsNoneItem)
+      {
+        <None Include="@includeItem.Include" />
+      }
+      else if (includeItem.IsNoneItemLink)
+      {
+        <None Include="@includeItem.Include">
+          <Li@(nk)>@includeItem.LinkName</Li@(nk)>
+        </None>
+      }
+      else if (includeItem.IsReference)
+      {
+        if (String.IsNullOrEmpty(includeItem.ReferenceItem.HintPath) && !includeItem.ReferenceItem.IsPrivate) {
+          <Reference Include="@includeItem.ReferenceItem.Include" />
+        } else if (String.IsNullOrEmpty(includeItem.ReferenceItem.HintPath)) {
+          <Reference Include="@includeItem.ReferenceItem.Include">
+            <Private>@(includeItem.ReferenceItem.IsPrivate ? "True" : "False")</Private>
+          </Reference>
+        } else {
+          <Reference Include="@includeItem.ReferenceItem.Include">
+            <HintPath>@includeItem.ReferenceItem.HintPath</HintPath>
+            <Private>@(includeItem.ReferenceItem.IsPrivate ? "True" : "False")</Private>
+          </Reference>
+        }
+      }
+      else if (includeItem.IsProjectReference)
+      {
+        <ProjectReference Include="@includeItem.ProjectReferenceItem.Include">
+          <Name>@includeItem.ProjectReferenceItem.Name</Name>
+          <Project>@includeItem.ProjectReferenceItem.ProjectGuid.ToString("B")</Project>
+          <Private>@(includeItem.ProjectReferenceItem.IsPrivate ? "True" : "False")</Private>
+        </ProjectReference>
+      }
+      else
+      {
+        throw new InvalidOperationException("the given item is unknown: " + includeItem.ToString());
+      }
+    }
+  </ItemGroup>
+  <ItemGroup>
+    <BootstrapperPackage Include="Microsoft.Net.Client.3.5">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1 Client Profile</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Framework.3.5.SP1">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
+  </ItemGroup>
+  <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\FSharp\Microsoft.Portable.FSharp.Targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it.
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

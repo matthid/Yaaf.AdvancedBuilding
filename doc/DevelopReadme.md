@@ -1,14 +1,21 @@
 ﻿# Yaaf.AdvancedBuilding implementation documentation 
 
 ## Building
-
 Open the ``.sln`` file or run ``./build``.
 
-> NOTE: It is possible that you can only build the ``.sln`` file AFTER doing an initial ``./build`` (because nuget dependencies have to be resolved).
+> NOTE: You can only build the `.sln` file AFTER doing an initial `./build` (because nuget dependencies have to be resolved).
+
+If you want to edit the build for a specific build you should look into the `./src/platform` folders for a solution file.
+
+> NOTE: The platform solutions are generated with the first build!
+
+DON'T edit those platform specific solutions/project files as they will be overwritten by the next build!
+Just edit the templates in `./src/source/Yaaf.AdvancedBuilding/templates` NOT the ones in `./src/templates` (will be overwritten)
+or the "normal" project and solution files or the project generation files (*._proj.fsx files).
 
 ## General overview:
 
-This project aims to be a very flexible, extendable and good performing IRC implementation in C#.
+This project tries to help you with your build setup.
 
 ### Issues / Features / TODOs
 
@@ -54,9 +61,9 @@ http://semver.org/
 
 		The root for all projects (not including unit test projects).
 
-	- /src/samples/
+	- /src/templates/
 
-		The root for all sample projects.
+		The root for project templates (DONT TOUCH: will be overwritten automatically with `/src/source/Yaaf.AdvancedBuilding/templates`)
     
 	- /src/test/
 
@@ -74,11 +81,6 @@ http://semver.org/
 
 	Files to directly start a build including unit tests via console (windows & linux).
 
--  /packages.config
-
-	Nuget packages required by the build process.
-
-
 Each project should have has a corresponding project with the name `Test.${ProjectName}` in the test folder.
 This test project provides unit tests for the project `${ProjectName}`.
 
@@ -91,7 +93,8 @@ First `build.sh` and `build.cmd` restore build dependencies and `nuget.exe`, the
  - `Clean`: cleans the directories (previous builds)
  - `RestorePackages`: restores nuget packages
  - `SetVersions`: sets the current version
- - `Build_`: build/test for net40
+ - `Build_net40`: build/test for net40
+ - `Build_net45`: build/test for net45
  - `CopyToRelease`: copy the generated .dlls to release/lib
  - `LocalDoc`: create the local documentation you can view that locally
  - `All`: this does nothing itself but is used as a marker (executed by default when no parameter is given to ./build)
@@ -101,11 +104,11 @@ First `build.sh` and `build.cmd` restore build dependencies and `nuget.exe`, the
  - `ReleaseGithubDoc`: pushes the documentation to github
  - `Release`: a marker like "All"
 
-You can execute all steps until a given point with `./build #Step#` (replace #Step# with `Build_` to execute `Clean`, `RestorePackages`, `SetVersions`, `Build_`)
+You can execute all steps until a given point with `./build #Step#` (replace #Step# with `Build_net40` to execute `Clean`, `RestorePackages`, `SetVersions`, `Build_40`)
 
 You can execute a single step with `build #Step#_single`: For example to build the nuget packages you can just invoke `./build NuGet_single` 
 
-> Of course you need to have the appropriate dlls in place (otherwise the Nuget package creation will fail); ie have build IRC.Net before.
+> Of course you need to have the appropriate dlls in place (otherwise the Nuget package creation will fail); ie have build the project before.
 
 
 There is another (hidden) step `CleanAll` which will clean everything up (even build dependencies and the downloaded Nuget.exe), 

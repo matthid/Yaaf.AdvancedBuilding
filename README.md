@@ -35,15 +35,17 @@ And most of the time after adding a feature I wanted that feature on other proje
 Because of this I introduced Yaaf.AdvancedBuilding a nuget package containing a general FAKE build script, which can be configured.
 Whenever I introduce a new feature into the build script I only need to update Yaaf.AdvancedBuilding to be able to use it.
 
+Another pain point is building for multiple targets... fsproj files have only limited (read "no") support for
+msbuild features like `<Compile Include="@(CompileList)" />` (to extract common files/references), therefore you can only really duplicate the
+fsproj files and keep maintaining a bunch of them. This project tries to fix this by generating target specific msbuild files for you.
+
 Features:
 
 - Your build can be updated.
-- Extendible with own FAKE Targets.
+- Extendible with your own FAKE targets / dependencies.
 - Additional support for building projects for multiple targets (net40, net45 and portable profiles)
-  (This is not completed but will come with an update; 
-  I did not settle for a design jet... look into ./doc/IDEA.txt or the source code if interested)
    * Feature to specify fsproj and csproj templates and generate profile specific fsproj and csproj templates out of these
-   * You will have FAKE targets for this
+   * You will have FAKE targets for the generated files
 
 ## Quick intro
 

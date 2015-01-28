@@ -18,11 +18,15 @@
     @dependencies@
   </metadata>
   <files>
-    <file src="release/lib/Yaaf.AdvancedBuilding.dll" target="lib\net40\Yaaf.AdvancedBuilding.dll" />
-    <file src="release/lib/Yaaf.AdvancedBuilding.xml" target="lib\net40\Yaaf.AdvancedBuilding.xml" />
+    <file src="release/lib/net40/Yaaf.AdvancedBuilding.dll" target="tools\Yaaf.AdvancedBuilding.dll" />
+    <file src="release/lib/net40/Yaaf.AdvancedBuilding.xml" target="tools\Yaaf.AdvancedBuilding.xml" />
+    <file src="packages/Microsoft.AspNet.Razor/lib/net40/System.Web.Razor.dll" target="tools\System.Web.Razor.dll" />
+    <file src="packages/RazorEngine/lib/net40/RazorEngine.dll" target="tools\RazorEngine.dll" />
+    <file src="packages/Yaaf.FSharp.Scripting/lib/net40/Yaaf.FSharp.Scripting.dll" target="tools\Yaaf.FSharp.Scripting.dll" />
     <file src="packages/Yaaf.AdvancedBuilding/content/build.cmd" target="content/build.cmd" />
     <file src="packages/Yaaf.AdvancedBuilding/content/build.sh" target="content/build.sh" />
     <file src="packages/Yaaf.AdvancedBuilding/content/buildInclude.fsx" target="content/buildInclude.fsx" />
+    <file src="packages/Yaaf.AdvancedBuilding/content/buildConfigDef.fsx" target="content/buildConfigDef.fsx" />
     <file src="packages/Yaaf.AdvancedBuilding/content/downloadNugetInclude.fsx" target="content/downloadNugetInclude.fsx" />
     <file src="packages/Yaaf.AdvancedBuilding/content/generateDocsInclude.fsx" target="content/generateDocsInclude.fsx" />
 
@@ -49,12 +53,17 @@
     <file src="downloadNuget.fsx" target="scaffold\build\downloadNuget.fsx" />
     <file src="generateDocs.fsx" target="scaffold\build\generateDocs.fsx" />
 
+    <!-- Build templates -->
+    <file src="src/templates/fsproj_net40.cshtml" target="examples\buildtemplates\fsproj_net40.cshtml" />
+    <file src="src/templates/fsproj_net45.cshtml" target="examples\buildtemplates\fsproj_net45.cshtml" />
+    <file src="src/templates/fsproj_portable111.cshtml" target="examples\buildtemplates\fsproj_portable111.cshtml" />
+
     <!-- Required when using NuGet -->
     <file src="src/nuget.config" target="scaffold\nuget\src\nuget.config" />
     <file src="src/.nuget/NuGet.Config" target="scaffold\nuget\src\.nuget\NuGet.Config" />
     <file src="src/.nuget/NuGet.targets" target="scaffold\nuget\src\.nuget\NuGet.targets" />
 
-    <!-- templates -->
+    <!-- documentation templates -->
     <file src="doc/templates/docpage.cshtml" target="scaffold\templates\doc\templates\docpage.cshtml" />
     <file src="doc/templates/docpage-index.cshtml" target="scaffold\templates\doc\templates\docpage-index.cshtml" />
     <file src="doc/templates/template.cshtml" target="scaffold\templates\doc\templates\template.cshtml" />

@@ -27,14 +27,18 @@ In the remainder of this document we will explain the various configuration opti
 
 *)
 
+#if FAKE
+#else
+// Support when file is opened in Visual Studio
+#load "packages/Yaaf.AdvancedBuilding/content/buildConfigDef.fsx"
+#endif
+
 (**
 ## Required config start
 
 First We need to load some dependencies and open some namespaces.
 *)
-#I @"packages/FAKE/tools/"
-#r @"FakeLib.dll"
-
+open BuildConfigDef
 open System.Collections.Generic
 open System.IO
 
@@ -48,166 +52,118 @@ open AssemblyInfoFile
 
 Then we need to set some general properties of the project.
 *)
-// properties (main)
-let projectName = "Yaaf.AdvancedBuilding"
-let copyrightNotice = "Yaaf.AdvancedBuilding Copyright © Matthias Dittrich 2015"
-let projectSummary = "Yaaf.AdvancedBuilding provides several build scripts for you to use."
-let projectDescription =
-  "Yaaf.AdvancedBuilding is a loose collection of build scripts. " +
-  "The benefit is that you can automatically update your build by updating this package, " +
-  "when you don't need your own crazy build script. But even than it is possible " +
-  "that you could re-use some scripts within this package."
-let authors = ["Matthias Dittrich"]
-let page_author = "Matthias Dittrich"
-let mail = "matthi.d@gmail.com"
-// Read release notes document
-let release = ReleaseNotesHelper.parseReleaseNotes (File.ReadLines "doc/ReleaseNotes.md")
-let version = release.AssemblyVersion
-let version_nuget = release.NugetVersion
-
-
-let github_user = "matthid"
-let github_project = "Yaaf.AdvancedBuilding"
-let nuget_url = "https://www.nuget.org/packages/Yaaf.AdvancedBuilding/"
-
-let tags = "building C# F# dotnet .net"
-
+let buildConfig =
+ // Read release notes document
+ let release = ReleaseNotesHelper.parseReleaseNotes (File.ReadLines "doc/ReleaseNotes.md")
+ { BuildConfiguration.Defaults with
+    ProjectName = "Yaaf.AdvancedBuilding"
+    CopyrightNotice = "Yaaf.AdvancedBuilding Copyright © Matthias Dittrich 2015"
+    ProjectSummary = "Yaaf.AdvancedBuilding provides several build scripts for you to use."
+    ProjectDescription =
+      "Yaaf.AdvancedBuilding is a loose collection of build scripts. " +
+      "The benefit is that you can automatically update your build by updating this package, " +
+      "when you don't need your own crazy build script. But even than it is possible " +
+      "that you could re-use some scripts within this package."
+    ProjectAuthors = ["Matthias Dittrich"]
+    // Defaults to "https://www.nuget.org/packages/%(ProjectName)/"
+    //NugetUrl = "https://www.nuget.org/packages/Yaaf.AdvancedBuilding/"
+    NugetTags = "building C# F# dotnet .net"
+    PageAuthor = "Matthias Dittrich"
+    GithubUser = "matthid"
+    // Defaults to ProjectName if unset
+    // GithubProject = "Yaaf.AdvancedBuilding"
+    Version = release.NugetVersion
 (**
 Setup which nuget packages are created.
 *)
-let nugetPackages =
-  [ "Yaaf.AdvancedBuilding.nuspec", (fun p ->
-      { p with
-          Authors = authors
-          Project = projectName
-          Summary = projectSummary
-          Description = projectDescription
-          Version = version_nuget
-          NoDefaultExcludes = true
-          ReleaseNotes = toLines release.Notes
-          Tags = tags
-          Dependencies =
-            [ "Yaaf.FSharp.Scripting", "1.0.0"
-              "FSharp.Formatting", "2.6.3"
-              "FSharp.Compiler.Service", "0.0.82"
-              "FAKE", "3.14.8" ] }) ]
-
+    NugetPackages =
+      [ "Yaaf.AdvancedBuilding.nuspec", (fun config p ->
+          { p with
+              Version = config.Version
+              NoDefaultExcludes = true
+              ReleaseNotes = toLines release.Notes
+              Dependencies =
+                [ "FSharp.Formatting", "2.6.3"
+                  "FSharp.Compiler.Service", "0.0.82"
+                  "FAKE", "3.14.8" ] })
+        "Yaaf.AdvancedBuilding.Library.nuspec", (fun config p ->
+          { p with
+              Version = config.Version
+              Project = config.ProjectName + ".Library"
+              NoDefaultExcludes = true
+              ReleaseNotes = toLines release.Notes
+              Dependencies =
+                [ "Yaaf.FSharp.Scripting", "1.0.2"
+                  "RazorEngine", "3.5.3" ] }) ]
 (**
-## The `generated_file_list` property
+With `UseNuget` you can specify if Yaaf.AdvancedBuilding should restore nuget packages
+before running the build (if you only use paket, you leave the default setting = false).
+*)
+    UseNuget = true
+(**
+## The `GeneratedFileList` property
 
-The `generated_file_list` list is used to specify which files are copied over to the release directory.
+The `GeneratedFileList` list is used to specify which files are copied over to the release directory.
 This list is also used for documentation generation.
+Defaults to [ x.ProjectName + ".dll"; x.ProjectName + ".xml" ] which is only enough for very simple projects.
 *)
-let generated_file_list =
-  [ "Yaaf.AdvancedBuilding.dll"
-    "Yaaf.AdvancedBuilding.xml" ]
+    GeneratedFileList =
+      [ "Yaaf.AdvancedBuilding.dll"
+        "Yaaf.AdvancedBuilding.xml" ]
 
 (**
-## The `BuildParams` Type
-
-You can define your own type for building, the only limitation is that this type needs the `SimpleBuildName` and `CustomBuildName` properties.
-The `SimpleBuildName` property is used for the generated FAKE target for this build `(sprintf "Build_%s" build.SimpleBuildName)`.
-The `CustomBuildName` is used as a parameter for msbuild/xbuild and can be used within the fsproj and csproj files to define custom builds.
-(IE. custom defines / targets and so on).
-The `CustomBuildName` property is also used as the name of the sub-directory within the `buildDir` (see below).
+You can change which AssemblyInfo files are generated for you.
+On default "./src/SharedAssemblyInfo.fs" and "./src/SharedAssemblyInfo.cs" are created.
 *)
-type BuildParams =
-    {
-        SimpleBuildName : string
-        CustomBuildName : string
-    }
+    SetAssemblyFileVersions = (fun config ->
+      let info =
+        [ Attribute.Company config.ProjectName
+          Attribute.Product config.ProjectName
+          Attribute.Copyright config.CopyrightNotice
+          Attribute.Version config.Version
+          Attribute.FileVersion config.Version
+          Attribute.InformationalVersion config.Version]
+      CreateFSharpAssemblyInfo "./src/SharedAssemblyInfo.fs" info)
+(**
+## Yaaf.AdvancedBuilding features
+Enable project file creation from ._proj and ._proj.fsx files.
+*)
+    EnableProjectFileCreation = true
+(**
+Setup the builds
+*)
+    BuildTargets =
+     [ { BuildParams.Empty with
+          // The default build
+          CustomBuildName = ""
+          SimpleBuildName = "net40" }
+       { BuildParams.Empty with
+          // The generated templates
+          CustomBuildName = "net45"
+          SimpleBuildName = "net45" }]
+
+  }
 
 (**
-## Building
-You can define all the builds you want to do.
-If you only want to do one build use the `emptyParams` from below (and empty `CustomBuildName` means to build directly into `buildDir`).
+## FAKE settings
+
+You can setup FAKE variables as well.
 *)
-//let profile111Params = { SimpleBuildName = "profile111"; CustomBuildName = "portable-net45+netcore45+wpa81+MonoAndroid1+MonoTouch1" }
-let emptyParams = { SimpleBuildName = ""; CustomBuildName = "" }
-//let net45Params = { SimpleBuildName = "net45"; CustomBuildName = "net45" }
-
-(**
-And then add them to the `allParams` list so Yaaf.AdvancedBuilding can find them.
-*)
-let allParams = [ emptyParams ]
-
-(**
-With `use_nuget` you can specify if Yaaf.AdvancedBuilding should restore nuget packages
-before running the build (if you only use paket, you can set it to false).
-*)
-let use_nuget = true
-
-(**
-Some general build directories you can setup.
-*)
-let buildDir = "./build/"
-let outLibDir = "./release/lib/"
-let outDocDir = "./release/documentation/"
-let outNugetDir = "./release/nuget/"
-let docTemplatesDir = "./doc/templates/"
-let testDir  = "./test/"
-
-let buildMode = "Release" // if isMono then "Release" else "Debug"
-
-
-(**
-## More settings
-
-In this section you don't normally need to change anything
-*)
-let github_url = sprintf "https://github.com/%s/%s" github_user github_project
 
 if isMono then
     monoArguments <- "--runtime=v4.0 --debug"
     //monoArguments <- "--runtime=v4.0"
 
 (**
-You can change where Yaaf.AdvancedBuilding tries to find templates (for the documentation generation)
-*)
-let layoutRoots =
-    [ docTemplatesDir; 
-      docTemplatesDir @@ "reference" ]
-
-(**
-You can change which AssemblyInfo files are generated for you.
-*)
-let setVersion () = 
-  let info =
-      [Attribute.Company projectName
-       Attribute.Product projectName
-       Attribute.Copyright copyrightNotice
-       Attribute.Version version
-       Attribute.FileVersion version
-       Attribute.InformationalVersion version_nuget]
-  CreateFSharpAssemblyInfo "./src/SharedAssemblyInfo.fs" info
-  let info =
-      [Attribute.Company projectName
-       Attribute.Product projectName
-       Attribute.Copyright copyrightNotice
-       Attribute.Version version
-       Attribute.FileVersion version
-       Attribute.InformationalVersion version_nuget]
-  CreateCSharpAssemblyInfo "./src/SharedAssemblyInfo.cs" info
-
-(**
-The following functions tell Yaaf.AdvancedBuilding where it needs to look for project files.
-*)
-let findProjectFiles (buildParams:BuildParams) =
-    !! (sprintf "src/source/**/*.fsproj")
-    ++ (sprintf "src/source/**/*.csproj")
-
-let findTestFiles (buildParams:BuildParams) =
-    !! (sprintf "src/test/**/Test.*.fsproj")
-    ++ (sprintf "src/test/**/Test.*.csproj")
-
-let unitTestDlls testDir (buildParams:BuildParams) =
-    !! (testDir + "/Test.*.dll")
-
-(**
 ## Remove ME!
 This is specific to the Yaaf.AdvancedBuilding project, you can safely remove everything below.
 *)
-if projectName = "Yaaf.AdvancedBuilding" then
+if buildConfig.ProjectName = "Yaaf.AdvancedBuilding" then
   if File.Exists "./buildConfig.fsx" then
     // We copy the buildConfig to ./doc so that we can generate a html page from this file
     File.Copy ("./buildConfig.fsx", "./doc/buildConfig.fsx", true)
+  // Copy templates to their normal path.
+
+  ensureDirectory "./src/templates"
+  CopyRecursive "./src/source/Yaaf.AdvancedBuilding/templates" "./src/templates" true
+  |> Seq.iter (fun f -> trace (sprintf "File %A copied" f))

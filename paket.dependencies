@@ -9,3 +9,5 @@ nuget NUnit.Runners
 nuget FSharp.Compiler.Service
 nuget Unquote
 nuget Yaaf.FSharp.Scripting
+nuget Microsoft.AspNet.Razor == 2.0.30506.0
+nuget RazorEngine
