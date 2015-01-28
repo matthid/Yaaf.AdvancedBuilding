@@ -30,4 +30,7 @@ _ReSharper*/
 test-results/
 *.userprefs
 
-/templates
+# Those are automatically generated
+*.fsproj
+*.csproj
+*.sln

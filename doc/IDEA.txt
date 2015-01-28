@@ -25,10 +25,15 @@ Target "PrepareProjectFiles" (fun _ ->
 Project settings (Test.Yaaf.DependencyInjection._proj)
 (for example when this is a test-project and can't be portable because of test dependencies)
 \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
-module ProjectData
-open Yaaf.AdvancedBuilding
-let generateProjectInfo (projectInfo) =
-// START FILE
+
+{ BuildFileList =
+    [ "net40", 
+        { projectInfo.DefaultTemplateData "net40" with 
+          Includes = [] } ]
+    { 
+    }
+
+]
       { projectInfo with
         BuildTemplates = 
           [ "net40", ("template_net40"

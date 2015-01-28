@@ -1,4 +1,12 @@
-﻿### 0.1.4
+﻿### 0.2.0
+
+ * Redesigned how `buildConfig.fsx` has to be written!
+   Now you need to implement a BuildConfiguration record type, this helps that
+   builds don't break when new features are introduced.
+   This also allows us to set a lot of defaults for you
+ * Implemented initial project and solution generation
+
+### 0.1.4
 
  * `releaseDir` Configuration is no longer required.
  * BREAKING: You can/must specify `outNugetDir` after updating!
