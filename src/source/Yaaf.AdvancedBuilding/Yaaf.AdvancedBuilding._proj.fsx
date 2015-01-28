@@ -1,7 +1,7 @@
 ﻿#if PROJGEN
 #else
 // Support in VS (not actually required in a build-generation script)
-#I "../../../packages/Yaaf.AdvancedBuilding/lib/net40/"
+#I "../../../packages/Yaaf.AdvancedBuilding/tools/"
 #r "Yaaf.AdvancedBuilding.dll"
 open Yaaf.AdvancedBuilding
 let projectInfo = Unchecked.defaultof<GlobalProjectInfo>

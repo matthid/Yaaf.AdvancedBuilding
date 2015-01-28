@@ -1,6 +1,7 @@
 ﻿@inherits RazorEngine.Templating.TemplateBase<Yaaf.AdvancedBuilding.Razor_TemplateModel>
 <?xml version="1.0" encoding="utf-8" ?>
-@{ var nk = "nk"; }<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+@{ var link = new Func<String, object>(s => Raw(string.Format("<Link>{0}</Link>", s))); }
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
     <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
     <PropertyGroup>
         <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
@@ -71,7 +72,7 @@
             else if (includeItem.IsCompileLink)
             {
                 <Compile Include="@(includeItem.Include)" >
-                    <Li@(nk)>@(includeItem.LinkName)</Li@(nk)>
+                    @link(includeItem.LinkName)
                 </Compile>
             }
             else if (includeItem.IsContent)
@@ -81,7 +82,7 @@
             else if (includeItem.IsContentLink)
             {
                 <Content Include="@includeItem.Include" >
-                    <Li@(nk)>@includeItem.LinkName</Li@(nk)>
+                    @link(includeItem.LinkName)
                 </Content>
             }
             else if (includeItem.IsNoneItem)
@@ -91,7 +92,7 @@
             else if (includeItem.IsNoneItemLink)
             {
                 <None Include="@includeItem.Include">
-                    <Li@(nk)>@includeItem.LinkName</Li@(nk)>
+                    @link(includeItem.LinkName)
                 </None>
             }
             else if (includeItem.IsReference)
