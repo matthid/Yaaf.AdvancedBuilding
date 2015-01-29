@@ -58,6 +58,10 @@
     <file src="src/templates/fsproj_net45.cshtml" target="examples\buildtemplates\fsproj_net45.cshtml" />
     <file src="src/templates/fsproj_portable111.cshtml" target="examples\buildtemplates\fsproj_portable111.cshtml" />
 
+    <!-- Project generation examples -->
+    <file src="src/source/Yaaf.AdvancedBuilding/Yaaf.AdvancedBuilding._proj.fsx" target="examples\projectGen\Yaaf.AdvancedBuilding._proj.fsx" />
+    <file src="src/test/Test.Yaaf.AdvancedBuilding/Test.Yaaf.AdvancedBuilding._proj.fsx" target="examples\projectGen\Test.Yaaf.AdvancedBuilding._proj.fsx" />
+
     <!-- Required when using NuGet -->
     <file src="src/nuget.config" target="scaffold\nuget\src\nuget.config" />
     <file src="src/.nuget/NuGet.Config" target="scaffold\nuget\src\.nuget\NuGet.Config" />

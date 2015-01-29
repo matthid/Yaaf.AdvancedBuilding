@@ -1,4 +1,9 @@
-﻿### 0.2.0
+﻿### 0.2.1
+
+ * Fixed some bundled templates
+ * remove an Include to Yaaf.FSharp.Scriping (removes a warning)
+
+### 0.2.0
 
  * BREAKING: Redesigned how `buildConfig.fsx` has to be written!
    Now you need to implement a BuildConfiguration record type, this helps (in the future)
