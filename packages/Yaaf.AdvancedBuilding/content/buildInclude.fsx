@@ -23,7 +23,8 @@ let config = BuildConfig.buildConfig.FillDefaults ()
 
 // NOTE: We want to add that to buildConfigDef.fsx sometimes in the future
 #I @"../../FSharp.Compiler.Service/lib/net40/"
-#I @"../../Yaaf.FSharp.Scripting/lib/net40/"
+// Bundled
+//#I @"../../Yaaf.FSharp.Scripting/lib/net40/"
 #I "../tools/"
 #r "Yaaf.AdvancedBuilding.dll"
 
