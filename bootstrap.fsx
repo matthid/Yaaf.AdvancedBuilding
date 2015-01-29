@@ -24,7 +24,7 @@ Target "Build" (fun _ ->
                 "CustomBuildName", "" ]
         |> Log "BOOTSTRAP: "
     // They aren't available on end systems!
-    [ "FSharp.Compiler.Service.dll"; "Yaaf.FSharp.Scripting.dll"]
+    [ "FSharp.Compiler.Service.dll" ]
     |> Seq.iter (fun file ->
       trace (sprintf "DELETING: %s" file)
       File.Delete(sprintf "packages/Yaaf.AdvancedBuilding/tools/%s" file))
