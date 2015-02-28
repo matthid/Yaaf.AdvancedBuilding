@@ -1,10 +1,11 @@
 source https://nuget.org/api/v2
 
 nuget FAKE
-nuget FSharp.Formatting
+nuget FSharp.Core
+nuget FSharp.Formatting == 2.6.3
 nuget FSharp.Compiler.Service
 nuget Nuget.CommandLine
-nuget NUnit
+nuget NUnit == 2.6.3
 nuget NUnit.Runners
 nuget FSharp.Compiler.Service
 nuget Unquote

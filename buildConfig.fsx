@@ -85,7 +85,7 @@ Setup which nuget packages are created.
               Dependencies =
                 [ "FSharp.Formatting", "2.6.3"
                   "FSharp.Compiler.Service", "0.0.82"
-                  "FAKE", "3.14.8" ] })
+                  "FAKE", "3.17.13" ] })
         "Yaaf.AdvancedBuilding.Library.nuspec", (fun config p ->
           { p with
               Version = config.Version
@@ -94,7 +94,8 @@ Setup which nuget packages are created.
               ReleaseNotes = toLines release.Notes
               Dependencies =
                 [ "Yaaf.FSharp.Scripting", "1.0.2"
-                  "RazorEngine", "3.5.3" ] }) ]
+                  "RazorEngine", "3.6.1"
+                  "FSharp.Core", "3.1.2.1" ] }) ]
 (**
 With `UseNuget` you can specify if Yaaf.AdvancedBuilding should restore nuget packages
 before running the build (if you only use paket, you leave the default setting = false).
@@ -128,18 +129,21 @@ On default "./src/SharedAssemblyInfo.fs" and "./src/SharedAssemblyInfo.cs" are c
 ## Yaaf.AdvancedBuilding features
 Enable project file creation from ._proj and ._proj.fsx files.
 *)
-    EnableProjectFileCreation = true
+    EnableProjectFileCreation = false
 (**
 Setup the builds
 *)
     BuildTargets =
-     [ { BuildParams.Empty with
-          // The default build
-          CustomBuildName = ""
+     [ { BuildParams.WithSolution with
+          // The net40 build
+          AfterBuild = (fun () -> File.Delete ("build/net40/FSharp.Core.dll"))
+          DisableProjectFileCreation = true
+          PlatformName = "Sol_Net40"
           SimpleBuildName = "net40" }
-       { BuildParams.Empty with
-          // The generated templates
-          CustomBuildName = "net45"
+       { BuildParams.WithSolution with
+          // The net45 build
+          AfterBuild = (fun () -> File.Delete ("build/net45/FSharp.Core.dll"))
+          PlatformName = "Sol_Net45"
           SimpleBuildName = "net45" }]
 
   }

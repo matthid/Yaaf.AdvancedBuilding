@@ -1,4 +1,13 @@
-﻿### 0.2.1
+﻿### 0.3.0
+
+* Renamed CustomBuildName to PlatformName and set the Platform variable for it.
+* We now expect (the simpler) multi platform approach via variable instead of generating files as default.
+* Support for building a solution file (FindSolutionFiles) and using the default build folders (UseProjectOutDir).
+* Change default TestDir to /build/test instead of /test
+* Use FSharp.Core nuget package.
+* Added build.targets to make creation of multi platform msbuild files easier.
+
+### 0.2.1
 
  * Fixed some bundled templates
  * remove an Include to Yaaf.FSharp.Scriping (removes a warning)
