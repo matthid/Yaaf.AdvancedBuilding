@@ -8,7 +8,7 @@
     <owners>@authors@</owners>
     <licenseUrl>http://github.com/matthid/Yaaf.AdvancedBuilding/blob/develop/LICENSE.md</licenseUrl>
     <projectUrl>http://matthid.github.com/Yaaf.AdvancedBuilding</projectUrl>
-    <iconUrl>https://raw.githubusercontent.com/fsprojects/ProjectScaffold/master/docs/files/img/logo.png</iconUrl>
+    <iconUrl>https://raw.githubusercontent.com/matthid/Yaaf.AdvancedBuilding/master/doc/content/img/logo.png</iconUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <summary>@summary@</summary>
     <description>@description@</description>
@@ -29,6 +29,7 @@
     <file src="packages/Yaaf.AdvancedBuilding/content/buildConfigDef.fsx" target="content/buildConfigDef.fsx" />
     <file src="packages/Yaaf.AdvancedBuilding/content/downloadNugetInclude.fsx" target="content/downloadNugetInclude.fsx" />
     <file src="packages/Yaaf.AdvancedBuilding/content/generateDocsInclude.fsx" target="content/generateDocsInclude.fsx" />
+    <file src="packages/Yaaf.AdvancedBuilding/content/build.targets" target="content/build.targets" />
 
     <!-- Example files -->
     <file src="buildConfig.fsx" target="examples\buildConfig\buildConfig.Yaaf.AdvancedBuilding.fsx" />

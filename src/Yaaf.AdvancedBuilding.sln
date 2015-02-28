@@ -16,6 +16,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "project", "project", "{BF60
 		..\buildConfig.fsx = ..\buildConfig.fsx
 		..\paket.dependencies = ..\paket.dependencies
 		..\doc\ReleaseNotes.md = ..\doc\ReleaseNotes.md
+		..\nuget\Yaaf.AdvancedBuilding.Library.nuspec = ..\nuget\Yaaf.AdvancedBuilding.Library.nuspec
 		..\nuget\Yaaf.AdvancedBuilding.nuspec = ..\nuget\Yaaf.AdvancedBuilding.nuspec
 	EndProjectSection
 EndProject
@@ -41,18 +42,38 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "build", "build", "{2DFFAF1A
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
-		Debug|Any CPU = Debug|Any CPU
-		Release|Any CPU = Release|Any CPU
+		Debug|Sol_Net40 = Debug|Sol_Net40
+		Debug|Sol_Net45 = Debug|Sol_Net45
+		Debug|Sol_Profile111 = Debug|Sol_Profile111
+		Release|Sol_Net40 = Release|Sol_Net40
+		Release|Sol_Net45 = Release|Sol_Net45
+		Release|Sol_Profile111 = Release|Sol_Profile111
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{74CD69FA-7D48-4FC4-A478-A1F00A08E963}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{74CD69FA-7D48-4FC4-A478-A1F00A08E963}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{74CD69FA-7D48-4FC4-A478-A1F00A08E963}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{74CD69FA-7D48-4FC4-A478-A1F00A08E963}.Release|Any CPU.Build.0 = Release|Any CPU
-		{A01FB502-0A1D-4745-9313-EFAA85207866}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{A01FB502-0A1D-4745-9313-EFAA85207866}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{A01FB502-0A1D-4745-9313-EFAA85207866}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{A01FB502-0A1D-4745-9313-EFAA85207866}.Release|Any CPU.Build.0 = Release|Any CPU
+		{74CD69FA-7D48-4FC4-A478-A1F00A08E963}.Debug|Sol_Net40.ActiveCfg = Debug|Net40
+		{74CD69FA-7D48-4FC4-A478-A1F00A08E963}.Debug|Sol_Net40.Build.0 = Debug|Net40
+		{74CD69FA-7D48-4FC4-A478-A1F00A08E963}.Debug|Sol_Net45.ActiveCfg = Debug|Net45
+		{74CD69FA-7D48-4FC4-A478-A1F00A08E963}.Debug|Sol_Net45.Build.0 = Debug|Net45
+		{74CD69FA-7D48-4FC4-A478-A1F00A08E963}.Debug|Sol_Profile111.ActiveCfg = Debug|Profile111
+		{74CD69FA-7D48-4FC4-A478-A1F00A08E963}.Debug|Sol_Profile111.Build.0 = Debug|Profile111
+		{74CD69FA-7D48-4FC4-A478-A1F00A08E963}.Release|Sol_Net40.ActiveCfg = Release|Net40
+		{74CD69FA-7D48-4FC4-A478-A1F00A08E963}.Release|Sol_Net40.Build.0 = Release|Net40
+		{74CD69FA-7D48-4FC4-A478-A1F00A08E963}.Release|Sol_Net45.ActiveCfg = Release|Net45
+		{74CD69FA-7D48-4FC4-A478-A1F00A08E963}.Release|Sol_Net45.Build.0 = Release|Net45
+		{74CD69FA-7D48-4FC4-A478-A1F00A08E963}.Release|Sol_Profile111.ActiveCfg = Release|Profile111
+		{74CD69FA-7D48-4FC4-A478-A1F00A08E963}.Release|Sol_Profile111.Build.0 = Release|Profile111
+		{A01FB502-0A1D-4745-9313-EFAA85207866}.Debug|Sol_Net40.ActiveCfg = Debug|Net40
+		{A01FB502-0A1D-4745-9313-EFAA85207866}.Debug|Sol_Net40.Build.0 = Debug|Net40
+		{A01FB502-0A1D-4745-9313-EFAA85207866}.Debug|Sol_Net45.ActiveCfg = Debug|Net45
+		{A01FB502-0A1D-4745-9313-EFAA85207866}.Debug|Sol_Net45.Build.0 = Debug|Net45
+		{A01FB502-0A1D-4745-9313-EFAA85207866}.Debug|Sol_Profile111.ActiveCfg = Debug|Profile111
+		{A01FB502-0A1D-4745-9313-EFAA85207866}.Debug|Sol_Profile111.Build.0 = Debug|Profile111
+		{A01FB502-0A1D-4745-9313-EFAA85207866}.Release|Sol_Net40.ActiveCfg = Release|Net40
+		{A01FB502-0A1D-4745-9313-EFAA85207866}.Release|Sol_Net40.Build.0 = Release|Net40
+		{A01FB502-0A1D-4745-9313-EFAA85207866}.Release|Sol_Net45.ActiveCfg = Release|Net45
+		{A01FB502-0A1D-4745-9313-EFAA85207866}.Release|Sol_Net45.Build.0 = Release|Net45
+		{A01FB502-0A1D-4745-9313-EFAA85207866}.Release|Sol_Profile111.ActiveCfg = Release|Profile111
+		{A01FB502-0A1D-4745-9313-EFAA85207866}.Release|Sol_Profile111.Build.0 = Release|Profile111
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

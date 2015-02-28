@@ -8,7 +8,7 @@ let projectInfo = Unchecked.defaultof<GlobalProjectInfo>
 #endif
 let framework_references_net45 =
   [ "mscorlib"
-    "FSharp.Core, Version=$(TargetFSharpCoreVersion), Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a"
+    //"FSharp.Core, Version=$(TargetFSharpCoreVersion), Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a"
     "System"; "System.Core"; "System.Numerics"; "System.Xml"; "System.Xml.Linq" ]
   |> List.map (fun ref -> Reference { Include = ref; HintPath = ""; IsPrivate = false })
 let info =
