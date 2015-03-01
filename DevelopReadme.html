@@ -2,7 +2,7 @@
 <html lang="en">
   <head>
     <meta charset="utf-8">
-    <title>Yaaf.AdvancedBuilding implementation documentation
+    <title>Yaaf.AdvancedBuilding build and development documentation
 </title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="Yaaf.AdvancedBuilding provides several build scripts for you to use.">
@@ -36,94 +36,89 @@
       <div class="row">
         <div class="span9" id="main">
           
-<h1><a name="Yaaf-AdvancedBuilding-implementation-documentation" class="anchor" href="#Yaaf-AdvancedBuilding-implementation-documentation">Yaaf.AdvancedBuilding implementation documentation</a></h1>
+<h1><a name="Yaaf-AdvancedBuilding-build-and-development-documentation" class="anchor" href="#Yaaf-AdvancedBuilding-build-and-development-documentation">Yaaf.AdvancedBuilding build and development documentation</a></h1>
+
+<blockquote>
+  <p>NOTE: This document can be referenced from any project using Yaaf.AdvancedBuilding.</p>
+</blockquote>
 
 <h2><a name="Building" class="anchor" href="#Building">Building</a></h2>
 
 <p>Open the <code>.sln</code> file or run <code>./build</code>.</p>
 
 <blockquote>
-  <p>NOTE: You can only build the <code>.sln</code> file AFTER doing an initial <code>./build</code> (because nuget dependencies have to be resolved).</p>
+  <p>NOTE: You can only build the <code>.sln</code> file AFTER doing an initial <code>./build</code> (because dependencies have to be restored first).</p>
 </blockquote>
 
-<p>If you want to edit the build for a specific build you should look into the <code>./src/platform</code> folders for a solution file.</p>
+<h2><a name="Visual-Studio-Monodevelop" class="anchor" href="#Visual-Studio-Monodevelop">Visual Studio / Monodevelop</a></h2>
+
+<p>As mentioned above you need to <code>build</code> at least once before you can open the 
+solution file (<code>src/${ProjectName}.sln</code>) with Visual Studio / Monodevelop.</p>
+
+<p>Just open the solution file and select the build you want to edit in the Configuration-Manager (ie. your Platform).</p>
+
+<h2><a name="The-Project-structure" class="anchor" href="#The-Project-structure">The Project structure:</a></h2>
 
 <blockquote>
-  <p>NOTE: The platform solutions are generated with the first build!</p>
+  <p>Note: Projects using Yaaf.AdvancedBuilding can leave out some components or rename them! The following structure represents the default configuration.</p>
 </blockquote>
 
-<p>DON'T edit those platform specific solutions/project files as they will be overwritten by the next build!
-Just edit the templates in <code>./src/source/Yaaf.AdvancedBuilding/templates</code> NOT the ones in <code>./src/templates</code> (will be overwritten)
-or the "normal" project and solution files or the project generation files (*._proj.fsx files).</p>
-
-<h2><a name="General-overview" class="anchor" href="#General-overview">General overview:</a></h2>
-
-<p>This project tries to help you with your build setup.</p>
-
-<h3><a name="Issues-Features-TODOs" class="anchor" href="#Issues-Features-TODOs">Issues / Features / TODOs</a></h3>
-
-<p>New features are accepted via github pull requests (so just fork away right now!):  <a href="https://github.com/matthid/Yaaf.AdvancedBuilding">https://github.com/matthid/Yaaf.AdvancedBuilding</a></p>
-
-<p>Issues and TODOs are tracked on github, see: <a href="https://github.com/matthid/Yaaf.AdvancedBuilding/issues">https://github.com/matthid/Yaaf.AdvancedBuilding/issues</a></p>
-
-<p>Discussions/Forums are on IRC.</p>
-
-<h3><a name="Versioning" class="anchor" href="#Versioning">Versioning:</a></h3>
-
-<p><a href="http://semver.org/">http://semver.org/</a></p>
-
-<h3><a name="High-level-documentation-ordered-by-project" class="anchor" href="#High-level-documentation-ordered-by-project">High level documentation ordered by project.</a></h3>
-
 <ul>
-<li><code>Yaaf.AdvancedBuilding</code>: For one a project to test the building infrastructure, in the future a helper to generate fsproj and csproj files.</li>
-</ul>
-
-<h3><a name="The-Project-structure" class="anchor" href="#The-Project-structure">The Project structure:</a></h3>
-
-<ul>
-<li><p>/.nuget/</p>
-<p>Nuget dependencies will be downloaded into this folder. 
-  This folder can safely be deleted without affecting the build.</p></li>
+<li><p>/.paket/</p>
+<p>Files for paket: <a href="https://github.com/fsprojects/Paket">https://github.com/fsprojects/Paket</a></p></li>
 <li><p>/build/</p>
 <p>The project assemblies will be build into this folder. This folder can safely be deleted without affecting the build.</p></li>
-<li><p>/lib/</p>
-<p>library dependencies (currently not used). Most dependencies are automatically managed by nuget and not in this folder. 
-  Only some internal dependencies and packages not in nuget. The git repository should always be "complete".</p></li>
 <li><p>/doc/</p>
 <p>Project documentation files. This folder contains both development and user documentation.</p></li>
+<li><p>/gh-pages/</p>
+<p>Folder for the documentation branch (can be deleted safely).</p></li>
+<li><p>/lib/</p>
+<p>library dependencies (most of the time not used). Most dependencies are automatically managed by nuget and not in this folder. 
+  Only some internal dependencies and packages not in downloaded automatically are available here. 
+  The git repository should always be "complete" and ready to be build.</p></li>
+<li><p>/packages/</p>
+<p>Dependencies will be downloaded into this folder. 
+  This folder can safely be deleted without affecting the build.</p></li>
+<li><p>/release/</p>
+<p>Place for the build to put the produced results (dll files, docs, nuget packages, ...)</p></li>
 <li><p>/src/</p>
 <p>The Solution directory for all projects</p>
 <ul>
 <li><p>/src/source/</p>
-<p>The root for all projects (not including unit test projects).</p></li>
-<li><p>/src/templates/</p>
-<p>The root for project templates (DONT TOUCH: will be overwritten automatically with <code>/src/source/Yaaf.AdvancedBuilding/templates</code>)</p></li>
+<p>The root for all projects (not including unit test projects).
+  Each project should have has a corresponding project with the name <code>Test.${ProjectName}</code> in the test folder.
+  This test project provides unit tests for the project <code>${ProjectName}</code>.</p></li>
 <li><p>/src/test/</p>
 <p>The root for all unit test projects.</p></li>
 </ul></li>
-<li><p>/test/</p>
-<p>The unit test assemblies will be build into this folder. This folder can safely be deleted without affecting the build.</p></li>
 <li><p>/tmp/</p>
 <p>This folder is ignored by git.</p></li>
 <li><p>/build.cmd, /build.sh, /build.fsx</p>
 <p>Files to directly start a build including unit tests via console (windows &amp; linux).</p></li>
 </ul>
 
-<p>Each project should have has a corresponding project with the name <code>Test.${ProjectName}</code> in the test folder.
-This test project provides unit tests for the project <code>${ProjectName}</code>.</p>
+<ul>
+<li><p>/paket.dependencies, /paket.lock</p>
+<p>When those files exist they are used to restore dependencies with paket: <a href="https://github.com/fsprojects/Paket">https://github.com/fsprojects/Paket</a></p></li>
+<li><p>/packages.config</p>
+<p>When this file exists a <code>nuget.exe</code> is downloaded by the build files (if not already restored through paket) and is used to restore BUILD dependencies.
+  The build dependencies are restored into /packages and without version in the folder-name (so they look like paket folders and you can switch between both methods).</p></li>
+</ul>
 
 <h2><a name="Advanced-Building" class="anchor" href="#Advanced-Building">Advanced Building</a></h2>
 
 <p>The build is done in different steps and you can execute the build until a given step or a single step:</p>
 
-<p>First <code>build.sh</code> and <code>build.cmd</code> restore build dependencies and <code>nuget.exe</code>, then build.fsx is invoked:</p>
+<p>First <code>build.sh</code> and <code>build.cmd</code> restore a <code>nuget.exe</code>, <code>paket.exe</code> or both (depending on the project) to restore build dependencies, then build.fsx is invoked:</p>
 
 <ul>
 <li><code>Clean</code>: cleans the directories (previous builds)</li>
 <li><code>RestorePackages</code>: restores nuget packages</li>
 <li><code>SetVersions</code>: sets the current version</li>
-<li><code>Build_net40</code>: build/test for net40</li>
-<li><code>Build_net45</code>: build/test for net45</li>
+<li><code>Build_net40</code>: build/test for net40, availability depends on the concrete project</li>
+<li><code>Build_net45</code>: build/test for net45, availability depends on the concrete project</li>
+<li><code>Build_profile111</code>: build/test for portable profile 111, availability depends on the concrete project</li>
+<li><code>Build_ ...</code>: more platforms / builds may be available depending on the project</li>
 <li><code>CopyToRelease</code>: copy the generated .dlls to release/lib</li>
 <li><code>LocalDoc</code>: create the local documentation you can view that locally</li>
 <li><code>All</code>: this does nothing itself but is used as a marker (executed by default when no parameter is given to ./build)</li>
@@ -143,18 +138,25 @@ This test project provides unit tests for the project <code>${ProjectName}</code
 </blockquote>
 
 <p>There is another (hidden) step <code>CleanAll</code> which will clean everything up (even build dependencies and the downloaded Nuget.exe), 
-this step is only needed when build dependencies change. <code>git clean -d -x -f</code> is also a good way to do that</p>
+this step is ONLY needed when BUILD dependencies change AND you use <code>nuget.exe</code> instead of <code>paket.exe</code> to restore them! 
+<code>git clean -d -x -f</code> is also a good way to do that.</p>
 
-<h2><a name="Visual-Studio-Monodevelop" class="anchor" href="#Visual-Studio-Monodevelop">Visual Studio / Monodevelop</a></h2>
+<h2><a name="General-overview-specific-to-Yaaf-AdvancedBuilding" class="anchor" href="#General-overview-specific-to-Yaaf-AdvancedBuilding">General overview specific to Yaaf.AdvancedBuilding:</a></h2>
 
-<p>As mentioned above you need to <code>build</code> at least once before you can open the 
-solution files (<code>src/${ProjectName}.*.sln</code>) with Visual Studio / Monodevelop.</p>
+<h3><a name="Issues-Features-TODOs" class="anchor" href="#Issues-Features-TODOs">Issues / Features / TODOs</a></h3>
 
-<p>Just open the solution file for the build you want to edit.</p>
+<p>New features are accepted via github pull requests (so just fork away right now!):  <a href="https://github.com/matthid/Yaaf.AdvancedBuilding">https://github.com/matthid/Yaaf.AdvancedBuilding</a></p>
+
+<p>Issues and TODOs are tracked on github, see: <a href="https://github.com/matthid/Yaaf.AdvancedBuilding/issues">https://github.com/matthid/Yaaf.AdvancedBuilding/issues</a></p>
+
+<h3><a name="Versioning" class="anchor" href="#Versioning">Versioning:</a></h3>
+
+<p><a href="http://semver.org/">http://semver.org/</a></p>
+
+<h3><a name="High-level-documentation-ordered-by-project" class="anchor" href="#High-level-documentation-ordered-by-project">High level documentation ordered by project.</a></h3>
 
 <ul>
-<li>Note that files/references are managed through special <code>includes.targets</code> (eg: <code>src/source/${ProjectName}/includes.targets</code>) files.</li>
-<li>The build configuration is managed through <code>src/buildConfig.targets</code></li>
+<li><code>Yaaf.AdvancedBuilding</code>: For now a project to test the building infrastructure, in the future a helper to generate/convert fsproj and csproj files.</li>
 </ul>
 
 
