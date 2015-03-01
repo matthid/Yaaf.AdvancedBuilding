@@ -136,13 +136,15 @@ Setup the builds
     BuildTargets =
      [ { BuildParams.WithSolution with
           // The net40 build
-          AfterBuild = (fun () -> File.Delete ("build/net40/FSharp.Core.dll"))
+          // Workaround FSharp.Compiler.Service not liking to have a FSharp.Core here: https://github.com/fsprojects/FSharpx.Reflection/issues/1
+          AfterBuild = fun _ -> File.Delete "build/net40/FSharp.Core.dll"
           DisableProjectFileCreation = true
           PlatformName = "Sol_Net40"
           SimpleBuildName = "net40" }
        { BuildParams.WithSolution with
           // The net45 build
-          AfterBuild = (fun () -> File.Delete ("build/net45/FSharp.Core.dll"))
+          // Workaround FSharp.Compiler.Service not liking to have a FSharp.Core here: https://github.com/fsprojects/FSharpx.Reflection/issues/1
+          AfterBuild = fun _ -> File.Delete "build/net45/FSharp.Core.dll"
           PlatformName = "Sol_Net45"
           SimpleBuildName = "net45" }]
 
