@@ -1,4 +1,8 @@
-﻿### 0.3.0
+﻿### 0.3.1
+
+ * Handle .dll files without corresponding .xml file in documentation generation.
+
+### 0.3.0
 
 * Renamed CustomBuildName to PlatformName and set the Platform variable for it.
 * We now expect (the simpler) multi platform approach via variable instead of generating files as default.
