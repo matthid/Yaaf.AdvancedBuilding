@@ -83,9 +83,10 @@ Setup which nuget packages are created.
               NoDefaultExcludes = true
               ReleaseNotes = toLines release.Notes
               Dependencies =
-                [ "FSharp.Formatting", "2.6.3"
-                  "FSharp.Compiler.Service", "0.0.82"
-                  "FAKE", "3.17.13" ] })
+                [ "FSharp.Formatting"
+                  "FSharp.Compiler.Service"
+                  "FAKE" ]
+                  |> List.map (fun name -> name, (GetPackageVersion "packages" name) |> RequireExactly)
         "Yaaf.AdvancedBuilding.Library.nuspec", (fun config p ->
           { p with
               Version = config.Version
@@ -93,14 +94,15 @@ Setup which nuget packages are created.
               NoDefaultExcludes = true
               ReleaseNotes = toLines release.Notes
               Dependencies =
-                [ "Yaaf.FSharp.Scripting", "1.0.2"
-                  "RazorEngine", "3.6.1"
-                  "FSharp.Core", "3.1.2.1" ] }) ]
+                [ "Yaaf.FSharp.Scripting"
+                  "RazorEngine"
+                  "FSharp.Core" ]
+                  |> List.map (fun name -> name, (GetPackageVersion "packages" name)) }) ]
 (**
 With `UseNuget` you can specify if Yaaf.AdvancedBuilding should restore nuget packages
-before running the build (if you only use paket, you leave the default setting = false).
+before running the build (if you only use paket, you either leave it out or use the default setting = false).
 *)
-    UseNuget = true
+    UseNuget = false
 (**
 ## The `GeneratedFileList` property
 

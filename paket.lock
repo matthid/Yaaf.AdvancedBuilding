@@ -1,8 +1,8 @@
 NUGET
   remote: https://nuget.org/api/v2
   specs:
-    FAKE (3.17.13)
-    FSharp.Compiler.Service (0.0.84)
+    FAKE (3.18.0)
+    FSharp.Compiler.Service (0.0.86)
     FSharp.Core (3.1.2.1)
     FSharp.Formatting (2.6.3)
       FSharp.Compiler.Service (>= 0.0.81)
@@ -14,5 +14,6 @@ NUGET
       Microsoft.AspNet.Razor (>= 3.0.0) - framework: >= net45
       Microsoft.AspNet.Razor (2.0.30506.0) - framework: >= net40 < net45
     Unquote (2.2.2)
-    Yaaf.FSharp.Scripting (1.0.2)
-      FSharp.Compiler.Service (>= 0.0.82)
+    Yaaf.FSharp.Scripting (1.0.4)
+      FSharp.Compiler.Service (>= 0.0.84)
+      FSharp.Core (>= 3.1.2.1)
