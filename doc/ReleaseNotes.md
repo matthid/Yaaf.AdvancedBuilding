@@ -1,4 +1,8 @@
-﻿### 0.3.2
+﻿### 0.3.3
+
+ * fix incorrectly packaged bash scripts.
+ 
+### 0.3.2
 
  * reference all libraries explicitly (prevents that outdated libraries are loaded from GAC instead of the libdir; EntityFramework).
 
