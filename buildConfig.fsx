@@ -86,7 +86,7 @@ Setup which nuget packages are created.
                 [ "FSharp.Formatting"
                   "FSharp.Compiler.Service"
                   "FAKE" ]
-                  |> List.map (fun name -> name, (GetPackageVersion "packages" name) |> RequireExactly)
+                  |> List.map (fun name -> name, (GetPackageVersion "packages" name |> RequireExactly))
         "Yaaf.AdvancedBuilding.Library.nuspec", (fun config p ->
           { p with
               Version = config.Version
@@ -102,7 +102,8 @@ Setup which nuget packages are created.
 With `UseNuget` you can specify if Yaaf.AdvancedBuilding should restore nuget packages
 before running the build (if you only use paket, you either leave it out or use the default setting = false).
 *)
-    UseNuget = false
+    // We must restore to get a Razor3 and Razor2 (paket can only handle one)
+    UseNuget = true
 (**
 ## The `GeneratedFileList` property
 
