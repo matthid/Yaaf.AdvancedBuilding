@@ -1,4 +1,8 @@
-﻿### 0.3.1
+﻿### 0.3.2
+
+ * reference all libraries explicitly (prevents that outdated libraries are loaded from GAC instead of the libdir; EntityFramework).
+
+### 0.3.1
 
  * Handle .dll files without corresponding .xml file in documentation generation.
 
