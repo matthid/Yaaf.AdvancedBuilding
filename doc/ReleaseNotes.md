@@ -1,4 +1,9 @@
-﻿### 0.3.3
+﻿### 0.3.4
+
+ * Blacklist FSharp.Core and mscorlib in FSharp.Formatting
+ * Lock dependencies to stabilize build and `paket update` on users.
+
+### 0.3.3
 
  * fix incorrectly packaged bash scripts.
  

@@ -86,7 +86,7 @@ Setup which nuget packages are created.
                 [ "FSharp.Formatting"
                   "FSharp.Compiler.Service"
                   "FAKE" ]
-                  |> List.map (fun name -> name, (GetPackageVersion "packages" name |> RequireExactly))
+                  |> List.map (fun name -> name, (GetPackageVersion "packages" name |> RequireExactly)) } )
         "Yaaf.AdvancedBuilding.Library.nuspec", (fun config p ->
           { p with
               Version = config.Version
