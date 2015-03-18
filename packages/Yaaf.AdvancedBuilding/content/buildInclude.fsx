@@ -38,6 +38,14 @@ open Fake.Git
 open Fake.FSharpFormatting
 open AssemblyInfoFile
 
+let readLine msg def =
+  if isLocalBuild then
+    printf "%s" msg
+    System.Console.ReadLine()
+  else
+    printf "%s%s" msg def
+    def
+
 if config.UseNuget then
     // Ensure the ./src/.nuget/NuGet.exe file exists (required by xbuild)
     let nuget = findToolInSubPath "NuGet.exe" (config.GlobalPackagesDir @@ "NuGet.CommandLine/tools/NuGet.exe")
@@ -247,8 +255,8 @@ MyTarget "ReleaseGithubDoc" (fun isSingle ->
     let doAction =
         if isSingle then true
         else
-            printf "update github docs to %s? (y,n): " repro
-            let line = System.Console.ReadLine()
+            let msg = sprintf "update github docs to %s? (y,n): " repro
+            let line = readLine msg "y"
             line = "y"
     if doAction then
         CleanDir "gh-pages"
@@ -257,8 +265,8 @@ MyTarget "ReleaseGithubDoc" (fun isSingle ->
         CopyRecursive ("release"@@"documentation"@@(sprintf "%s.github.io" config.GithubUser)@@"html") "gh-pages" true |> printfn "%A"
         StageAll "gh-pages"
         Commit "gh-pages" (sprintf "Update generated documentation %s" config.Version)
-        printf "gh-pages branch updated in the gh-pages directory, push that branch to %s now? (y,n): " repro
-        let line = System.Console.ReadLine()
+        let msg = sprintf "gh-pages branch updated in the gh-pages directory, push that branch to %s now? (y,n): " repro
+        let line = readLine msg "y"
         if line = "y" then
             Branches.pushBranch "gh-pages" "origin" "gh-pages"
 )
@@ -274,11 +282,21 @@ MyTarget "VersionBump" (fun _ ->
         for (status, file) in changedFiles do
             printfn "File %s changed (%A)" file status
 
-        printf "version bump commit? (y,n): "
-        let line = System.Console.ReadLine()
+        let line = readLine "version bump commit? (y,n): " "y"
         if line = "y" then
             StageAll ""
             Commit "" (sprintf "Bump version to %s" config.Version)
+
+    if not isLocalBuild && (getBuildParamOrDefault "yaaf_merge_master" "false") = "true" then
+      Branches.pushBranch "" "origin" "develop"
+      Branches.checkout "" false "master"
+      Merge.merge "" FastForwardFlag "develop"
+      Branches.pushBranch "" "origin" "master"
+      Branches.tag "" config.Version
+      Branches.pushTag "" "origin" config.Version
+      Branches.checkout "" false "develop"
+      Merge.merge "" FastForwardFlag "master"
+      Branches.pushBranch "" "origin" "develop"
 )
 
 Target "Release" (fun _ ->

@@ -1,4 +1,9 @@
-﻿### 0.3.4
+﻿### 0.3.5
+
+ * Disable questions when running on a build server.
+ * Add feature to create tags and merge to master.
+
+### 0.3.4
 
  * Blacklist FSharp.Core and mscorlib in FSharp.Formatting
  * Lock dependencies to stabilize build and `paket update` on users.
