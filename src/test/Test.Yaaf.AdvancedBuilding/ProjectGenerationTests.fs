@@ -45,9 +45,11 @@ type ProjectGeneratorTests() =
             let loadedList = d.GetReferences() |> Seq.map (fun c -> c.GetFile()) |> Seq.cache
             //// We replace the list and add required items manually as mcs doesn't like duplicates...
             let getItem name =
-                loadedList |> Seq.find (fun l -> l.Contains name)
+                match loadedList |> Seq.tryFind (fun l -> l.Contains name) with
+                | Some f -> f
+                | None -> failwithf "assembly %s is not loaded." name
             [ (getItem "FSharp.Core").Replace("4.3.0.0", "4.3.1.0")  // (if isMono then "/usr/lib64/mono/gac/FSharp.Core/4.3.1.0__b03f5f7f11d50a3a/FSharp.Core.dll" else "FSharp.Core") 
-              getItem "FSharp.Compiler.Service.dll"
+              getItem "Yaaf.FSharp.Scripting.dll"
               getItem "System.Web.Razor.dll"
               getItem "RazorEngine.dll"
               getItem "Yaaf.AdvancedBuilding.dll" ] 
