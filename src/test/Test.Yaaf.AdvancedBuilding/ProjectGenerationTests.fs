@@ -44,7 +44,8 @@ type ProjectGeneratorTests() =
     let references =
         if isMono then
             let loadedAssemblies = AppDomain.CurrentDomain.GetAssemblies() |> Seq.cache
-            let loadedPaths = loadedAssemblies |> Seq.map(fun a -> a.Location) |> Seq.toArray
+            let loadedPaths = 
+              loadedAssemblies |> Seq.choose(fun a -> try Some a.Location with _ -> None) |> Seq.toArray
 
             let toLoad =
               Directory.GetFiles(AppDomain.CurrentDomain.BaseDirectory, "*.dll")
