@@ -3,6 +3,9 @@ namespace Test.Yaaf.AdvancedBuilding
 open Yaaf.AdvancedBuilding
 open NUnit.Framework
 open System
+open System.Reflection
+open System.Linq
+open System.Collections.Generic
 open System.IO
 open System.Xml
 open System.Xml.Linq
@@ -40,6 +43,15 @@ type ProjectGeneratorTests() =
     let isMono = try System.Type.GetType("Mono.Runtime") <> null with _ -> false
     let references =
         if isMono then
+            let loadedAssemblies = AppDomain.CurrentDomain.GetAssemblies() |> Seq.cache
+            let loadedPaths = loadedAssemblies |> Seq.map(fun a -> a.Location) |> Seq.toArray
+
+            let toLoad =
+              Directory.GetFiles(AppDomain.CurrentDomain.BaseDirectory, "*.dll")
+              |> Seq.filter (fun r -> not <| loadedPaths.Contains(r, StringComparer.InvariantCultureIgnoreCase))
+            for path in toLoad do
+              AppDomain.CurrentDomain.Load(AssemblyName.GetAssemblyName(path))
+
             // Workaround compiler errors in Razor-ViewEngine
             let d = RazorEngine.Compilation.ReferenceResolver.UseCurrentAssembliesReferenceResolver()
             let loadedList = d.GetReferences() |> Seq.map (fun c -> c.GetFile()) |> Seq.cache
