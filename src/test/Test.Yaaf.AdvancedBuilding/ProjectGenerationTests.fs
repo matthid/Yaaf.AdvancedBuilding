@@ -37,7 +37,23 @@ type ProjectGeneratorTests() =
         GlobalData = []
       }
     let templatePath = "templatePath"
-    let generator = new ProjectGenerator(templatePath)
+    let isMono = try System.Type.GetType("Mono.Runtime") <> null with _ -> false
+    let references =
+        if isMono then
+            // Workaround compiler errors in Razor-ViewEngine
+            let d = RazorEngine.Compilation.ReferenceResolver.UseCurrentAssembliesReferenceResolver()
+            let loadedList = d.GetReferences() |> Seq.map (fun c -> c.GetFile()) |> Seq.cache
+            //// We replace the list and add required items manually as mcs doesn't like duplicates...
+            let getItem name =
+                loadedList |> Seq.find (fun l -> l.Contains name)
+            [ (getItem "FSharp.Core").Replace("4.3.0.0", "4.3.1.0")  // (if isMono then "/usr/lib64/mono/gac/FSharp.Core/4.3.1.0__b03f5f7f11d50a3a/FSharp.Core.dll" else "FSharp.Core") 
+              getItem "FSharp.Compiler.Service.dll"
+              getItem "System.Web.Razor.dll"
+              getItem "RazorEngine.dll"
+              getItem "Yaaf.AdvancedBuilding.dll" ] 
+            |> Some
+        else None
+    let generator = new ProjectGenerator(templatePath, ?references = references)
     let session = generator.FsiSession
 
     let razorEngineTestHelper files f =

@@ -3,3 +3,4 @@ NUnit
 NUnit.Runners
 Unquote
 Yaaf.FSharp.Scripting
+RazorEngine
