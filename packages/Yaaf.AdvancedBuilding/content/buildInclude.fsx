@@ -324,14 +324,9 @@ MyTarget "VersionBump" (fun _ ->
     if not isLocalBuild && (getBuildParamOrDefault "yaaf_merge_master" "false") = "true" then
       // Make sure we are on develop (commit will fail otherwise)
       Stash.push "" "stash version update changes."
-      try Branches.deleteBranch "" true "build_HEAD"
-      with e -> trace (sprintf "deletion of build_HEAD branch failed %O" e)
-      Branches.checkout "" true "build_HEAD"
-      try Branches.deleteBranch "" true "master"
-      with e -> trace (sprintf "deletion of master branch failed %O" e)
-      Branches.checkout "" false "origin/master"
-      Branches.checkout "" true "master"
-      Merge.merge "" FastForwardFlag "build_HEAD"
+      try Branches.deleteBranch "" true "develop"
+      with e -> trace (sprintf "deletion of develop branch failed %O" e)
+      Branches.checkout "" true "develop"
       Stash.pop ""
 
     if changedFiles |> Seq.isEmpty |> not then
@@ -344,14 +339,22 @@ MyTarget "VersionBump" (fun _ ->
             Commit "" (sprintf "Bump version to %s" config.Version)
 
     if not isLocalBuild && (getBuildParamOrDefault "yaaf_merge_master" "false") = "true" then
+      try Branches.deleteBranch "" true "master"
+      with e -> trace (sprintf "deletion of master branch failed %O" e)
+      Branches.checkout "" false "origin/master"
+      Branches.checkout "" true "master"
+      Merge.merge "" NoFastForwardFlag "develop"
+
       Branches.pushBranch "" "origin" "master"
+      //try Branches.deleteTag "" config.Version
+      //with e -> trace (sprintf "deletion of tag %s failed %O" config.Version e)
       Branches.tag "" config.Version
       Branches.pushTag "" "origin" config.Version
       try Branches.deleteBranch "" true "develop"
       with e -> trace (sprintf "deletion of develop branch failed %O" e)
       Branches.checkout "" false "origin/develop"
       Branches.checkout "" true "develop"
-      Merge.merge "" FastForwardFlag "master"
+      Merge.merge "" NoFastForwardFlag "master"
       Branches.pushBranch "" "origin" "develop"
 )
 
