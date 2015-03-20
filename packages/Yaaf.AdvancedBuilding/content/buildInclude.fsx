@@ -324,7 +324,13 @@ MyTarget "VersionBump" (fun _ ->
     if not isLocalBuild && (getBuildParamOrDefault "yaaf_merge_master" "false") = "true" then
       // Make sure we are on develop (commit will fail otherwise)
       Stash.push "" "stash version update changes."
-      Branches.checkout "" false "develop"
+      try Branches.deleteBranch "" true "build_HEAD"
+      with _ -> trace (sprintf "deletion of build_HEAD branch failed %O" e)
+      Branches.checkout "" true "build_HEAD"
+      try Branches.deleteBranch "" true "master"
+      with e -> trace (sprintf "deletion of master branch failed %O" e)
+      Branches.checkout "" false "origin/master"
+      Merge.merge "" FastForwardFlag "build_HEAD"
       Stash.pop ""
 
     if changedFiles |> Seq.isEmpty |> not then
@@ -337,13 +343,12 @@ MyTarget "VersionBump" (fun _ ->
             Commit "" (sprintf "Bump version to %s" config.Version)
 
     if not isLocalBuild && (getBuildParamOrDefault "yaaf_merge_master" "false") = "true" then
-      Branches.pushBranch "" "origin" "develop"
-      Branches.checkout "" false "master"
-      Merge.merge "" FastForwardFlag "develop"
       Branches.pushBranch "" "origin" "master"
       Branches.tag "" config.Version
       Branches.pushTag "" "origin" config.Version
-      Branches.checkout "" false "develop"
+      try Branches.deleteBranch "" true "develop"
+      with e -> trace (sprintf "deletion of develop branch failed %O" e)
+      Branches.checkout "" false "origin/develop"
       Merge.merge "" FastForwardFlag "master"
       Branches.pushBranch "" "origin" "develop"
 )
