@@ -1,4 +1,8 @@
-﻿### 0.3.6
+﻿### 0.4.0
+
+ * Rename NuGet target to NuGetPack and introduce NuGetPush. NuGetPush is executed as last step.
+
+### 0.3.6
 
  * make sure we are on develop branch when the build is on a build server and yaaf_merge_master is true.
 

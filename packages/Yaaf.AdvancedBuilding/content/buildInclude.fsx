@@ -255,24 +255,30 @@ let rec private publish parameters =
           |> failwith
     traceEndTask "MyNuGetPublish" nuspec
 
-MyTarget "NuGet" (fun _ ->
-    let outDir = config.OutNugetDir
-    ensureDirectory outDir
+let packSetup config p =
+  { p with
+      Authors = config.ProjectAuthors
+      Project = config.ProjectName
+      Summary = config.ProjectSummary
+      Version = config.Version
+      Description = config.ProjectDescription
+      Tags = config.NugetTags
+      WorkingDir = "."
+      OutputPath = config.OutNugetDir
+      AccessKey = getBuildParamOrDefault "nugetkey" ""
+      Publish = false
+      Dependencies = [ ] }
+
+MyTarget "NuGetPack" (fun _ ->
+    ensureDirectory config.OutNugetDir
     for (nuspecFile, settingsFunc) in config.NugetPackages do
-      let packSetup p =
-        { p with
-            Authors = config.ProjectAuthors
-            Project = config.ProjectName
-            Summary = config.ProjectSummary
-            Version = config.Version
-            Description = config.ProjectDescription
-            Tags = config.NugetTags
-            WorkingDir = "."
-            OutputPath = outDir
-            AccessKey = getBuildParamOrDefault "nugetkey" ""
-            Publish = false
-            Dependencies = [ ] }
-      NuGet (packSetup >> settingsFunc config) (sprintf "nuget/%s" nuspecFile)
+      let packSetup = packSetup config
+      NuGet (fun p -> { (packSetup >> settingsFunc config) p with Publish = false }) (sprintf "nuget/%s" nuspecFile)
+)
+
+MyTarget "NuGetPush" (fun _ ->
+    for (nuspecFile, settingsFunc) in config.NugetPackages do
+      let packSetup = packSetup config
       let parameters = NuGetDefaults() |> (fun p -> { packSetup p with Publish = true }) |> settingsFunc config
       // This allows us to specify packages which we do not want to push...
       if hasBuildParam "nugetkey" && parameters.Publish then publish parameters
@@ -371,7 +377,7 @@ config.BuildTargets
 // Dependencies
 "Clean" 
   ==> "CopyToRelease"
-  ==> "NuGet"
+  ==> "NuGetPack"
   ==> "LocalDoc"
   ==> "All"
  
@@ -379,5 +385,6 @@ config.BuildTargets
   ==> "VersionBump"
   ==> "GithubDoc"
   ==> "ReleaseGithubDoc"
+  ==> "NuGetPush"
   ==> "Release"
 
