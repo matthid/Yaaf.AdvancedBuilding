@@ -42,7 +42,7 @@ type ProjectGeneratorTests() =
     let templatePath = "templatePath"
     let isMono = try System.Type.GetType("Mono.Runtime") <> null with _ -> false
     let references =
-        if isMono then
+        //if isMono then
             let loadedAssemblies = AppDomain.CurrentDomain.GetAssemblies() |> Seq.cache
             let loadedPaths = 
               loadedAssemblies |> Seq.choose(fun a -> try Some a.Location with _ -> None) |> Seq.toArray
@@ -51,24 +51,26 @@ type ProjectGeneratorTests() =
               Directory.GetFiles(AppDomain.CurrentDomain.BaseDirectory, "*.dll")
               |> Seq.filter (fun r -> not <| loadedPaths.Contains(r, StringComparer.InvariantCultureIgnoreCase))
             for path in toLoad do
-              AppDomain.CurrentDomain.Load(AssemblyName.GetAssemblyName(path))
-
+              AppDomain.CurrentDomain.Load(AssemblyName.GetAssemblyName(path)) |> ignore
             // Workaround compiler errors in Razor-ViewEngine
             let d = RazorEngine.Compilation.ReferenceResolver.UseCurrentAssembliesReferenceResolver()
             let loadedList = d.GetReferences() |> Seq.map (fun c -> c.GetFile()) |> Seq.cache
             //// We replace the list and add required items manually as mcs doesn't like duplicates...
             let getItem name =
-                match loadedList |> Seq.tryFind (fun l -> l.Contains name) with
+                match loadedList |> Seq.tryFind (fun l -> l.Contains name && not (l.Contains ("Test." + name))) with
                 | Some f -> f
                 | None -> failwithf "assembly %s is not loaded." name
             [ (getItem "FSharp.Core").Replace("4.3.0.0", "4.3.1.0")  // (if isMono then "/usr/lib64/mono/gac/FSharp.Core/4.3.1.0__b03f5f7f11d50a3a/FSharp.Core.dll" else "FSharp.Core") 
+              getItem "FSharp.Compiler.Service.dll"
               getItem "Yaaf.FSharp.Scripting.dll"
               getItem "System.Web.Razor.dll"
               getItem "RazorEngine.dll"
-              getItem "Yaaf.AdvancedBuilding.dll" ] 
-            |> Some
-        else None
-    let generator = new ProjectGenerator(templatePath, ?references = references)
+              getItem "Yaaf.AdvancedBuilding.dll"
+              getItem "System.dll"
+              getItem "System.Core.dll" ] 
+        //    |> Some
+        //else None
+    let generator = new ProjectGenerator(templatePath, references)
     let session = generator.FsiSession
 
     let razorEngineTestHelper files f =
