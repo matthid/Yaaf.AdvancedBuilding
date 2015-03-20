@@ -325,7 +325,7 @@ MyTarget "VersionBump" (fun _ ->
       // Make sure we are on develop (commit will fail otherwise)
       Stash.push "" "stash version update changes."
       try Branches.deleteBranch "" true "build_HEAD"
-      with _ -> trace (sprintf "deletion of build_HEAD branch failed %O" e)
+      with e -> trace (sprintf "deletion of build_HEAD branch failed %O" e)
       Branches.checkout "" true "build_HEAD"
       try Branches.deleteBranch "" true "master"
       with e -> trace (sprintf "deletion of master branch failed %O" e)
