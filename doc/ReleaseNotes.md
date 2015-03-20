@@ -1,4 +1,8 @@
-﻿### 0.3.5
+﻿### 0.3.6
+
+ * make sure we are on develop branch when the build is on a build server and yaaf_merge_master is true.
+
+### 0.3.5
 
  * Disable questions when running on a build server.
  * Add feature to create tags and merge to master.

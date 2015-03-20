@@ -315,6 +315,12 @@ Target "All" (fun _ ->
 MyTarget "VersionBump" (fun _ ->
     // Commit updates the SharedAssemblyInfo.cs files.
     let changedFiles = Fake.Git.FileStatus.getChangedFilesInWorkingCopy "" "HEAD" |> Seq.toList
+    if not isLocalBuild && (getBuildParamOrDefault "yaaf_merge_master" "false") = "true" then
+      // Make sure we are on develop (commit will fail otherwise)
+      Stash.push "" "stash version update changes."
+      Branches.checkout "" false "develop"
+      Stash.pop ""
+
     if changedFiles |> Seq.isEmpty |> not then
         for (status, file) in changedFiles do
             printfn "File %s changed (%A)" file status
