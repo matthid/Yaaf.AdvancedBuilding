@@ -330,6 +330,7 @@ MyTarget "VersionBump" (fun _ ->
       try Branches.deleteBranch "" true "master"
       with e -> trace (sprintf "deletion of master branch failed %O" e)
       Branches.checkout "" false "origin/master"
+      Branches.checkout "" true "master"
       Merge.merge "" FastForwardFlag "build_HEAD"
       Stash.pop ""
 
@@ -349,6 +350,7 @@ MyTarget "VersionBump" (fun _ ->
       try Branches.deleteBranch "" true "develop"
       with e -> trace (sprintf "deletion of develop branch failed %O" e)
       Branches.checkout "" false "origin/develop"
+      Branches.checkout "" true "develop"
       Merge.merge "" FastForwardFlag "master"
       Branches.pushBranch "" "origin" "develop"
 )
