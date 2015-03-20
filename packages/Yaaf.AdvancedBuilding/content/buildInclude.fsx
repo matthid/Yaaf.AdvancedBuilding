@@ -220,11 +220,46 @@ MyTarget "CopyToRelease" (fun _ ->
         )
 )
 
+
+/// push package (and try again if something fails), FAKE Version doesn't work on mono
+/// From https://raw.githubusercontent.com/fsharp/FAKE/master/src/app/FakeLib/NuGet/NugetHelper.fs
+let rec private publish parameters =
+    let replaceAccessKey key (text : string) =
+        if isNullOrEmpty key then text
+        else text.Replace(key, "PRIVATEKEY")
+    let nuspec = sprintf "%s.%s.nupkg" parameters.Project parameters.Version
+    traceStartTask "MyNuGetPublish" nuspec
+    let tracing = enableProcessTracing
+    enableProcessTracing <- false
+    let source =
+        if isNullOrEmpty parameters.PublishUrl then ""
+        else sprintf "-s %s" parameters.PublishUrl
+
+    let args = sprintf "push \"%s\" %s %s" (parameters.OutputPath @@ nuspec) parameters.AccessKey source
+    tracefn "%s %s in WorkingDir: %s Trials left: %d" parameters.ToolPath (replaceAccessKey parameters.AccessKey args)
+        (FullName parameters.WorkingDir) parameters.PublishTrials
+    try
+        let result =
+            ExecProcess (fun info ->
+                info.FileName <- parameters.ToolPath
+                info.WorkingDirectory <- FullName parameters.WorkingDir
+                info.Arguments <- args) parameters.TimeOut
+        enableProcessTracing <- tracing
+        if result <> 0 then failwithf "Error during NuGet push. %s %s" parameters.ToolPath args
+    with exn ->
+        if parameters.PublishTrials > 0 then publish { parameters with PublishTrials = parameters.PublishTrials - 1 }
+        else
+          (if exn.InnerException <> null then exn.Message + "\r\n" + exn.InnerException.Message
+           else exn.Message)
+          |> replaceAccessKey parameters.AccessKey
+          |> failwith
+    traceEndTask "MyNuGetPublish" nuspec
+
 MyTarget "NuGet" (fun _ ->
     let outDir = config.OutNugetDir
     ensureDirectory outDir
     for (nuspecFile, settingsFunc) in config.NugetPackages do
-      NuGet (fun p ->
+      let packSetup p =
         { p with
             Authors = config.ProjectAuthors
             Project = config.ProjectName
@@ -235,9 +270,12 @@ MyTarget "NuGet" (fun _ ->
             WorkingDir = "."
             OutputPath = outDir
             AccessKey = getBuildParamOrDefault "nugetkey" ""
-            Publish = hasBuildParam "nugetkey"
-            Dependencies = [ ] } |> settingsFunc config)
-        (sprintf "nuget/%s" nuspecFile)
+            Publish = false
+            Dependencies = [ ] }
+      NuGet (packSetup >> settingsFunc config) (sprintf "nuget/%s" nuspecFile)
+      let parameters = NuGetDefaults() |> (fun p -> { packSetup p with Publish = true }) |> settingsFunc config
+      // This allows us to specify packages which we do not want to push...
+      if hasBuildParam "nugetkey" && parameters.Publish then publish parameters
 )
 
 // Documentation 
@@ -248,7 +286,6 @@ MyTarget "LocalDoc" (fun _ ->
     buildDocumentationTarget "LocalDoc"
     trace (sprintf "Local documentation has been finished, you can view it by opening %s in your browser!" (Path.GetFullPath (config.OutDocDir @@ "local" @@ "html" @@ "index.html")))
 )
-
 
 MyTarget "ReleaseGithubDoc" (fun isSingle ->
     let repro = (sprintf "git@github.com:%s/%s.git" config.GithubUser config.GithubProject)
