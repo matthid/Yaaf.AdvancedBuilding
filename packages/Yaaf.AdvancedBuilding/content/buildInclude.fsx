@@ -338,7 +338,8 @@ MyTarget "VersionBump" (fun _ ->
       try Branches.deleteBranch "" true "develop"
       with e -> trace (sprintf "deletion of develop branch failed %O" e)
       Branches.checkout "" true "develop"
-      Stash.pop ""
+      try Stash.pop ""
+      with e -> trace (sprintf "stash pop failed %O" e)
 
     if changedFiles |> Seq.isEmpty |> not then
         for (status, file) in changedFiles do
