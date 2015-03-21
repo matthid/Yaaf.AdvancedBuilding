@@ -330,17 +330,18 @@ Target "All" (fun _ ->
 )
 
 MyTarget "VersionBump" (fun _ ->
-    // Commit updates the SharedAssemblyInfo.cs files.
-    let changedFiles = Fake.Git.FileStatus.getChangedFilesInWorkingCopy "" "HEAD" |> Seq.toList
-    if not isLocalBuild && (getBuildParamOrDefault "yaaf_merge_master" "false") = "true" then
+    let doBranchUpdates = not isLocalBuild && (getBuildParamOrDefault "yaaf_merge_master" "false") = "true"
+    if doBranchUpdates then
       // Make sure we are on develop (commit will fail otherwise)
-      Stash.push "" "stash version update changes."
+      Stash.push "" ""
       try Branches.deleteBranch "" true "develop"
       with e -> trace (sprintf "deletion of develop branch failed %O" e)
       Branches.checkout "" true "develop"
       try Stash.pop ""
       with e -> trace (sprintf "stash pop failed %O" e)
 
+    // Commit updates the SharedAssemblyInfo.cs files.
+    let changedFiles = Fake.Git.FileStatus.getChangedFilesInWorkingCopy "" "HEAD" |> Seq.toList
     if changedFiles |> Seq.isEmpty |> not then
         for (status, file) in changedFiles do
             printfn "File %s changed (%A)" file status
@@ -350,7 +351,7 @@ MyTarget "VersionBump" (fun _ ->
             StageAll ""
             Commit "" (sprintf "Bump version to %s" config.Version)
 
-    if not isLocalBuild && (getBuildParamOrDefault "yaaf_merge_master" "false") = "true" then
+    if doBranchUpdates then
       try Branches.deleteBranch "" true "master"
       with e -> trace (sprintf "deletion of master branch failed %O" e)
       Branches.checkout "" false "origin/master"
