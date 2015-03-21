@@ -1,6 +1,7 @@
 ﻿### 0.5.0
 
  * Update to net45 and latest FSharp.Formatting.
+ * Documentation output is now live.
 
 ### 0.4.0
 

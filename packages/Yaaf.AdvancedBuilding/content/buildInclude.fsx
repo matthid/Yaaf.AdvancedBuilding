@@ -111,13 +111,20 @@ let buildAll (buildParams:BuildParams) =
     runTests buildParams
     buildParams.AfterTest ()
 
+/// Run the given buildscript with fsi.exe
+let executeFSIWithOutput workingDirectory script args =
+    let exitCode =
+        ExecProcessWithLambdas
+            (fsiStartInfo script workingDirectory args)
+            TimeSpan.MaxValue false ignore ignore
+    System.Threading.Thread.Sleep 1000
+    exitCode
+
 // Documentation
 let buildDocumentationTarget target =
     trace (sprintf "Building documentation (%s), this could take some time, please wait..." target)
-    let b, s = executeFSI "." "generateDocs.fsx" ["target", target]
-    for l in s do
-        (if l.IsError then traceError else trace) (sprintf "DOCS: %s" l.Message)
-    if not b then
+    let exit = executeFSIWithOutput "." "generateDocs.fsx" ["target", target]
+    if exit <> 0 then
         failwith "documentation failed"
     ()
 
@@ -291,6 +298,10 @@ MyTarget "GithubDoc" (fun _ -> buildDocumentationTarget "GithubDoc")
 MyTarget "LocalDoc" (fun _ -> 
     buildDocumentationTarget "LocalDoc"
     trace (sprintf "Local documentation has been finished, you can view it by opening %s in your browser!" (Path.GetFullPath (config.OutDocDir @@ "local" @@ "html" @@ "index.html")))
+)
+
+MyTarget "AllDocs" (fun _ ->
+    buildDocumentationTarget "AllDocs"
 )
 
 MyTarget "ReleaseGithubDoc" (fun isSingle ->
