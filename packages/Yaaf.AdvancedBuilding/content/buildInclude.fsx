@@ -111,13 +111,20 @@ let buildAll (buildParams:BuildParams) =
     runTests buildParams
     buildParams.AfterTest ()
 
+/// Run the given buildscript with fsi.exe
+let executeFSIWithOutput workingDirectory script args =
+    let exitCode =
+        ExecProcessWithLambdas
+            (fsiStartInfo script workingDirectory args)
+            TimeSpan.MaxValue false ignore ignore
+    System.Threading.Thread.Sleep 1000
+    exitCode
+
 // Documentation
 let buildDocumentationTarget target =
     trace (sprintf "Building documentation (%s), this could take some time, please wait..." target)
-    let b, s = executeFSI "." "generateDocs.fsx" ["target", target]
-    for l in s do
-        (if l.IsError then traceError else trace) (sprintf "DOCS: %s" l.Message)
-    if not b then
+    let exit = executeFSIWithOutput "." "generateDocs.fsx" ["target", target]
+    if exit <> 0 then
         failwith "documentation failed"
     ()
 
@@ -293,6 +300,10 @@ MyTarget "LocalDoc" (fun _ ->
     trace (sprintf "Local documentation has been finished, you can view it by opening %s in your browser!" (Path.GetFullPath (config.OutDocDir @@ "local" @@ "html" @@ "index.html")))
 )
 
+MyTarget "AllDocs" (fun _ ->
+    buildDocumentationTarget "AllDocs"
+)
+
 MyTarget "ReleaseGithubDoc" (fun isSingle ->
     let repro = (sprintf "git@github.com:%s/%s.git" config.GithubUser config.GithubProject)
     let doAction =
@@ -319,21 +330,18 @@ Target "All" (fun _ ->
 )
 
 MyTarget "VersionBump" (fun _ ->
+    let doBranchUpdates = not isLocalBuild && (getBuildParamOrDefault "yaaf_merge_master" "false") = "true"
+    if doBranchUpdates then
+      // Make sure we are on develop (commit will fail otherwise)
+      Stash.push "" ""
+      try Branches.deleteBranch "" true "develop"
+      with e -> trace (sprintf "deletion of develop branch failed %O" e)
+      Branches.checkout "" true "develop"
+      try Stash.pop ""
+      with e -> trace (sprintf "stash pop failed %O" e)
+
     // Commit updates the SharedAssemblyInfo.cs files.
     let changedFiles = Fake.Git.FileStatus.getChangedFilesInWorkingCopy "" "HEAD" |> Seq.toList
-    if not isLocalBuild && (getBuildParamOrDefault "yaaf_merge_master" "false") = "true" then
-      // Make sure we are on develop (commit will fail otherwise)
-      Stash.push "" "stash version update changes."
-      try Branches.deleteBranch "" true "build_HEAD"
-      with e -> trace (sprintf "deletion of build_HEAD branch failed %O" e)
-      Branches.checkout "" true "build_HEAD"
-      try Branches.deleteBranch "" true "master"
-      with e -> trace (sprintf "deletion of master branch failed %O" e)
-      Branches.checkout "" false "origin/master"
-      Branches.checkout "" true "master"
-      Merge.merge "" FastForwardFlag "build_HEAD"
-      Stash.pop ""
-
     if changedFiles |> Seq.isEmpty |> not then
         for (status, file) in changedFiles do
             printfn "File %s changed (%A)" file status
@@ -343,15 +351,23 @@ MyTarget "VersionBump" (fun _ ->
             StageAll ""
             Commit "" (sprintf "Bump version to %s" config.Version)
 
-    if not isLocalBuild && (getBuildParamOrDefault "yaaf_merge_master" "false") = "true" then
+    if doBranchUpdates then
+      try Branches.deleteBranch "" true "master"
+      with e -> trace (sprintf "deletion of master branch failed %O" e)
+      Branches.checkout "" false "origin/master"
+      Branches.checkout "" true "master"
+      Merge.merge "" NoFastForwardFlag "develop"
+
       Branches.pushBranch "" "origin" "master"
+      //try Branches.deleteTag "" config.Version
+      //with e -> trace (sprintf "deletion of tag %s failed %O" config.Version e)
       Branches.tag "" config.Version
       Branches.pushTag "" "origin" config.Version
       try Branches.deleteBranch "" true "develop"
       with e -> trace (sprintf "deletion of develop branch failed %O" e)
       Branches.checkout "" false "origin/develop"
       Branches.checkout "" true "develop"
-      Merge.merge "" FastForwardFlag "master"
+      Merge.merge "" NoFastForwardFlag "master"
       Branches.pushBranch "" "origin" "develop"
 )
 

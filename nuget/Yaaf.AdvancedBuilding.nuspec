@@ -18,11 +18,14 @@
     @dependencies@
   </metadata>
   <files>
-    <file src="release/lib/net40/Yaaf.AdvancedBuilding.dll" target="tools\Yaaf.AdvancedBuilding.dll" />
-    <file src="release/lib/net40/Yaaf.AdvancedBuilding.xml" target="tools\Yaaf.AdvancedBuilding.xml" />
-    <file src="packages/Microsoft.AspNet.Razor/lib/net40/System.Web.Razor.dll" target="tools\System.Web.Razor.dll" />
-    <file src="packages/RazorEngine/lib/net40/RazorEngine.dll" target="tools\RazorEngine.dll" />
-    <file src="packages/Yaaf.FSharp.Scripting/lib/net40/Yaaf.FSharp.Scripting.dll" target="tools\Yaaf.FSharp.Scripting.dll" />
+    <file src="release/lib/net45/Yaaf.AdvancedBuilding.dll" target="tools\Yaaf.AdvancedBuilding.dll" />
+    <file src="release/lib/net45/Yaaf.AdvancedBuilding.xml" target="tools\Yaaf.AdvancedBuilding.xml" />
+    <file src="packages/.nuget/Microsoft.AspNet.Razor.3.2.2/lib/net45/System.Web.Razor.dll" target="tools\System.Web.Razor.dll" />
+    <file src="packages/.nuget/Microsoft.AspNet.Razor.3.2.2/lib/net45/System.Web.Razor.xml" target="tools\System.Web.Razor.xml" />
+    <file src="packages/RazorEngine/lib/net45/RazorEngine.dll" target="tools\RazorEngine.dll" />
+    <file src="packages/RazorEngine/lib/net45/RazorEngine.xml" target="tools\RazorEngine.xml" />
+    <file src="packages/Yaaf.FSharp.Scripting/lib/net45/Yaaf.FSharp.Scripting.dll" target="tools\Yaaf.FSharp.Scripting.dll" />
+    <file src="packages/Yaaf.FSharp.Scripting/lib/net45/Yaaf.FSharp.Scripting.xml" target="tools\Yaaf.FSharp.Scripting.xml" />
     <file src="packages/Yaaf.AdvancedBuilding/content/build.cmd" target="content/build.cmd" />
     <file src="packages/Yaaf.AdvancedBuilding/content/build.sh" target="content/build.sh" />
     <file src="packages/Yaaf.AdvancedBuilding/content/buildInclude.fsx" target="content/buildInclude.fsx" />

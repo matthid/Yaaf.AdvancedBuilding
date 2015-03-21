@@ -10,18 +10,7 @@
 open BuildConfigDef
 let config = BuildConfig.buildConfig.FillDefaults()
 
-#I @"../../FSharp.Compiler.Service/lib/net40/"
-#I @"../../FSharp.Formatting/lib/net40/"
-
-// Documentation
-#r "FSharp.Compiler.Service.dll"
-#r "System.Web.dll"
-#r "System.Web.Razor.dll"
-#r "RazorEngine.dll"
-#r "FSharp.Markdown.dll"
-#r "FSharp.Literate.dll"
-#r "FSharp.CodeFormat.dll"
-#r "FSharp.MetadataFormat.dll"
+#load @"../../FSharp.Formatting/FSharp.Formatting.fsx"
 
 open System.Collections.Generic
 open System.IO
@@ -224,7 +213,8 @@ let buildAllDocumentation outDocDir website_root =
     CleanDirs [ outDocDir ]
     copyDocContentFiles()
     processDocumentationFiles OutputKind.Html
-    processDocumentationFiles OutputKind.Latex
+    // enable when working again...
+    //processDocumentationFiles OutputKind.Latex
     buildReference()
     
 let MyTarget name body =
@@ -232,9 +222,18 @@ let MyTarget name body =
     let single = (sprintf "%s_single" name)
     Target single (fun _ -> body true)
 
-MyTarget "GithubDoc" (fun _ -> buildAllDocumentation (config.OutDocDir @@ sprintf "%s.github.io" config.GithubUser) (sprintf "https://%s.github.io/%s" config.GithubUser config.GithubProject))
+let doGithub () =
+    buildAllDocumentation (config.OutDocDir @@ sprintf "%s.github.io" config.GithubUser) (sprintf "https://%s.github.io/%s" config.GithubUser config.GithubProject)
 
-MyTarget "LocalDoc" (fun _ -> 
+let doLocal () =
     buildAllDocumentation (config.OutDocDir @@ "local") ("file://" + Path.GetFullPath (config.OutDocDir @@ "local" @@ "html"))
     trace (sprintf "Local documentation has been finished, you can view it by opening %s in your browser!" (Path.GetFullPath (config.OutDocDir @@ "local" @@ "html" @@ "index.html")))
+
+MyTarget "GithubDoc" (fun _ -> doGithub())
+
+MyTarget "LocalDoc" (fun _ -> doLocal())
+
+MyTarget "AllDocs" (fun _ ->
+    doGithub()
+    doLocal()
 )

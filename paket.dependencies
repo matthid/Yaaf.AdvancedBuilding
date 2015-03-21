@@ -2,7 +2,7 @@ source https://nuget.org/api/v2
 
 nuget FAKE
 nuget FSharp.Core
-nuget FSharp.Formatting == 2.6.3
+nuget FSharp.Formatting
 nuget FSharp.Compiler.Service
 nuget Nuget.CommandLine
 nuget NUnit == 2.6.3
