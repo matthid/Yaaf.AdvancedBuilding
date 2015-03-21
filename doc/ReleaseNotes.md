@@ -1,4 +1,8 @@
-﻿### 0.4.0
+﻿### 0.5.0
+
+ * Update to net45 and latest FSharp.Formatting.
+
+### 0.4.0
 
  * Rename NuGet target to NuGetPack and introduce NuGetPush. NuGetPush is executed as last step.
 

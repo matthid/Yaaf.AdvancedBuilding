@@ -10,18 +10,7 @@
 open BuildConfigDef
 let config = BuildConfig.buildConfig.FillDefaults()
 
-#I @"../../FSharp.Compiler.Service/lib/net40/"
-#I @"../../FSharp.Formatting/lib/net40/"
-
-// Documentation
-#r "FSharp.Compiler.Service.dll"
-#r "System.Web.dll"
-#r "System.Web.Razor.dll"
-#r "RazorEngine.dll"
-#r "FSharp.Markdown.dll"
-#r "FSharp.Literate.dll"
-#r "FSharp.CodeFormat.dll"
-#r "FSharp.MetadataFormat.dll"
+#load @"../../FSharp.Formatting/FSharp.Formatting.fsx"
 
 open System.Collections.Generic
 open System.IO
@@ -224,7 +213,8 @@ let buildAllDocumentation outDocDir website_root =
     CleanDirs [ outDocDir ]
     copyDocContentFiles()
     processDocumentationFiles OutputKind.Html
-    processDocumentationFiles OutputKind.Latex
+    // enable when working again...
+    //processDocumentationFiles OutputKind.Latex
     buildReference()
     
 let MyTarget name body =

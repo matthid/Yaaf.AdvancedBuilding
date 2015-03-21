@@ -85,6 +85,7 @@ Setup which nuget packages are created.
               Dependencies =
                 [ "FSharp.Formatting"
                   "FSharp.Compiler.Service"
+                  "FSharpVSPowerTools.Core"
                   "FAKE" ]
                   |> List.map (fun name -> name, (GetPackageVersion "packages" name |> RequireExactly)) } )
         "Yaaf.AdvancedBuilding.Library.nuspec", (fun config p ->
