@@ -1,4 +1,8 @@
-﻿### 0.5.0
+﻿### 0.5.1
+
+ * Be more verbose in CopyToRelease.
+
+### 0.5.0
 
  * Update to net45 and latest FSharp.Formatting.
  * Documentation output is now live.
