@@ -1,6 +1,7 @@
 ﻿### 0.5.1
 
  * Be more verbose in CopyToRelease.
+ * You can now specify the used Razor references for the documentation generation via `DocRazorReferences`
 
 ### 0.5.0
 
