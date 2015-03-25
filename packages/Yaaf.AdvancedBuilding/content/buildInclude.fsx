@@ -153,7 +153,6 @@ MyTarget "CleanAll" (fun _ ->
 )
 
 MyTarget "RestorePackages" (fun _ ->
-  if config.UseNuget then
     // will catch src/targetsDependencies
     !! "./src/**/packages.config"
     |> Seq.iter 
@@ -168,7 +167,6 @@ MyTarget "SetVersions" (fun _ ->
 )
 
 MyTarget "CreateProjectFiles" (fun _ ->
-  if config.EnableProjectFileCreation then
     let generator = new ProjectGenerator("./src/templates")
     let createdFile = ref false
     let projectGenFiles =
@@ -377,6 +375,8 @@ Target "Release" (fun _ ->
     trace "All released!"
 )
 
+Target "ReadyForBuild" ignore
+
 // Clean all
 "Clean" 
   ==> "CleanAll"
@@ -384,14 +384,15 @@ Target "Release" (fun _ ->
   ==> "CleanAll_single"
 
 "Clean"
-  ==> "RestorePackages"
+  =?> ("RestorePackages", config.UseNuget)
   ==> "SetVersions"
-  ==> "CreateProjectFiles"
+  =?> ("CreateProjectFiles", config.EnableProjectFileCreation)
+  ==> "ReadyForBuild"
 
 config.BuildTargets
     |> Seq.iter (fun buildParam ->
         let buildName = sprintf "Build_%s" buildParam.SimpleBuildName
-        "CreateProjectFiles"
+        "ReadyForBuild"
           ==> buildName
           |> ignore
         buildName
@@ -408,8 +409,8 @@ config.BuildTargets
  
 "All" 
   ==> "VersionBump"
-  ==> "GithubDoc"
-  ==> "ReleaseGithubDoc"
+  =?> ("GithubDoc", config.EnableGithub)
+  =?> ("ReleaseGithubDoc", config.EnableGithub)
   ==> "NuGetPush"
   ==> "Release"
 
