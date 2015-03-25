@@ -83,6 +83,8 @@ type BuildConfiguration =
     CopyrightNotice : string
     ProjectDescription : string
     ProjectAuthors : string list
+    /// Enable all github integrations (pushing documentation)
+    EnableGithub : bool
     GithubUser : string
     /// Defaults to ProjectName
     GithubProject : string
@@ -140,6 +142,7 @@ type BuildConfiguration =
       CopyrightNotice = ""
       ProjectDescription = ""
       UseNuget = false
+      EnableGithub = true
       EnableProjectFileCreation = false
       ProjectAuthors = []
       BuildTargets = [ BuildParams.Empty ]

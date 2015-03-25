@@ -1,4 +1,8 @@
-﻿### 0.5.1
+﻿### 0.5.2
+
+ * You can now disable Github integrations with `EnableGithub = false` (documentation generation).
+
+### 0.5.1
 
  * Be more verbose in CopyToRelease.
  * You can now specify the used Razor references for the documentation generation via `DocRazorReferences`
