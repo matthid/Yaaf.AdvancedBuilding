@@ -1,4 +1,8 @@
-﻿### 0.5.2
+﻿### 0.5.3
+
+ * Fix some broken defaults in documentation generation (which leads to broken links).
+
+### 0.5.2
 
  * You can now disable Github integrations with `EnableGithub = false` (documentation generation).
 
