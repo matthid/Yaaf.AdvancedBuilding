@@ -34,20 +34,23 @@ Yaaf.AdvancedBuilding
 After setting up some projects with FAKE and paket I often find the need to edit the `build.fsx` and add new features.
 And most of the time after adding a feature I wanted that feature on other projects as well.
 
-Because of this I introduced Yaaf.AdvancedBuilding a nuget package containing a general FAKE build script, which can be configured.
+Because of this I introduced Yaaf.AdvancedBuilding, a nuget package containing a general FAKE build script, which can be configured.
 Whenever I introduce a new feature into the build script I only need to update Yaaf.AdvancedBuilding to be able to use it.
 
-Another pain point is building for multiple targets... fsproj files have only limited (read "no") support for
-msbuild features like `<Compile Include="@(CompileList)" />` (to extract common files/references), therefore you can only really duplicate the
-fsproj files and keep maintaining a bunch of them. This project tries to fix this by generating target specific msbuild files for you.
+Another pain point is building for multiple targets... 
+The default FAKE targets defined in Yaaf.AdvancedBuilding can handle multiple targets.
+Basically we use the solution platform configuration to define multiple platforms/targets.
+This makes the build completely executable with xbuild/msbuild and lets you configure everything in
+the project files (Visual Studio) itself. 
+This way you can change the platform from within Visual Studio without the need to load another solution or to restart Visual Studio. 
+You can find an example here: https://github.com/matthid/Yaaf.FSharp.Helper/blob/develop/src/source/Yaaf.FSharp.Helper/Yaaf.FSharp.Helper.fsproj
 
 Features:
 
 - Your build can be updated.
-- Extendible with your own FAKE targets / dependencies.
+- Extendible with your own FAKE targets / dependencies (as without Yaaf.AdvancedBuilding).
 - Additional support for building projects for multiple targets (net40, net45 and portable profiles)
-   * Feature to specify fsproj and csproj templates and generate profile specific fsproj and csproj templates out of these
-   * You will have FAKE targets for the generated files
+- Simplifies your paket.dependencies file by simplifying all build dependencies to just Yaaf.AdvancedBuilding.
 
 ## Quick intro
 
@@ -64,7 +67,7 @@ We also assume that you have a project named `Yaaf.Project` already setup with `
 - src
   - test (Directory for test projects)
     - Test.Yaaf.Project (test projects start with "Test." and produce equally named ".dll" files)
-  - source (Directort for source projects)
+  - source (Directory for source projects)
   - Yaaf.Project.sln
 - build.cmd
 - build.sh
