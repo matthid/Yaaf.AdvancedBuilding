@@ -10,15 +10,11 @@ REM resore paket build dependencies
 if exist ".paket/paket.bootstrapper.exe" (
   echo Bootstrap paket
   .paket\paket.bootstrapper.exe
-  if errorlevel 1 (
-    exit /b %errorlevel%
-  )
+  if %errorlevel% neq 0 exit /b %errorlevel%
 
   echo restore paket packages
   .paket\paket.exe restore
-  if errorlevel 1 (
-    exit /b %errorlevel%
-  )
+  if %errorlevel% neq 0 exit /b %errorlevel%
 
   set fake=%paket_packages%/%fake_path%
   set nuget=%paket_packages%/%nuget_path%
@@ -29,6 +25,7 @@ if not exist %nuget% (
     if not exist %nuget_packages%/%nuget_path% (
       echo Bootstrap Nuget
       "C:\Program Files (x86)\Microsoft SDKs\F#\3.1\Framework\v4.0\fsi.exe" downloadNuget.fsx
+      if %errorlevel% neq 0 exit /b %errorlevel%
     )
     set nuget=%nuget_packages%/%nuget_path%
   )
@@ -38,6 +35,7 @@ if exist packages.config (
   if exist %nuget% (
     echo Resolve build dependencies
     "%nuget%" "install" "packages.config" "-OutputDirectory" %nuget_packages% "-ExcludeVersion"
+    if %errorlevel% neq 0 exit /b %errorlevel%
   ) else (
     echo NuGet build dependencies file found but no NuGet.exe could be found, either add downloadNuget.fsx or add Nuget.Commandline as paket dependency!.
   )
@@ -54,4 +52,5 @@ if not exist %fake% (
 
 echo start FAKE for the rest of the build procedure...
 "%fake%" %* --fsiargs -d:WIN64 -d:FAKE build.fsx
+if %errorlevel% neq 0 exit /b %errorlevel%
 
