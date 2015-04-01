@@ -1,4 +1,9 @@
-﻿### 0.5.3
+﻿### 0.5.4
+
+ * Add the possibility to source the build script and execute the "do_build" function afterwards
+   This helps when you run into problems with paket and a locked 'build.sh' file.
+
+### 0.5.3
 
  * Fix some broken defaults in documentation generation (which leads to broken links).
 
