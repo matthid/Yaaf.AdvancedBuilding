@@ -2,7 +2,8 @@ source https://nuget.org/api/v2
 
 nuget FAKE
 nuget FSharp.Core
-nuget FSharp.Formatting
+nuget FSharp.Formatting == 2.7.5
+nuget FSharpVSPowerTools.Core 1.7.0
 nuget FSharp.Compiler.Service
 nuget Nuget.CommandLine
 nuget NUnit == 2.6.3
