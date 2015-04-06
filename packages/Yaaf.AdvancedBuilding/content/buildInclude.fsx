@@ -168,18 +168,20 @@ MyTarget "CreateDebugFiles" (fun _ ->
     !! (config.GlobalPackagesDir + "/**/*.exe")
     ++ (config.GlobalPackagesDir + "/**/*.dll")
     |> Seq.iter (fun assembly ->
-        match File.Exists (Path.ChangeExtension(assembly, "pdb")), File.Exists (Path.ChangeExtension (assembly, "mdb")) with
-        | true, false ->
-          // create mdb
-          trace (sprintf "Creating mdb for %s" assembly)
-          Yaaf.AdvancedBuilding.DebugSymbolHelper.writeMdbFromPdb assembly
-        | false, true ->
-          // create pdb
-          trace (sprintf "Creating pdb for %s" assembly)
-          Yaaf.AdvancedBuilding.DebugSymbolHelper.writePdbFromMdb assembly
-        | _, _ -> 
-          // either no debug symbols available or already both.
-          ()
+        try
+          match File.Exists (Path.ChangeExtension(assembly, "pdb")), File.Exists (Path.ChangeExtension (assembly, "mdb")) with
+          | true, false ->
+            // create mdb
+            trace (sprintf "Creating mdb for %s" assembly)
+            Yaaf.AdvancedBuilding.DebugSymbolHelper.writeMdbFromPdb assembly
+          | false, true ->
+            // create pdb
+            trace (sprintf "Creating pdb for %s" assembly)
+            Yaaf.AdvancedBuilding.DebugSymbolHelper.writePdbFromMdb assembly
+          | _, _ -> 
+            // either no debug symbols available or already both.
+            ()
+        with exn -> traceError (sprintf "Error creating symbols: %s" exn.Message)
     ) 
 )
 
