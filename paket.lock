@@ -9,15 +9,8 @@ NUGET
       FSharpVSPowerTools.Core (>= 1.7.0)
     FSharpVSPowerTools.Core (1.7.0)
       FSharp.Compiler.Service (>= 0.0.81)
-    Microsoft.AspNet.Razor (2.0.30506.0)
     Mono.Cecil (0.9.5.4)
     NuGet.CommandLine (2.8.5)
     NUnit (2.6.3)
     NUnit.Runners (2.6.4)
-    RazorEngine (3.6.4)
-      Microsoft.AspNet.Razor (>= 3.0.0) - framework: >= net45
-      Microsoft.AspNet.Razor (2.0.30506.0) - framework: >= net40 < net45
     Unquote (2.2.2)
-    Yaaf.FSharp.Scripting (1.0.5)
-      FSharp.Compiler.Service (>= 0.0.84)
-      FSharp.Core (>= 3.1.2.1)

@@ -17,6 +17,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "project", "project", "{BF60
 		..\bootstrap.fsx = ..\bootstrap.fsx
 		..\buildConfig.fsx = ..\buildConfig.fsx
 		..\paket.dependencies = ..\paket.dependencies
+		..\paket.lock = ..\paket.lock
 		..\doc\ReleaseNotes.md = ..\doc\ReleaseNotes.md
 		..\nuget\Yaaf.AdvancedBuilding.Library.nuspec = ..\nuget\Yaaf.AdvancedBuilding.Library.nuspec
 		..\nuget\Yaaf.AdvancedBuilding.nuspec = ..\nuget\Yaaf.AdvancedBuilding.nuspec
