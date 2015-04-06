@@ -337,6 +337,10 @@ Target "All" (fun _ ->
     trace "All finished!"
 )
 
+Target "CheckWindows" (fun _ ->
+    if isLinux then failwith "can only do releases on windows." 
+)
+
 MyTarget "VersionBump" (fun _ ->
     let doBranchUpdates = not isLocalBuild && (getBuildParamOrDefault "yaaf_merge_master" "false") = "true"
     if doBranchUpdates then
@@ -416,7 +420,8 @@ config.BuildTargets
   ==> "LocalDoc"
   ==> "All"
  
-"All" 
+"All"
+  =?> ("CheckWindows", config.RestrictReleaseToWindows)
   ==> "VersionBump"
   =?> ("GithubDoc", config.EnableGithub)
   =?> ("ReleaseGithubDoc", config.EnableGithub)

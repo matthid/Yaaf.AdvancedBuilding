@@ -110,6 +110,11 @@ type BuildConfiguration =
     /// on unix (to create nuget packages on linux with integrated pdb files)
     EnableDebugSymbolConversion : bool
 
+    /// Makes "./build.sh Release" fail when not executed on a windows machine
+    /// Use this if you want to include .pdb in your nuget packge 
+    /// (to ensure your release contains debug symbols)
+    RestrictReleaseToWindows : bool
+
     // Build configuration
     /// Defaults to [ x.ProjectName + ".dll"; x.ProjectName + ".xml" ]
     GeneratedFileList : string list
@@ -144,6 +149,7 @@ type BuildConfiguration =
       UseNuget = false
       EnableGithub = true
       EnableDebugSymbolConversion = true
+      RestrictReleaseToWindows = true
       ProjectAuthors = []
       BuildTargets = [ BuildParams.Empty ]
       NugetUrl = ""
