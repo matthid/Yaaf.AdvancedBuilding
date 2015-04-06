@@ -27,6 +27,7 @@ let config = BuildConfig.buildConfig.FillDefaults ()
 // Bundled
 //#I @"../../Yaaf.FSharp.Scripting/lib/net40/"
 #I "../tools/"
+System.Reflection.Assembly.Load("Mono.Cecil, Version=0.9.5.0, Culture=neutral, PublicKeyToken=0738eb9f132ed756")
 #r "Yaaf.AdvancedBuilding.dll"
 
 open Yaaf.AdvancedBuilding
