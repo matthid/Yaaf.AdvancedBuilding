@@ -71,7 +71,10 @@ let rec replaceCodeBlocks ctx = function
         let nested = List.map (List.choose (replaceCodeBlocks ctx)) nested
         Some(Matching.ParagraphNested(pn, nested))
     | par -> Some par
-    
+
+let editLiterateDocument ctx (doc:LiterateDocument) =
+  doc.With(paragraphs = List.choose (replaceCodeBlocks ctx) doc.Paragraphs)
+ 
 let buildAllDocumentation outDocDir website_root =
     let references = config.DocRazorReferences
     
@@ -107,8 +110,7 @@ let buildAllDocumentation outDocDir website_root =
       let handleDoc template (doc:LiterateDocument) outfile =
         // prismjs support
         let ctx = formattingContext (Some template) (Some outputKind) (Some true) (Some projInfo) (Some config.LayoutRoots)
-        let newParagraphs = List.choose (replaceCodeBlocks ctx) doc.Paragraphs
-        Templating.processFile references (doc.With(paragraphs = newParagraphs)) outfile ctx 
+        Templating.processFile references (editLiterateDocument ctx doc) outfile ctx 
         
       let processMarkdown template infile outfile =
         let doc = Literate.ParseMarkdownFile( infile )
