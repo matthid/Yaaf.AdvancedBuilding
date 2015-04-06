@@ -56,15 +56,17 @@ if config.UseNuget then
 
 let createMissingSymbolFiles assembly =
   try
-    match File.Exists (Path.ChangeExtension(assembly, "pdb")), File.Exists (Path.ChangeExtension (assembly, "mdb")) with
+    match File.Exists (Path.ChangeExtension(assembly, "pdb")), File.Exists (assembly + ".mdb") with
     | true, false ->
       // create mdb
-      trace (sprintf "Creating mdb for %s" assembly)
+      traceVerbose (sprintf "Creating mdb for %s" assembly)
       DebugSymbolHelper.writeMdbFromPdb assembly
-    | false, true ->
+    | false, true when not isLinux ->
       // create pdb
-      trace (sprintf "Creating pdb for %s" assembly)
+      traceVerbose (sprintf "Creating pdb for %s" assembly)
       DebugSymbolHelper.writePdbFromMdb assembly
+    | false, true ->
+      traceVerbose (sprintf "Cannot create pdb for %s because we are not on windows :(" assembly) 
     | _, _ -> 
       // either no debug symbols available or already both.
       ()
