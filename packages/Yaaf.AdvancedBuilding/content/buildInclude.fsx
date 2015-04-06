@@ -55,6 +55,23 @@ if config.UseNuget then
     else
       failwith "you set UseNuget to true but there is no \"./src/.nuget/NuGet.targets\" or \"./src/.nuget/NuGet.Config\"! Please copy them from ./packages/Yaaf.AdvancedBuilding/scaffold/nuget"
 
+let createMissingSymbolFiles assembly =
+  try
+    match File.Exists (Path.ChangeExtension(assembly, "pdb")), File.Exists (Path.ChangeExtension (assembly, "mdb")) with
+    | true, false ->
+      // create mdb
+      trace (sprintf "Creating mdb for %s" assembly)
+      Yaaf.AdvancedBuilding.DebugSymbolHelper.writeMdbFromPdb assembly
+    | false, true ->
+      // create pdb
+      trace (sprintf "Creating pdb for %s" assembly)
+      Yaaf.AdvancedBuilding.DebugSymbolHelper.writePdbFromMdb assembly
+    | _, _ -> 
+      // either no debug symbols available or already both.
+      ()
+  with exn -> traceError (sprintf "Error creating symbols: %s" exn.Message)
+
+
 let buildWithFiles msg dir projectFileFinder (buildParams:BuildParams) =
     let files = projectFileFinder buildParams |> Seq.toList
     let buildDir = 
@@ -164,25 +181,10 @@ MyTarget "RestorePackages" (fun _ ->
 )
 
 MyTarget "CreateDebugFiles" (fun _ ->
-    // creates .mdb from .pdb files
+    // creates .mdb from .pdb files and the other way around
     !! (config.GlobalPackagesDir + "/**/*.exe")
     ++ (config.GlobalPackagesDir + "/**/*.dll")
-    |> Seq.iter (fun assembly ->
-        try
-          match File.Exists (Path.ChangeExtension(assembly, "pdb")), File.Exists (Path.ChangeExtension (assembly, "mdb")) with
-          | true, false ->
-            // create mdb
-            trace (sprintf "Creating mdb for %s" assembly)
-            Yaaf.AdvancedBuilding.DebugSymbolHelper.writeMdbFromPdb assembly
-          | false, true ->
-            // create pdb
-            trace (sprintf "Creating pdb for %s" assembly)
-            Yaaf.AdvancedBuilding.DebugSymbolHelper.writePdbFromMdb assembly
-          | _, _ -> 
-            // either no debug symbols available or already both.
-            ()
-        with exn -> traceError (sprintf "Error creating symbols: %s" exn.Message)
-    ) 
+    |> Seq.iter createMissingSymbolFiles  
 )
 
 MyTarget "SetVersions" (fun _ -> 
@@ -250,6 +252,12 @@ MyTarget "CopyToRelease" (fun _ ->
         )
 )
 
+MyTarget "CreateReleaseSymbolFiles" (fun _ ->
+    // creates .mdb from .pdb files and the other way around
+    !! (config.OutLibDir + "/**/*.exe")
+    ++ (config.OutLibDir + "/**/*.dll")
+    |> Seq.iter createMissingSymbolFiles  
+)
 
 /// push package (and try again if something fails), FAKE Version doesn't work on mono
 /// From https://raw.githubusercontent.com/fsharp/FAKE/master/src/app/FakeLib/NuGet/NugetHelper.fs
@@ -408,6 +416,7 @@ Target "ReadyForBuild" ignore
 
 "Clean"
   =?> ("RestorePackages", config.UseNuget)
+  =?> ("CreateDebugFiles", config.EnableDebugSymbolConversion)
   ==> "SetVersions"
   =?> ("CreateProjectFiles", config.EnableProjectFileCreation)
   ==> "ReadyForBuild"
@@ -426,6 +435,7 @@ config.BuildTargets
 // Dependencies
 "Clean" 
   ==> "CopyToRelease"
+  =?> ("CreateReleaseSymbolFiles", config.EnableDebugSymbolConversion)
   ==> "NuGetPack"
   ==> "LocalDoc"
   ==> "All"

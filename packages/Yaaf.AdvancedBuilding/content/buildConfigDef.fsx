@@ -109,6 +109,10 @@ type BuildConfiguration =
     /// Defaults to setting up a "./src/SharedAssemblyInfo.fs" and "./src/SharedAssemblyInfo.cs"
     SetAssemblyFileVersions : BuildConfiguration -> unit
     EnableProjectFileCreation : bool
+    /// Enables to convert pdb to mdb or mdb to pdb after paket restore.
+    /// This improves cross platform development and creates pdb files 
+    /// on unix (to create nuget packages on linux with integrated pdb files)
+    EnableDebugSymbolConversion : bool
 
     // Build configuration
     /// Defaults to [ x.ProjectName + ".dll"; x.ProjectName + ".xml" ]
@@ -144,6 +148,7 @@ type BuildConfiguration =
       UseNuget = false
       EnableGithub = true
       EnableProjectFileCreation = false
+      EnableDebugSymbolConversion = true
       ProjectAuthors = []
       BuildTargets = [ BuildParams.Empty ]
       NugetUrl = ""
