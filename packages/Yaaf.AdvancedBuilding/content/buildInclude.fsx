@@ -23,7 +23,7 @@ open BuildConfigDef
 let config = BuildConfig.buildConfig.FillDefaults ()
 
 // NOTE: We want to add that to buildConfigDef.fsx sometimes in the future
-#I @"../../FSharp.Compiler.Service/lib/net40/"
+// #I @"../../FSharp.Compiler.Service/lib/net40/" // included in FAKE, but to be able to use the latest
 // Bundled
 //#I @"../../Yaaf.FSharp.Scripting/lib/net40/"
 #I "../tools/"
@@ -243,6 +243,15 @@ MyTarget "CopyToRelease" (fun _ ->
             let outDir = outLibDir @@ buildName
             ensureDirectory outDir
             config.GeneratedFileList
+            |> Seq.collect (fun file ->
+              let extension = (Path.GetExtension file).TrimStart('.')
+              match extension with
+              | "dll" | "exe" -> 
+                [ file
+                  Path.ChangeExtension(file, "pdb")
+                  Path.ChangeExtension(file, extension + ".mdb" ) ]              
+              | _ -> [ file ]
+            )
             |> Seq.filter (fun (file) -> File.Exists (source @@ file))
             |> Seq.iter (fun (file) ->
                 let sourceFile = source @@ file

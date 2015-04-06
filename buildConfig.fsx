@@ -84,8 +84,9 @@ Setup which nuget packages are created.
               ReleaseNotes = toLines release.Notes
               Dependencies =
                 [ "FSharp.Formatting"
-                  "FSharp.Compiler.Service"
+                  // "FSharp.Compiler.Service" included in FAKE
                   "FSharpVSPowerTools.Core"
+                  // "Mono.Cecil" included in FAKE
                   "FAKE" ]
                   |> List.map (fun name -> name, (GetPackageVersion "packages" name |> RequireExactly)) } )
         "Yaaf.AdvancedBuilding.Library.nuspec", (fun config p ->
@@ -97,6 +98,7 @@ Setup which nuget packages are created.
               Dependencies =
                 [ "Yaaf.FSharp.Scripting"
                   "RazorEngine"
+                  "Mono.Cecil"
                   "FSharp.Core" ]
                   |> List.map (fun name -> name, (GetPackageVersion "packages" name)) }) ]
 (**
