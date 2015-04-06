@@ -19,7 +19,7 @@
   </metadata>
   <files>
     <file src="release/lib/net45/Yaaf.AdvancedBuilding.dll" target="tools\Yaaf.AdvancedBuilding.dll" />
-    <file src="release/lib/net45/Yaaf.AdvancedBuilding.mdb" target="tools\Yaaf.AdvancedBuilding.mdb" />
+    <file src="release/lib/net45/Yaaf.AdvancedBuilding.dll.mdb" target="tools\Yaaf.AdvancedBuilding.dll.mdb" />
     <file src="release/lib/net45/Yaaf.AdvancedBuilding.xml" target="tools\Yaaf.AdvancedBuilding.xml" />
     <file src="packages/.nuget/Microsoft.AspNet.Razor.3.2.2/lib/net45/System.Web.Razor.dll" target="tools\System.Web.Razor.dll" />
     <file src="packages/.nuget/Microsoft.AspNet.Razor.3.2.2/lib/net45/System.Web.Razor.xml" target="tools\System.Web.Razor.xml" />
