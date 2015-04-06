@@ -1,6 +1,5 @@
 ﻿namespace Yaaf.AdvancedBuilding
 open System
-open System.Xml
 open System.Xml.Linq
 open System.IO
 open System.Collections.Generic

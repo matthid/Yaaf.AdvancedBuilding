@@ -30,7 +30,6 @@ let config = BuildConfig.buildConfig.FillDefaults ()
 #r "Yaaf.AdvancedBuilding.dll"
 
 open Yaaf.AdvancedBuilding
-open System.Collections.Generic
 open System.IO
 open System
 
@@ -61,11 +60,11 @@ let createMissingSymbolFiles assembly =
     | true, false ->
       // create mdb
       trace (sprintf "Creating mdb for %s" assembly)
-      Yaaf.AdvancedBuilding.DebugSymbolHelper.writeMdbFromPdb assembly
+      DebugSymbolHelper.writeMdbFromPdb assembly
     | false, true ->
       // create pdb
       trace (sprintf "Creating pdb for %s" assembly)
-      Yaaf.AdvancedBuilding.DebugSymbolHelper.writePdbFromMdb assembly
+      DebugSymbolHelper.writePdbFromMdb assembly
     | _, _ -> 
       // either no debug symbols available or already both.
       ()
@@ -191,39 +190,6 @@ MyTarget "SetVersions" (fun _ ->
     config.SetAssemblyFileVersions config
 )
 
-MyTarget "CreateProjectFiles" (fun _ ->
-    let generator = new ProjectGenerator("./src/templates")
-    let createdFile = ref false
-    let projectGenFiles =
-      !! "./src/**/*._proj"
-      ++ "./src/**/*._proj.fsx"
-      |> Seq.cache
-    projectGenFiles
-    |> Seq.iter (fun file ->
-      trace (sprintf "Starting project file generation for: %s" file)
-      generator.GenerateProjectFiles(GlobalProjectInfo.Empty, file))
-
-    if projectGenFiles |> Seq.isEmpty |> not then
-      config.BuildTargets
-        |> Seq.filter (fun buildParam -> not (buildParam.DisableProjectFileCreation))
-        |> Seq.iter (fun buildParam ->
-          let solutionDir = sprintf "src/%s" buildParam.SimpleBuildName
-          let projectFiles =
-            buildParam.FindProjectFiles buildParam
-            |> Seq.append (buildParam.FindTestFiles buildParam)
-            |> Seq.map (fun file ->
-              { PathInSolution = ""
-                Project = SolutionGenerator.getSolutionProject solutionDir file })
-            |> Seq.toList
-          let solution = SolutionGenerator.generateSolution projectFiles []
-          let solutionFile = Path.Combine (solutionDir, config.ProjectName + ".sln")
-          use writer = new StreamWriter(File.OpenWrite (solutionFile))
-          SolutionModule.write solution writer
-          writer.Flush()
-        )
-      let exitCode = Shell.Exec(".paket/paket.exe", "install")
-      if exitCode <> 0 then failwithf "paket.exe update failed with exit code: %d" exitCode
-)
 config.BuildTargets
     |> Seq.iter (fun buildParam -> 
         MyTarget (sprintf "Build_%s" buildParam.SimpleBuildName) (fun _ -> buildAll buildParam))
@@ -238,7 +204,7 @@ MyTarget "CopyToRelease" (fun _ ->
     config.BuildTargets
         |> Seq.map (fun buildParam -> buildParam.SimpleBuildName)
         |> Seq.map (fun t -> config.BuildDir @@ t, t)
-        |> Seq.filter (fun (p, t) -> Directory.Exists p)
+        |> Seq.filter (fun (p, _) -> Directory.Exists p)
         |> Seq.iter (fun (source, buildName) ->
             let outDir = outLibDir @@ buildName
             ensureDirectory outDir
@@ -324,7 +290,7 @@ MyTarget "NuGetPack" (fun _ ->
 )
 
 MyTarget "NuGetPush" (fun _ ->
-    for (nuspecFile, settingsFunc) in config.NugetPackages do
+    for (_, settingsFunc) in config.NugetPackages do
       let packSetup = packSetup config
       let parameters = NuGetDefaults() |> (fun p -> { packSetup p with Publish = true }) |> settingsFunc config
       // This allows us to specify packages which we do not want to push...
@@ -427,7 +393,6 @@ Target "ReadyForBuild" ignore
   =?> ("RestorePackages", config.UseNuget)
   =?> ("CreateDebugFiles", config.EnableDebugSymbolConversion)
   ==> "SetVersions"
-  =?> ("CreateProjectFiles", config.EnableProjectFileCreation)
   ==> "ReadyForBuild"
 
 config.BuildTargets
