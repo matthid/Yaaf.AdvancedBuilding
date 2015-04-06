@@ -96,9 +96,7 @@ Setup which nuget packages are created.
               NoDefaultExcludes = true
               ReleaseNotes = toLines release.Notes
               Dependencies =
-                [ "Yaaf.FSharp.Scripting"
-                  "RazorEngine"
-                  "Mono.Cecil"
+                [ "Mono.Cecil"
                   "FSharp.Core" ]
                   |> List.map (fun name -> name, (GetPackageVersion "packages" name)) }) ]
 (**
