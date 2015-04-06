@@ -6,6 +6,12 @@
 (*
     This file handles the generation of the docs (it is called by the build automatically). 
 *)
+#if FAKE
+#else
+// Support when file is opened in Visual Studio
+#load "buildConfigDef.fsx"
+#load "../../../buildConfig.fsx"
+#endif
 
 open BuildConfigDef
 let config = BuildConfig.buildConfig.FillDefaults()
