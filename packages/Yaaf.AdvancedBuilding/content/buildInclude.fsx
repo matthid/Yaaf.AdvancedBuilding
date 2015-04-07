@@ -27,8 +27,8 @@ let config = BuildConfig.buildConfig.FillDefaults ()
 // Bundled
 //#I @"../../Yaaf.FSharp.Scripting/lib/net40/"
 #I "../tools/"
-System.Reflection.Assembly.Load("Mono.Cecil, Version=0.9.5.0, Culture=neutral, PublicKeyToken=0738eb9f132ed756")
 #r "Yaaf.AdvancedBuilding.dll"
+
 
 open Yaaf.AdvancedBuilding
 open System.IO
@@ -58,10 +58,12 @@ if config.UseNuget then
 let createMissingSymbolFiles assembly =
   try
     match File.Exists (Path.ChangeExtension(assembly, "pdb")), File.Exists (assembly + ".mdb") with
-    | true, false ->
+    | true, false when not isLinux ->
       // create mdb
       trace (sprintf "Creating mdb for %s" assembly)
       DebugSymbolHelper.writeMdbFromPdb assembly
+    | true, false ->
+      trace (sprintf "Cannot create mdb for %s because we are not on windows :(" assembly) 
     | false, true when not isLinux ->
       // create pdb
       trace (sprintf "Creating pdb for %s" assembly)
