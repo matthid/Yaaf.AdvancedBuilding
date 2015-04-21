@@ -16,6 +16,7 @@
 #else
 // Support when file is opened in Visual Studio
 #load "buildConfigDef.fsx"
+#load "../../../buildConfig.fsx"
 #endif
 
 open BuildConfigDef
@@ -160,6 +161,28 @@ MyTarget "RestorePackages" (fun _ ->
             { param with    
                 // ToolPath = ""
                 OutputPath = config.NugetPackageDir }))
+)
+
+MyTarget "CreateDebugFiles" (fun _ ->
+    // creates .mdb from .pdb files
+    !! (config.GlobalPackagesDir + "/**/*.exe")
+    ++ (config.GlobalPackagesDir + "/**/*.dll")
+    |> Seq.iter (fun assembly ->
+        try
+          match File.Exists (Path.ChangeExtension(assembly, "pdb")), File.Exists (Path.ChangeExtension (assembly, "mdb")) with
+          | true, false ->
+            // create mdb
+            trace (sprintf "Creating mdb for %s" assembly)
+            Yaaf.AdvancedBuilding.DebugSymbolHelper.writeMdbFromPdb assembly
+          | false, true ->
+            // create pdb
+            trace (sprintf "Creating pdb for %s" assembly)
+            Yaaf.AdvancedBuilding.DebugSymbolHelper.writePdbFromMdb assembly
+          | _, _ -> 
+            // either no debug symbols available or already both.
+            ()
+        with exn -> traceError (sprintf "Error creating symbols: %s" exn.Message)
+    ) 
 )
 
 MyTarget "SetVersions" (fun _ -> 
