@@ -1,11 +1,10 @@
 source https://nuget.org/api/v2
 
-nuget FAKE
 nuget FSharp.Core
-nuget FSharp.Formatting == 2.7.5
-nuget FSharpVSPowerTools.Core 1.7.0
+nuget FAKE
+nuget FSharp.Formatting
 nuget Nuget.CommandLine
-nuget NUnit == 2.6.3
+nuget NUnit
 nuget NUnit.Runners
 nuget Unquote
 nuget Mono.Cecil

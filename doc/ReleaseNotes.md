@@ -1,4 +1,7 @@
-﻿### 0.5.4
+﻿### 0.5.5
+ * Update to latest FSharp.Formatting / RazorEngine
+
+### 0.5.4
 
  * Add the possibility to source the build script and execute the "do_build" function afterwards
    This helps when you run into problems with paket and a locked 'build.sh' file.
