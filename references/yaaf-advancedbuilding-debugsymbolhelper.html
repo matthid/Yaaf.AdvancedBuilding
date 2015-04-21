@@ -2,7 +2,7 @@
 <html lang="en">
   <head>
     <meta charset="utf-8">
-    <title>SolutionSection - Yaaf.AdvancedBuilding</title>
+    <title>DebugSymbolHelper - Yaaf.AdvancedBuilding</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="">
     <meta name="author" content="Matthias Dittrich">
@@ -38,30 +38,33 @@
 
 
 
-<h1>SolutionSection </h1>
+<h1>DebugSymbolHelper</h1>
 <div class="xmldoc">
     Defined in Yaaf.AdvancedBuilding.dll.
 </div>
 <div class="xmldoc">
 </div>
-  <h3>Record Fields</h3>
+
+<!-- Render nested types and modules, if there are any -->
+
+  <h3>Functions and values</h3>
   <table class="table table-bordered member-list">
     <thead>
-      <tr><td>Record Field</td><td>Description</td></tr>
+      <tr><td>Function or value</td><td>Description</td></tr>
     </thead>
     <tbody>
       <tr>
         <td class="member-name">
 
-          <code onmouseout="hideTip(event, '114', 114)" onmouseover="showTip(event, '114', 114)">
-            Items
+          <code onmouseout="hideTip(event, '1', 1)" onmouseover="showTip(event, '1', 1)">
+            getDefaultResolver assemblyLocation
           </code>
-          <div class="tip" id="114">
-            <strong>Signature:</strong> SectionItem list<br />
+          <div class="tip" id="1">
+            <strong>Signature:</strong> assemblyLocation:string -&gt; DefaultAssemblyResolver<br />
                       </div>
         </td>
         <td class="xmldoc">
-            <a href="https://github.com/matthid/Yaaf.AdvancedBuilding/blob/master/src/source/Yaaf.AdvancedBuilding/SolutionModel.fs#L16-16" class="github-link">
+            <a href="https://github.com/matthid/Yaaf.AdvancedBuilding/blob/master/src/source/Yaaf.AdvancedBuilding/DebugSymbolHelper.fs#L12-12" class="github-link">
               <img src="../content/img/github.png" class="normal" />
               <img src="../content/img/github-blue.png" class="hover" />
             </a>
@@ -71,15 +74,15 @@
       <tr>
         <td class="member-name">
 
-          <code onmouseout="hideTip(event, '115', 115)" onmouseover="showTip(event, '115', 115)">
-            Name
+          <code onmouseout="hideTip(event, '2', 2)" onmouseover="showTip(event, '2', 2)">
+            writeAdditionalSymbols (...)
           </code>
-          <div class="tip" id="115">
-            <strong>Signature:</strong> string<br />
+          <div class="tip" id="2">
+            <strong>Signature:</strong> readerParams:ReaderParameters -&gt; writerParams:WriterParameters -&gt; assemblyPath:string -&gt; unit<br />
                       </div>
         </td>
         <td class="xmldoc">
-            <a href="https://github.com/matthid/Yaaf.AdvancedBuilding/blob/master/src/source/Yaaf.AdvancedBuilding/SolutionModel.fs#L14-14" class="github-link">
+            <a href="https://github.com/matthid/Yaaf.AdvancedBuilding/blob/master/src/source/Yaaf.AdvancedBuilding/DebugSymbolHelper.fs#L8-8" class="github-link">
               <img src="../content/img/github.png" class="normal" />
               <img src="../content/img/github-blue.png" class="hover" />
             </a>
@@ -89,15 +92,51 @@
       <tr>
         <td class="member-name">
 
-          <code onmouseout="hideTip(event, '116', 116)" onmouseover="showTip(event, '116', 116)">
-            PrePostProcess
+          <code onmouseout="hideTip(event, '3', 3)" onmouseover="showTip(event, '3', 3)">
+            writeMdbFromPdb assemblyPath
           </code>
-          <div class="tip" id="116">
-            <strong>Signature:</strong> string<br />
+          <div class="tip" id="3">
+            <strong>Signature:</strong> assemblyPath:string -&gt; unit<br />
                       </div>
         </td>
         <td class="xmldoc">
-            <a href="https://github.com/matthid/Yaaf.AdvancedBuilding/blob/master/src/source/Yaaf.AdvancedBuilding/SolutionModel.fs#L15-15" class="github-link">
+            <a href="https://github.com/matthid/Yaaf.AdvancedBuilding/blob/master/src/source/Yaaf.AdvancedBuilding/DebugSymbolHelper.fs#L28-28" class="github-link">
+              <img src="../content/img/github.png" class="normal" />
+              <img src="../content/img/github-blue.png" class="hover" />
+            </a>
+          
+        </td>
+      </tr>
+      <tr>
+        <td class="member-name">
+
+          <code onmouseout="hideTip(event, '4', 4)" onmouseover="showTip(event, '4', 4)">
+            writePdbFromMdb assemblyPath
+          </code>
+          <div class="tip" id="4">
+            <strong>Signature:</strong> assemblyPath:string -&gt; unit<br />
+                      </div>
+        </td>
+        <td class="xmldoc">
+            <a href="https://github.com/matthid/Yaaf.AdvancedBuilding/blob/master/src/source/Yaaf.AdvancedBuilding/DebugSymbolHelper.fs#L29-29" class="github-link">
+              <img src="../content/img/github.png" class="normal" />
+              <img src="../content/img/github-blue.png" class="hover" />
+            </a>
+          
+        </td>
+      </tr>
+      <tr>
+        <td class="member-name">
+
+          <code onmouseout="hideTip(event, '5', 5)" onmouseover="showTip(event, '5', 5)">
+            writeSymbolsFromTo (...)
+          </code>
+          <div class="tip" id="5">
+            <strong>Signature:</strong> fromReaderProvider:ISymbolReaderProvider -&gt; toWriterProvider:ISymbolWriterProvider -&gt; assemblyPath:string -&gt; unit<br />
+                      </div>
+        </td>
+        <td class="xmldoc">
+            <a href="https://github.com/matthid/Yaaf.AdvancedBuilding/blob/master/src/source/Yaaf.AdvancedBuilding/DebugSymbolHelper.fs#L17-17" class="github-link">
               <img src="../content/img/github.png" class="normal" />
               <img src="../content/img/github-blue.png" class="hover" />
             </a>
