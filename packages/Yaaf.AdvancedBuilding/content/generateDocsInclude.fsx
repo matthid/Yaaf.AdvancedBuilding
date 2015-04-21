@@ -17,8 +17,6 @@ open BuildConfigDef
 let config = BuildConfig.buildConfig.FillDefaults()
 
 #load @"../../FSharp.Formatting/FSharp.Formatting.fsx"
-// see https://github.com/tpetricek/FSharp.Formatting/pull/302
-#r "RazorEngine.dll"
 
 open System.Collections.Generic
 open System.IO
