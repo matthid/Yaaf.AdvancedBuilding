@@ -74,7 +74,7 @@ let rec replaceCodeBlocks ctx = function
 
 let editLiterateDocument ctx (doc:LiterateDocument) =
   doc.With(paragraphs = List.choose (replaceCodeBlocks ctx) doc.Paragraphs)
- 
+
 let buildAllDocumentation outDocDir website_root =
     let references = config.DocRazorReferences
     
@@ -120,29 +120,10 @@ let buildAllDocumentation outDocDir website_root =
         handleDoc template doc outfile
         
       let rec processDirectory template indir outdir = 
-        // Create output directory if it does not exist
-        if Directory.Exists(outdir) |> not then
-          try Directory.CreateDirectory(outdir) |> ignore 
-          with _ -> failwithf "Cannot create directory '%s'" outdir
-
-        let fsx = [ for f in Directory.GetFiles(indir, "*.fsx") -> processScriptFile template, f ]
-        let mds = [ for f in Directory.GetFiles(indir, "*.md") -> processMarkdown template, f ]
-        for func, file in fsx @ mds do
-          let dir = Path.GetDirectoryName(file)
-          let name = Path.GetFileNameWithoutExtension(file)
-          let ext = (match outputKind with OutputKind.Latex -> "tex" | _ -> "html")
-          let output = Path.Combine(outdir, sprintf "%s.%s" name ext)
-
-          // Update only when needed
-          let changeTime = File.GetLastWriteTime(file)
-          let generateTime = File.GetLastWriteTime(output)
-          if changeTime > generateTime then
-            printfn "Generating '%s/%s.%s'" dir name ext
-            func file output
-
-        for d in Directory.EnumerateDirectories(indir) do
-          let name = Path.GetFileName(d)
-          processDirectory template (Path.Combine(indir, name)) (Path.Combine(outdir, name))
+        Literate.ProcessDirectory(
+          indir, template, outdir, outputKind, generateAnchors = true, replacements = projInfo, 
+          layoutRoots = config.LayoutRoots, customizeDocument = editLiterateDocument,
+          processRecursive = true, includeSource = true)
 
       processDirectory template "./doc" outDir
       let processFile template inFile outFile =
