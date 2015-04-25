@@ -75,7 +75,12 @@ let rec replaceCodeBlocks ctx = function
 let editLiterateDocument ctx (doc:LiterateDocument) =
   doc.With(paragraphs = List.choose (replaceCodeBlocks ctx) doc.Paragraphs)
 
+let evalutator = lazy (FsiEvaluator())
 let buildAllDocumentation outDocDir website_root =
+    let outDocDir = Path.GetFullPath outDocDir
+    let resetPwd = 
+      let pwd =  System.IO.Directory.GetCurrentDirectory()
+      (fun () -> System.IO.Directory.SetCurrentDirectory pwd)
     let references = config.DocRazorReferences
     
     let projInfo =
@@ -100,38 +105,45 @@ let buildAllDocumentation outDocDir website_root =
       //CopyRecursive (formatting @@ "styles") (output @@ "content") true 
       //  |> Log "Copying styles and scripts: "
 
+    let fullLayoutRoots = config.LayoutRoots |> List.map Path.GetFullPath
       
     let processDocumentationFiles(outputKind) =
       let indexTemplate, template, outDirName, indexName, extension =
         match outputKind with
         | OutputKind.Html -> "docpage-index.cshtml", "docpage.cshtml", "html", "index.html", ".html"
-        | OutputKind.Latex -> config.DocTemplatesDir @@ "template-color.tex", config.DocTemplatesDir @@ "template-color.tex", "latex", "Readme.tex", ".tex"
+        | OutputKind.Latex -> 
+          Path.GetFullPath(config.DocTemplatesDir @@ "template-color.tex"), 
+          Path.GetFullPath(config.DocTemplatesDir @@ "template-color.tex"), 
+          "latex", "Readme.tex", ".tex"
       let outDir = outDocDir @@ outDirName
       let handleDoc template (doc:LiterateDocument) outfile =
         // prismjs support
-        let ctx = formattingContext (Some template) (Some outputKind) (Some true) (Some projInfo) (Some config.LayoutRoots)
+        let ctx = formattingContext (Some template) (Some outputKind) (Some true) (Some projInfo) (Some fullLayoutRoots)
         Templating.processFile references (editLiterateDocument ctx doc) outfile ctx 
-        
+        resetPwd()
+
       let processMarkdown template infile outfile =
-        let doc = Literate.ParseMarkdownFile( infile )
+        let doc = Literate.ParseMarkdownFile( infile, fsiEvaluator = evalutator.Value )
         handleDoc template doc outfile
       let processScriptFile template infile outfile =
-        let doc = Literate.ParseScriptFile( infile )
+        let doc = Literate.ParseScriptFile( infile, fsiEvaluator = evalutator.Value )
         handleDoc template doc outfile
         
       let rec processDirectory template indir outdir = 
         Literate.ProcessDirectory(
           indir, template, outdir, outputKind, generateAnchors = true, replacements = projInfo, 
-          layoutRoots = config.LayoutRoots, customizeDocument = editLiterateDocument,
-          processRecursive = true, includeSource = true)
+          layoutRoots = fullLayoutRoots, customizeDocument = editLiterateDocument,
+          processRecursive = true, includeSource = true, fsiEvaluator = evalutator.Value)
+        resetPwd()
 
-      processDirectory template "./doc" outDir
+      processDirectory template (Path.GetFullPath "./doc") outDir
       let processFile template inFile outFile =
         if File.Exists inFile then
           processMarkdown template inFile outFile
         else
           trace (sprintf "File %s was not found so %s was not created!" inFile outFile)
-
+      
+      // Handle some special files.
       processFile indexTemplate "./README.md" (outDir @@ indexName)
       processFile template "./CONTRIBUTING.md" (outDir @@ "Contributing" + extension)
       processFile template "./LICENSE.md" (outDir @@ "License" + extension)
