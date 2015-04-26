@@ -1,6 +1,7 @@
 ﻿### 0.6.0
 
- * Snippet evaluation support via F# Formatting.
+ * Snippet evaluation support via F# Formatting (disabled until FSF updates).
+ * Remove project file creation.
 
 ### 0.5.5
 

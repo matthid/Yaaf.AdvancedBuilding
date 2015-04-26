@@ -23,7 +23,7 @@ bootstrap a NuGet.exe into `packages/Nuget.CommandLine`.
 The second step is to invoke FAKE with `build.fsx` which loads the current `buildConfig.fsx` file and delegates the work to
 `packages/Yaaf.AdvancedBuilding/content/buildInclude.fsx`. For details about FAKE look into http://fsharp.github.com/FAKE .
 
-In the remainder of this document we will explain the various configuration options for Yaaf.Configuration.
+In the remainder of this document we will explain the various configuration options for Yaaf.AdvancedBuilding.
 
 *)
 

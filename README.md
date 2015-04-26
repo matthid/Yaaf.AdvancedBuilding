@@ -60,7 +60,7 @@ It should especially help/simplify the process of building projects for multiple
 The setup for this is not trivial and having an idea of FAKE (http://fsharp.github.com/FAKE) and paket (http://fsprojects.github.io/Paket/) helps.
 We assume in this quick intro guide that you are able to setup a simple project with FAKE (without ProjectScaffold).
 
-We also assume that you have a project named `Yaaf.Project` already setup with `FAKE` and paket with the following folder structure:
+We also assume that you have a project named `Yaaf.Project` already setup with `FAKE` and `Paket` with the following folder structure:
 
 ```
 - .paket (paket folder)
@@ -85,7 +85,6 @@ Now we first add Yaaf.AdvancedBuilding to our dependencies
 ```
 source https://nuget.org/api/v2
 
-nuget MyDependency
 nuget Yaaf.AdvancedBuilding
 ```
 
