@@ -1,4 +1,9 @@
-﻿### 0.6.0
+﻿### 0.6.1
+
+ * Combine the documentations steps 
+   (slightly increases the time for a "normal" build, but improves the performance for a "release" build.)
+
+### 0.6.0
 
  * Snippet evaluation support via F# Formatting (disabled until FSF updates).
  * Remove project file creation.
