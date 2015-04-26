@@ -1,10 +1,6 @@
 ﻿namespace Yaaf.AdvancedBuilding
 
-open System
-open System.Xml
 open System.Xml.Linq
-open System.IO
-open System.Collections.Generic
 
 type PlatformConfig =
   { PlatformString : string
@@ -16,11 +12,14 @@ type PlatformConfig =
 
 module Portable =
     let makeSingleProjectPortable (parsedProject:XDocument) =
-        
+        ignore parsedProject
         ()
 
     let makePortable (parsedSolution:SolutionFile) (parsedProject:XDocument list) =
-        
+        ignore parsedProject
+        ignore parsedSolution
         ()
     let makeProjectPortable solutionFile projectFile =
+        ignore solutionFile
+        ignore projectFile
         ()

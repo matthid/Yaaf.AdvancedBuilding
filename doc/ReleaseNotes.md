@@ -1,4 +1,9 @@
-﻿### 0.5.5
+﻿### 0.6.0
+
+ * Snippet evaluation support via F# Formatting.
+
+### 0.5.5
+
  * Update to latest FSharp.Formatting / RazorEngine
 
 ### 0.5.4

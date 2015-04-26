@@ -156,14 +156,14 @@ module SolutionModule =
             lines.Add(!currentLine)
 #endif
             { new IReader with
-                member x.CurrentLine = !currentLine
-                member x.MoveNext () =
+                member __.CurrentLine = !currentLine
+                member __.MoveNext () =
                     currentLine := solutionReader.ReadLine()
 #if DEBUG
                     lines.Add(!currentLine)
 #endif
                     !currentLine
-                member x.IsAtEnd = !currentLine = null}
+                member __.IsAtEnd = !currentLine = null}
 
         let fileVersion = parseHeaderFileVersion reader
         parseHeaderIgnore reader |> ignore

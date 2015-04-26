@@ -84,8 +84,9 @@ Setup which nuget packages are created.
               ReleaseNotes = toLines release.Notes
               Dependencies =
                 [ "FSharp.Formatting"
-                  "FSharp.Compiler.Service"
+                  // "FSharp.Compiler.Service" included in FAKE
                   "FSharpVSPowerTools.Core"
+                  // "Mono.Cecil" included in FAKE
                   "FAKE" ]
                   |> List.map (fun name -> name, (GetPackageVersion "packages" name |> RequireExactly)) } )
         "Yaaf.AdvancedBuilding.Library.nuspec", (fun config p ->
@@ -95,8 +96,7 @@ Setup which nuget packages are created.
               NoDefaultExcludes = true
               ReleaseNotes = toLines release.Notes
               Dependencies =
-                [ "Yaaf.FSharp.Scripting"
-                  "RazorEngine"
+                [ "Mono.Cecil"
                   "FSharp.Core" ]
                   |> List.map (fun name -> name, (GetPackageVersion "packages" name)) }) ]
 (**
@@ -131,10 +131,6 @@ On default "./src/SharedAssemblyInfo.fs" and "./src/SharedAssemblyInfo.cs" are c
       CreateFSharpAssemblyInfo "./src/SharedAssemblyInfo.fs" info)
 (**
 ## Yaaf.AdvancedBuilding features
-Enable project file creation from ._proj and ._proj.fsx files.
-*)
-    EnableProjectFileCreation = false
-(**
 Setup the builds
 *)
     BuildTargets =
@@ -151,7 +147,13 @@ Setup the builds
           AfterBuild = fun _ -> File.Delete "build/net45/FSharp.Core.dll"
           PlatformName = "Sol_Net45"
           SimpleBuildName = "net45" }]
-
+(**
+enable mdb2pdb and pdb2mdb conversation for paket/nuget packages and your package.
+Note that mdb2pdb only works on windows so to get a cross platform debugging experience you:
+ - either include the pdb file and can therefore only release on a windows machine
+ - include a mdb and tell your users to use mdb2pdb on windows.
+*)
+    EnableDebugSymbolConversion = true
   }
 
 (**
@@ -170,10 +172,6 @@ This is specific to the Yaaf.AdvancedBuilding project, you can safely remove eve
 *)
 if buildConfig.ProjectName = "Yaaf.AdvancedBuilding" then
   if File.Exists "./buildConfig.fsx" then
-    // We copy the buildConfig to ./doc so that we can generate a html page from this file
+    // We copy the buildConfig to ./doc so that F# formatting generates a html page from this file
     File.Copy ("./buildConfig.fsx", "./doc/buildConfig.fsx", true)
   // Copy templates to their normal path.
-
-  ensureDirectory "./src/templates"
-  CopyRecursive "./src/source/Yaaf.AdvancedBuilding/templates" "./src/templates" true
-  |> Seq.iter (fun f -> trace (sprintf "File %A copied" f))

@@ -1,9 +1,6 @@
 namespace Yaaf.AdvancedBuilding
 open System
-open System.Xml
 open System.Xml.Linq
-open System.Collections.Generic
-open Yaaf.FSharp.Scripting
 
 //[<StructuredFormatDisplay("{AsString}")>]
 type GlobalProjectInfo = 
@@ -34,7 +31,6 @@ type ProjectGeneratorConfig =
 
 open System
 open System.IO
-open System.Text
 
 module ProjectGeneratorModule =
   let ifNone item opt =
@@ -70,15 +66,6 @@ module ProjectGeneratorModule =
     |> addBaseDir buildFileBaseDir
     |> addBaseDir baseDir
 
-  let setGlobalSetting (session:IFsiSession) (g:GlobalProjectInfo) =
-    session.Let "projectInfo" g
-
-  let getGlobalSetting (session:IFsiSession) =
-    session.EvalExpression<GlobalProjectInfo> ("projectInfo")
-
-  let projectFileFromExpression (session:IFsiSession) contents =
-    session.EvalExpression<ProjectGeneratorConfig> (contents)
-
   let fixInclude (relPath:string) item =
     let fixPath path =
         sprintf "%s\\%s" (relPath.Replace("/","\\")) path
@@ -96,69 +83,6 @@ module ProjectGeneratorModule =
     | ItemGroupItem.NoneItemLink (name, inc) ->
         ItemGroupItem.NoneItemLink (name, fixPath inc)
     | _ -> item
-
-/// Documentation for my library
-///
-/// ## Example
-///
-///     let h = Library.hello 1
-///     printfn "%d" h
-///
-type ProjectGenerator(templatePath, ?references) =
-  let session = ScriptHost.CreateNew(["PROJGEN"])
-  let razorManager = new RazorManager(templatePath, ?references = references)
-  let location = System.Reflection.Assembly.GetExecutingAssembly().Location
-  do
-    session.Open ("System")
-    session.Open ("System.Collections.Generic")
-    session.EvalInteraction (sprintf "#I \"%s\"" (Path.GetDirectoryName (location)))
-    session.Reference (location)
-    session.Open ("Yaaf.AdvancedBuilding")
-
-  let rec getConfigFromScript (globalInfo:GlobalProjectInfo) (settingsFile:string) =
-    //let contents = File.ReadAllText settingsFile
-    let baseDir = Path.GetDirectoryName settingsFile
-    let extension = Path.GetExtension (settingsFile)
-    if extension <> ".fsx" then
-        let fsxSettingsFile = settingsFile + ".fsx"
-        let name = Path.GetFileName fsxSettingsFile
-        let basePath = Path.GetDirectoryName fsxSettingsFile
-        let name =
-            if name.StartsWith (".") then name.Substring(1) else name
-        let fsxSettingsFile = Path.Combine (basePath, name)
-        File.Copy(settingsFile, fsxSettingsFile)
-        try
-            getConfigFromScript globalInfo fsxSettingsFile
-        finally
-            File.Delete(fsxSettingsFile)
-    else
-    let settingsFileFullPath = Path.GetFullPath settingsFile
-    let oldDir = System.Environment.CurrentDirectory
-    ProjectGeneratorModule.setGlobalSetting session globalInfo
-    try
-        System.Environment.CurrentDirectory <- Path.GetFullPath(baseDir)
-        session.EvalScript settingsFileFullPath
-        let fileName = Path.GetFileNameWithoutExtension settingsFileFullPath
-        let fileName =
-            if fileName.StartsWith (".") then fileName.Substring(1) else fileName
-        let moduleName = new StringBuilder(fileName)
-        moduleName.[0] <- System.Char.ToUpperInvariant moduleName.[0]
-        let moduleName = moduleName.ToString()
-
-        ProjectGeneratorModule.projectFileFromExpression session (sprintf "%s.%s" moduleName "generatorConfig")
-    finally
-        System.Environment.CurrentDirectory <- oldDir
-
-  let rec generateProjectFiles (globalInfo:GlobalProjectInfo) (settingsFile:string) =
-    let config = getConfigFromScript globalInfo settingsFile
-    for buildFilename, templateData in config.BuildFileList do
-      let outFile = ProjectGeneratorModule.getProjectFileName settingsFile buildFilename
-      let path = Path.GetDirectoryName(outFile)
-      Directory.CreateDirectory(path) |> ignore
-      if File.Exists outFile then File.Delete outFile
-      razorManager.CreateProjectFile(templateData, outFile)
-  member x.FsiSession = session
-  member x.GenerateProjectFiles (globalInfo, settingsFile) = generateProjectFiles globalInfo settingsFile
 
 type MsBuildInfo =
   { Includes : ItemGroupItem list

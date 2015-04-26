@@ -2,15 +2,12 @@
 
 open Yaaf.AdvancedBuilding
 open NUnit.Framework
-open System
 open System.IO
-open System.Xml
-open System.Xml.Linq
 
 [<TestFixture>]
 type SolutionGeneratorTests() =
     [<Test>]
-    member x.``check that we read and write a solution file`` () =
+    member __.``check that we read and write a solution file`` () =
         let solutionFile = """Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2013
 VisualStudioVersion = 12.0.31101.0
@@ -72,7 +69,7 @@ EndGlobal
         test <@ solution = solution2 @>
 
     [<Test>]
-    member x.``check that we can generate a solution`` () =
+    member __.``check that we can generate a solution`` () =
         File.WriteAllText ("file.txt", "test")
         let solution = SolutionGenerator.generateSolution [] [ { PathInSolution = "test"; PathRelativeToSolutionFile = "file.txt" }]
         test <@ solution.Projects |> Seq.length = 1 @>
@@ -80,7 +77,7 @@ EndGlobal
         test <@ solution.GlobalSections |> Seq.length = 0 @>
 
     [<Test>]
-    member x.``check that we can generate a solution (2)`` () =
+    member __.``check that we can generate a solution (2)`` () =
         File.WriteAllText ("file.txt", "test")
         File.WriteAllText ("file2.txt", "test2")
         let solution =
@@ -94,7 +91,7 @@ EndGlobal
         test <@ solution.GlobalSections |> Seq.length = 1 @>
 
     [<Test>]
-    member x.``check that the relative function works`` () =
+    member __.``check that the relative function works`` () =
         test <@ SolutionGenerator.makeRelative "./dir" "./project.fsx" = "..\\project.fsx" @>
         test <@ SolutionGenerator.makeRelative "./dir" "./dir/project.fsx" = "project.fsx" @>
         test <@ SolutionGenerator.makeRelative "./dir/sub" "./other/project.fsx" = "..\\..\\other\\project.fsx" @>
