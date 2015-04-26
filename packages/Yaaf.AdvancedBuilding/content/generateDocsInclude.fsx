@@ -135,7 +135,8 @@ let buildAllDocumentation outDocDir website_root =
         Literate.ProcessDirectory(
           indir, template, outdir, outputKind, generateAnchors = true, replacements = projInfo, 
           layoutRoots = fullLayoutRoots, customizeDocument = editLiterateDocument,
-          processRecursive = true, includeSource = true, ?fsiEvaluator = evalutator.Value)
+          processRecursive = true, includeSource = true, ?fsiEvaluator = evalutator.Value,
+          ?assemblyReferences = references)
         resetPwd()
 
       processDirectory template (Path.GetFullPath "./doc") outDir
@@ -187,7 +188,7 @@ let buildAllDocumentation outDocDir website_root =
             |> Seq.map (sprintf "-r:%s")
             |> Seq.toList
         MetadataFormat.Generate
-           (binaries, Path.GetFullPath outDir, config.LayoutRoots,
+           (binaries, Path.GetFullPath outDir, fullLayoutRoots,
             parameters = projInfo,
             libDirs = [ ],
             otherFlags = libraries,
