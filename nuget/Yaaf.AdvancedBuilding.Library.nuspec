@@ -20,7 +20,9 @@
   <files>
     <file src="release/lib/net40/Yaaf.AdvancedBuilding.dll" target="lib\net40\Yaaf.AdvancedBuilding.dll" />
     <file src="release/lib/net40/Yaaf.AdvancedBuilding.xml" target="lib\net40\Yaaf.AdvancedBuilding.xml" />
+    <file src="release/lib/net40/Yaaf.AdvancedBuilding.dll.mdb" target="lib\net40\Yaaf.AdvancedBuilding.dll.mdb" />
     <file src="release/lib/net45/Yaaf.AdvancedBuilding.dll" target="lib\net45\Yaaf.AdvancedBuilding.dll" />
     <file src="release/lib/net45/Yaaf.AdvancedBuilding.xml" target="lib\net45\Yaaf.AdvancedBuilding.xml" />
+    <file src="release/lib/net45/Yaaf.AdvancedBuilding.dll.mdb" target="lib\net45\Yaaf.AdvancedBuilding.dll.mdb" />
   </files>
 </package>

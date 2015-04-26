@@ -4,6 +4,7 @@ open Mono.Cecil
 open Mono.Cecil.Mdb
 open Mono.Cecil.Pdb
 
+/// Helper functions to convert platform specific symbol files.
 module DebugSymbolHelper =
   let writeAdditionalSymbols readerParams writerParams (assemblyPath:string) =
     let assemblyDefinition = AssemblyDefinition.ReadAssembly(assemblyPath, readerParams)
@@ -25,5 +26,7 @@ module DebugSymbolHelper =
     writerParameters.WriteSymbols <- true
     writeAdditionalSymbols readerParameters writerParameters assemblyPath
 
+  /// Create a mdb file from an existing pdb file.
   let writeMdbFromPdb assemblyPath = writeSymbolsFromTo (new PdbReaderProvider()) (new MdbWriterProvider()) assemblyPath
+  /// Create a pdb file from an existing mdb file.
   let writePdbFromMdb assemblyPath = writeSymbolsFromTo (new MdbReaderProvider()) (new PdbWriterProvider()) assemblyPath

@@ -1,11 +1,10 @@
 source https://nuget.org/api/v2
 
+nuget FSharp.Core
 nuget FAKE
 nuget FSharp.Formatting
 nuget Nuget.CommandLine
 nuget NUnit
 nuget NUnit.Runners
 nuget Unquote
-nuget Yaaf.FSharp.Scripting
-nuget RazorEngine
 nuget Mono.Cecil

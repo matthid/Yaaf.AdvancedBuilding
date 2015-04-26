@@ -5,10 +5,7 @@ module Test.Yaaf.AdvancedBuilding.MyTestHelper
 open Swensen.Unquote
 
 open System
-open System.Reflection
 open Microsoft.FSharp.Quotations
-
-open Swensen.Utils
 
 let testFailed =
     let outputReducedExprsMsg =

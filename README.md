@@ -60,7 +60,7 @@ It should especially help/simplify the process of building projects for multiple
 The setup for this is not trivial and having an idea of FAKE (http://fsharp.github.com/FAKE) and paket (http://fsprojects.github.io/Paket/) helps.
 We assume in this quick intro guide that you are able to setup a simple project with FAKE (without ProjectScaffold).
 
-We also assume that you have a project named `Yaaf.Project` already setup with `FAKE` and paket with the following folder structure:
+We also assume that you have a project named `Yaaf.Project` already setup with `FAKE` and `Paket` with the following folder structure:
 
 ```
 - .paket (paket folder)
@@ -85,7 +85,6 @@ Now we first add Yaaf.AdvancedBuilding to our dependencies
 ```
 source https://nuget.org/api/v2
 
-nuget MyDependency
 nuget Yaaf.AdvancedBuilding
 ```
 
@@ -133,3 +132,11 @@ cp packages/Yaaf.AdvancedBuilding/examples/buildConfig/buildConfig.Yaaf.Advanced
 Now you need to setup the `buildConfig.fsx` file! 
 Most settings can be taken from your old `build.fsx` file (which was overwritten above).
 This step is documented in an extra documentation page: https://matthid.github.io/Yaaf.AdvancedBuilding/buildConfig.html
+
+## Disclaimer
+
+ I use this project for various projects to build (Basically for all of my projects including https://github.com/Antaris/RazorEngine).
+ This means the core features are quite stable while updating.
+ However I often use this project to add new (build-)features as kind of a `playground` project 
+ and when they are not as useful as initially thought they will be removed.
+ Just join the chat or open an issue if your scripts broke (without any hint in the release notes).

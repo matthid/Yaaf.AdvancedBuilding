@@ -26,7 +26,8 @@ Target "Build" (fun _ ->
     // They aren't available on end systems!
     [ "FSharp.Compiler.Service.dll"; "FSharp.Core.dll"
       "nunit.framework.dll"; "Test.Yaaf.AdvancedBuilding.dll"
-      "Unquote.dll" ]
+      "Unquote.dll";
+      "Mono.Cecil.dll"; "Mono.Cecil.Mdb.dll"; "Mono.Cecil.Pdb.dll"; "Mono.Cecil.Rocks.dll" ]
     |> Seq.iter (fun file ->
       trace (sprintf "DELETING: %s" file)
       File.Delete(sprintf "packages/Yaaf.AdvancedBuilding/tools/%s" file))

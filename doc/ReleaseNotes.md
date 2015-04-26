@@ -1,4 +1,10 @@
-﻿### 0.5.5
+﻿### 0.6.0
+
+ * Snippet evaluation support via F# Formatting (disabled until FSF updates).
+ * Remove project file creation.
+
+### 0.5.5
+
  * Update to latest FSharp.Formatting / RazorEngine
 
 ### 0.5.4

@@ -1,16 +1,11 @@
 ﻿namespace Test.Yaaf.AdvancedBuilding
 
-open Yaaf.AdvancedBuilding
 open NUnit.Framework
-open System
-open System.IO
-open System.Xml
-open System.Xml.Linq
 
 [<TestFixture>]
 type PortableTests() =
     [<Test>]
-    member x.``check that we can convert a project to a portable project`` () =
+    member __.``check that we can convert a project to a portable project`` () =
         let projectXml = """<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
     <PropertyGroup>
@@ -48,4 +43,4 @@ type PortableTests() =
     </ProjectReference>
     </ItemGroup>
 </Project>"""
-        () 
+        ignore projectXml 
