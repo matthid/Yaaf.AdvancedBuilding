@@ -77,6 +77,8 @@ let editLiterateDocument ctx (doc:LiterateDocument) =
 
 //let evalutator = lazy (Some <| (FsiEvaluator() :> IFsiEvaluator))
 let evalutator = lazy None
+let fullLayoutRoots = config.LayoutRoots |> List.map Path.GetFullPath
+
 let buildAllDocumentation outDocDir website_root =
     let outDocDir = Path.GetFullPath outDocDir
     let resetPwd = 
@@ -106,7 +108,6 @@ let buildAllDocumentation outDocDir website_root =
       //CopyRecursive (formatting @@ "styles") (output @@ "content") true 
       //  |> Log "Copying styles and scripts: "
 
-    let fullLayoutRoots = config.LayoutRoots |> List.map Path.GetFullPath
       
     let processDocumentationFiles(outputKind) =
       let indexTemplate, template, outDirName, indexName, extension =
