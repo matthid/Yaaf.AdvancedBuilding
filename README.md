@@ -132,3 +132,11 @@ cp packages/Yaaf.AdvancedBuilding/examples/buildConfig/buildConfig.Yaaf.Advanced
 Now you need to setup the `buildConfig.fsx` file! 
 Most settings can be taken from your old `build.fsx` file (which was overwritten above).
 This step is documented in an extra documentation page: https://matthid.github.io/Yaaf.AdvancedBuilding/buildConfig.html
+
+## Disclaimer
+
+ I use this project for various projects to build (Basically for all of my projects including https://github.com/Antaris/RazorEngine).
+ This means the core features are quite stable while updating.
+ However I often use this project to add new (build-)features as kind of a `playground` project 
+ and when they are not as useful as initially thought they will be removed.
+ Just join the chat or open an issue if your scripts broke (without any hint in the release notes).
