@@ -75,7 +75,8 @@ let rec replaceCodeBlocks ctx = function
 let editLiterateDocument ctx (doc:LiterateDocument) =
   doc.With(paragraphs = List.choose (replaceCodeBlocks ctx) doc.Paragraphs)
 
-let evalutator = lazy (FsiEvaluator())
+//let evalutator = lazy (Some <| (FsiEvaluator() :> IFsiEvaluator))
+let evalutator = lazy None
 let buildAllDocumentation outDocDir website_root =
     let outDocDir = Path.GetFullPath outDocDir
     let resetPwd = 
@@ -123,17 +124,17 @@ let buildAllDocumentation outDocDir website_root =
         resetPwd()
 
       let processMarkdown template infile outfile =
-        let doc = Literate.ParseMarkdownFile( infile, fsiEvaluator = evalutator.Value )
+        let doc = Literate.ParseMarkdownFile( infile, ?fsiEvaluator = evalutator.Value )
         handleDoc template doc outfile
       let processScriptFile template infile outfile =
-        let doc = Literate.ParseScriptFile( infile, fsiEvaluator = evalutator.Value )
+        let doc = Literate.ParseScriptFile( infile, ?fsiEvaluator = evalutator.Value )
         handleDoc template doc outfile
         
       let rec processDirectory template indir outdir = 
         Literate.ProcessDirectory(
           indir, template, outdir, outputKind, generateAnchors = true, replacements = projInfo, 
           layoutRoots = fullLayoutRoots, customizeDocument = editLiterateDocument,
-          processRecursive = true, includeSource = true, fsiEvaluator = evalutator.Value)
+          processRecursive = true, includeSource = true, ?fsiEvaluator = evalutator.Value)
         resetPwd()
 
       processDirectory template (Path.GetFullPath "./doc") outDir
