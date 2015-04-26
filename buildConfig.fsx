@@ -154,6 +154,10 @@ Note that mdb2pdb only works on windows so to get a cross platform debugging exp
  - include a mdb and tell your users to use mdb2pdb on windows.
 *)
     EnableDebugSymbolConversion = true
+(**
+We include a mdb so we can actually release on linux.
+*)
+    RestrictReleaseToWindows = false
   }
 
 (**
