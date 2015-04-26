@@ -36,7 +36,7 @@
       <div class="row">
         <div class="span9" id="main">
           
-<!-- GENERATED FROM COMMIT: 26d3207707c011bda3554c6f667da08a9be869e7 -->
+<!-- GENERATED FROM COMMIT: f9e306b65dbcb41ea0f802b69341229e017dec4d -->
 <h1><a name="Yaaf-AdvancedBuilding" class="anchor" href="#Yaaf-AdvancedBuilding">Yaaf.AdvancedBuilding</a></h1>
 
 <h2><a name="Documentation" class="anchor" href="#Documentation"><a href="https://matthid.github.io/Yaaf.AdvancedBuilding/">Documentation</a></a></h2>
@@ -101,7 +101,7 @@ It should especially help/simplify the process of building projects for multiple
 <p>The setup for this is not trivial and having an idea of FAKE (<a href="http://fsharp.github.com/FAKE)">http://fsharp.github.com/FAKE)</a> and paket (<a href="http://fsprojects.github.io/Paket/)">http://fsprojects.github.io/Paket/)</a> helps.
 We assume in this quick intro guide that you are able to setup a simple project with FAKE (without ProjectScaffold).</p>
 
-<p>We also assume that you have a project named <code>Yaaf.Project</code> already setup with <code>FAKE</code> and paket with the following folder structure:</p>
+<p>We also assume that you have a project named <code>Yaaf.Project</code> already setup with <code>FAKE</code> and <code>Paket</code> with the following folder structure:</p>
 
 <table class="pre"><tr><td class="lines"><pre class="fssnip">
 <span class="l"> 1: </span>
@@ -145,13 +145,11 @@ Paket is also not strictly required! You can get away with a <code>packages.conf
 <span class="l">1: </span>
 <span class="l">2: </span>
 <span class="l">3: </span>
-<span class="l">4: </span>
 </pre>
 </td>
 <td class="snippet"><pre class="fssnip">
 <span class="i">source</span> <span class="i">https</span><span class="o">:</span><span class="c">//nuget.org/api/v2</span>
 
-<span class="i">nuget</span> <span class="i">MyDependency</span>
 <span class="i">nuget</span> <span class="i">Yaaf</span><span class="o">.</span><span class="i">AdvancedBuilding</span>
 </pre>
 </td>
@@ -206,6 +204,15 @@ cp packages/Yaaf.AdvancedBuilding/examples/buildConfig/buildConfig.Yaaf.Advanced
 <p>Now you need to setup the <code>buildConfig.fsx</code> file! 
 Most settings can be taken from your old <code>build.fsx</code> file (which was overwritten above).
 This step is documented in an extra documentation page: <a href="https://matthid.github.io/Yaaf.AdvancedBuilding/buildConfig.html">https://matthid.github.io/Yaaf.AdvancedBuilding/buildConfig.html</a></p>
+
+<h2><a name="Disclaimer" class="anchor" href="#Disclaimer">Disclaimer</a></h2>
+
+<p>I use this project for various projects to build (Basically for all of my projects including <a href="https://github.com/Antaris/RazorEngine).
+">https://github.com/Antaris/RazorEngine).
+</a> This means the core features are quite stable while updating.
+ However I often use this project to add new (build-)features as kind of a <code>playground</code> project 
+ and when they are not as useful as initially thought they will be removed.
+ Just join the chat or open an issue if your scripts broke (without any hint in the release notes).</p>
 
 
         </div>
