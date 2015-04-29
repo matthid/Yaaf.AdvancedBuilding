@@ -1,4 +1,10 @@
-﻿### 0.6.1
+﻿### 0.6.2
+
+ * Update all deps.
+ * Enable `FsiEvaluator` to support http://tpetricek.github.io/FSharp.Formatting/evaluation.html
+
+
+### 0.6.1
 
  * Combine the documentations steps 
    (slightly increases the time for a "normal" build, but improves the performance for a "release" build.)
