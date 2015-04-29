@@ -75,8 +75,8 @@ let rec replaceCodeBlocks ctx = function
 let editLiterateDocument ctx (doc:LiterateDocument) =
   doc.With(paragraphs = List.choose (replaceCodeBlocks ctx) doc.Paragraphs)
 
-//let evalutator = lazy (Some <| (FsiEvaluator() :> IFsiEvaluator))
-let evalutator = lazy None
+let evalutator = lazy (Some <| (FsiEvaluator() :> IFsiEvaluator))
+//let evalutator = lazy None
 
 let buildAllDocumentation outDocDir website_root =
     let references = config.DocRazorReferences
