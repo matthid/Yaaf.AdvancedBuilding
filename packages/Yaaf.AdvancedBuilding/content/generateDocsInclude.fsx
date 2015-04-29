@@ -173,25 +173,11 @@ let buildAllDocumentation outDocDir website_root =
         let binaries =
             referenceBinaries
             |> List.map (fun lib -> Path.GetFullPath( libDir @@ lib ))
-        let blacklist = [ "FSharp.Core.dll"; "mscorlib.dll" ]
-        let libraries =
-            Directory.EnumerateFiles(libDir, "*.dll")
-            |> Seq.map Path.GetFullPath
-            |> Seq.filter (fun file -> binaries |> List.exists (fun binary -> binary = file) |> not)
-            |> Seq.append [ "System";"System.Core";"System.Xml";"System.Xml.Linq" ]
-            |> Seq.filter (fun file ->
-                let name = Path.GetFileName file
-                let isBlacklisted = blacklist |> List.exists (fun b -> b = name)
-                if isBlacklisted then
-                  trace (sprintf "WARNING: Reference to \"%s\" is ignored because it is blacklisted!" file)
-                not isBlacklisted)
-            |> Seq.map (sprintf "-r:%s")
-            |> Seq.toList
         MetadataFormat.Generate
            (binaries, Path.GetFullPath outDir, fullLayoutRoots,
             parameters = projInfo,
-            libDirs = [ ],
-            otherFlags = libraries,
+            libDirs = [ libDir ],
+            otherFlags = [],
             sourceRepo = config.SourceReproUrl,
             sourceFolder = "./",
             publicOnly = true, 
