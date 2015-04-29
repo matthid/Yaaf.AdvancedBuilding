@@ -153,7 +153,7 @@ Note that mdb2pdb only works on windows so to get a cross platform debugging exp
  - either include the pdb file and can therefore only release on a windows machine
  - include a mdb and tell your users to use mdb2pdb on windows.
 *)
-    EnableDebugSymbolConversion = true
+    EnableDebugSymbolConversion = false
 (**
 We include a mdb so we can actually release on linux.
 *)
