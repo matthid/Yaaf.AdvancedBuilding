@@ -31,7 +31,7 @@ Yaaf.AdvancedBuilding
 
 ## Why AdvancedBuilding?
 
-After setting up some projects with FAKE and paket I often find the need to edit the `build.fsx` and add new features.
+After setting up some projects with FAKE and Paket I often find the need to edit the `build.fsx` and add new features.
 And most of the time after adding a feature I wanted that feature on other projects as well.
 
 Because of this I introduced Yaaf.AdvancedBuilding, a nuget package containing a general FAKE build script, which can be configured.
@@ -45,9 +45,9 @@ the project files (Visual Studio) itself.
 This way you can change the platform from within Visual Studio without the need to load another solution or to restart Visual Studio. 
 You can find an example here: https://github.com/matthid/Yaaf.FSharp.Helper/blob/develop/src/source/Yaaf.FSharp.Helper/Yaaf.FSharp.Helper.fsproj
 
-Features:
+Features / Design goals:
 
-- Your build can be updated.
+- Your build can be updated (with `paket update`).
 - Extendible with your own FAKE targets / dependencies (as without Yaaf.AdvancedBuilding).
 - Additional support for building projects for multiple targets (net40, net45 and portable profiles)
 - Simplifies your paket.dependencies file by simplifying all build dependencies to just Yaaf.AdvancedBuilding.
@@ -135,8 +135,8 @@ This step is documented in an extra documentation page: https://matthid.github.i
 
 ## Disclaimer
 
- I use this project for various projects to build (Basically for all of my projects including https://github.com/Antaris/RazorEngine).
- This means the core features are quite stable while updating.
- However I often use this project to add new (build-)features as kind of a `playground` project 
- and when they are not as useful as initially thought they will be removed.
- Just join the chat or open an issue if your scripts broke (without any hint in the release notes).
+I use this project for various projects to build (Basically for all of my projects including https://github.com/Antaris/RazorEngine).
+This means the core features are quite stable while updating.
+However I often use this project to add new (build-)features as kind of a `playground` project 
+and when they are not as useful as initially thought they will be removed.
+Just join the chat or open an issue if your scripts broke (without any hint in the release notes).

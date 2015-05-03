@@ -19,7 +19,6 @@
   </metadata>
   <files>
     <file src="release/lib/net45/Yaaf.AdvancedBuilding.dll" target="tools\Yaaf.AdvancedBuilding.dll" />
-    <file src="release/lib/net45/Yaaf.AdvancedBuilding.dll.mdb" target="tools\Yaaf.AdvancedBuilding.dll.mdb" />
     <file src="release/lib/net45/Yaaf.AdvancedBuilding.xml" target="tools\Yaaf.AdvancedBuilding.xml" />
     <file src="packages/Yaaf.AdvancedBuilding/content/build.cmd" target="content/build.cmd" />
     <file src="packages/Yaaf.AdvancedBuilding/content/build.sh" target="content/build.sh" />

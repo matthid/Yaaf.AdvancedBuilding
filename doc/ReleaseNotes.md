@@ -1,8 +1,12 @@
-﻿### 0.6.2
+﻿### 0.6.3
+
+ * Paket update
+ * Add "WatchDocs" target (currently beta, see https://github.com/tpetricek/FSharp.Formatting/pull/309)
+
+### 0.6.2
 
  * Update all deps.
  * Enable `FsiEvaluator` to support http://tpetricek.github.io/FSharp.Formatting/evaluation.html
-
 
 ### 0.6.1
 

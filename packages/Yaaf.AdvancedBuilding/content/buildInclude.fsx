@@ -307,6 +307,8 @@ MyTarget "GithubDoc" (fun _ -> buildDocumentationTarget "GithubDoc")
 
 MyTarget "LocalDoc" (fun _ -> buildDocumentationTarget "LocalDoc")
 
+MyTarget "WatchDocs" (fun _ -> buildDocumentationTarget "WatchDocs")
+
 // its just faster to generate all at the same time...
 MyTarget "AllDocs" (fun _ -> buildDocumentationTarget "AllDocs")
 
