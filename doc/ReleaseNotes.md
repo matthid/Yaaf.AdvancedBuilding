@@ -1,4 +1,8 @@
-﻿### 0.6.3
+﻿### 0.6.4
+
+ * Add "AfterBuild" target to fix an inter-target dependency problem when running "AllDocs".
+
+### 0.6.3
 
  * Paket update
  * Add "WatchDocs" target (currently beta, see https://github.com/tpetricek/FSharp.Formatting/pull/309)
