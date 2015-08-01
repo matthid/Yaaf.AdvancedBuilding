@@ -6,7 +6,7 @@ nuget FSharp.Formatting
 nuget FSharp.Compiler.Service
 
 // Project
-nuget FSharp.Core
+nuget FSharp.Core ~> 3.0
 nuget Mono.Cecil
 
 //Tests

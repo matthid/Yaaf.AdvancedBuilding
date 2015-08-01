@@ -39,6 +39,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "build", "build", "{2DFFAF1A
 	ProjectSection(SolutionItems) = preProject
 		..\packages\Yaaf.AdvancedBuilding\content\build.cmd = ..\packages\Yaaf.AdvancedBuilding\content\build.cmd
 		..\packages\Yaaf.AdvancedBuilding\content\build.sh = ..\packages\Yaaf.AdvancedBuilding\content\build.sh
+		..\packages\Yaaf.AdvancedBuilding\content\build.targets = ..\packages\Yaaf.AdvancedBuilding\content\build.targets
 		..\packages\Yaaf.AdvancedBuilding\content\buildConfigDef.fsx = ..\packages\Yaaf.AdvancedBuilding\content\buildConfigDef.fsx
 		..\packages\Yaaf.AdvancedBuilding\content\buildInclude.fsx = ..\packages\Yaaf.AdvancedBuilding\content\buildInclude.fsx
 		..\packages\Yaaf.AdvancedBuilding\content\downloadNugetInclude.fsx = ..\packages\Yaaf.AdvancedBuilding\content\downloadNugetInclude.fsx
