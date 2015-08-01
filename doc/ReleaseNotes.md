@@ -1,4 +1,8 @@
-﻿### 0.6.4
+﻿### 0.6.5
+
+ * Support for building with F# on mono 4.
+
+### 0.6.4
 
  * Add "AfterBuild" target to fix an inter-target dependency problem when running "AllDocs".
 
