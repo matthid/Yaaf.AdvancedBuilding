@@ -1,4 +1,8 @@
-﻿### 0.6.5
+﻿### 0.7.0
+
+ * Update all dependencies.
+
+### 0.6.5
 
  * Support for building with F# on mono 4.
 
