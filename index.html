@@ -36,7 +36,7 @@
       <div class="row">
         <div class="span9" id="main">
           
-<!-- GENERATED FROM COMMIT: d473cc7823b50155245878bdf235a2b52ed278a0 -->
+<!-- GENERATED FROM COMMIT: dc1f124f12544656c069d2ebb61c96519a3f414f -->
 <h1><a name="Yaaf-AdvancedBuilding" class="anchor" href="#Yaaf-AdvancedBuilding">Yaaf.AdvancedBuilding</a></h1>
 
 <h2><a name="Documentation" class="anchor" href="#Documentation"><a href="https://matthid.github.io/Yaaf.AdvancedBuilding/">Documentation</a></a></h2>
@@ -103,8 +103,7 @@ We assume in this quick intro guide that you are able to setup a simple project 
 
 <p>We also assume that you have a project named <code>Yaaf.Project</code> already setup with <code>FAKE</code> and <code>Paket</code> with the following folder structure:</p>
 
-<table class="pre"><tr><td class="lines"><pre class="fssnip">
-<span class="l"> 1: </span>
+<table class="pre"><tr><td class="lines"><pre class="fssnip"><span class="l"> 1: </span>
 <span class="l"> 2: </span>
 <span class="l"> 3: </span>
 <span class="l"> 4: </span>
@@ -114,10 +113,8 @@ We assume in this quick intro guide that you are able to setup a simple project 
 <span class="l"> 8: </span>
 <span class="l"> 9: </span>
 <span class="l">10: </span>
-</pre>
-</td>
-<td class="snippet"><pre class="fssnip">
-<span class="o">-</span> <span class="o">.</span><span class="i">paket</span> (<span class="i">paket</span> <span class="i">folder</span>)
+</pre></td>
+<td class="snippet"><pre class="fssnip highlighted"><code lang="fsharp"><span class="o">-</span> <span class="o">.</span><span class="i">paket</span> (<span class="i">paket</span> <span class="i">folder</span>)
 <span class="o">-</span> <span class="i">src</span>
   <span class="o">-</span> <span class="i">test</span> (<span class="i">Directory</span> <span class="k">for</span> <span class="i">test</span> <span class="i">projects</span>)
     <span class="o">-</span> <span class="i">Test</span><span class="o">.</span><span class="i">Yaaf</span><span class="o">.</span><span class="i">Project</span> (<span class="i">test</span> <span class="i">projects</span> <span class="i">start</span> <span class="k">with</span> <span class="s">&quot;Test.&quot;</span> <span class="k">and</span> <span class="i">produce</span> <span class="i">equally</span> <span class="i">named</span> <span class="s">&quot;.dll&quot;</span> <span class="i">files</span>)
@@ -127,8 +124,7 @@ We assume in this quick intro guide that you are able to setup a simple project 
 <span class="o">-</span> <span class="i">build</span><span class="o">.</span><span class="i">sh</span>
 <span class="o">-</span> <span class="i">build</span><span class="o">.</span><span class="i">fsx</span>
 <span class="o">-</span> <span class="i">paket</span><span class="o">.</span><span class="i">dependencies</span>
-</pre>
-</td>
+</code></pre></td>
 </tr>
 </table>
 
@@ -141,18 +137,14 @@ Paket is also not strictly required! You can get away with a <code>packages.conf
 
 <p>Now we first add Yaaf.AdvancedBuilding to our dependencies</p>
 
-<table class="pre"><tr><td class="lines"><pre class="fssnip">
-<span class="l">1: </span>
+<table class="pre"><tr><td class="lines"><pre class="fssnip"><span class="l">1: </span>
 <span class="l">2: </span>
 <span class="l">3: </span>
-</pre>
-</td>
-<td class="snippet"><pre class="fssnip">
-<span class="i">source</span> <span class="i">https</span><span class="o">:</span><span class="c">//nuget.org/api/v2</span>
+</pre></td>
+<td class="snippet"><pre class="fssnip highlighted"><code lang="fsharp"><span class="i">source</span> <span class="i">https</span><span class="o">:</span><span class="c">//nuget.org/api/v2</span>
 
 <span class="i">nuget</span> <span class="i">Yaaf</span><span class="o">.</span><span class="i">AdvancedBuilding</span>
-</pre>
-</td>
+</code></pre></td>
 </tr>
 </table>
 
