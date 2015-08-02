@@ -12,6 +12,12 @@ type ProjectGeneratorTests() =
 
     [<Test>]
     member x.``check that we can extract items`` () =
+      printfn "VERSION: %A" Environment.Version
+      for ass in AppDomain.CurrentDomain.GetAssemblies() do
+        printfn "\tAssembly: %s (%s)" ass.FullName (if ass.Location = null then "{null}" else ass.Location)
+      let entry = System.Reflection.Assembly.GetEntryAssembly()
+      printfn "Entry CLR Version: %A" (if entry = null then "[null}" else entry.ImageRuntimeVersion)
+
       x.DoTheTest()
 
     member __.DoTheTest() =
