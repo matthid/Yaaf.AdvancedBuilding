@@ -11,7 +11,7 @@ type ProjectGeneratorTests() =
     let (@@) a b = Path.Combine(a, b)
 
     [<Test>]
-    member __.``check that we can extract items`` () =
+    member x.``check that we can extract items`` () =
       let projectXml = """<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
     <PropertyGroup>
