@@ -1,4 +1,9 @@
-﻿### 0.7.1
+﻿### 0.7.2
+
+ * added .fake/ to gitignore (FAKE cache)
+   use "cp packages/Yaaf.AdvancedBuilding/scaffold/build/.gitignore ./" in the root project directory to apply the change.
+
+### 0.7.1
 
  * added *.svclog and *.mdb to the bundled gitignore.
    use "cp packages/Yaaf.AdvancedBuilding/scaffold/build/.gitignore ./" in the root project directory to apply the change.
