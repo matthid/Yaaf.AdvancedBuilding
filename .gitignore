@@ -32,6 +32,7 @@ build/
 *.obj
 *.pch
 *.pdb
+*.mdb
 *.pgc
 *.pgd
 *.rsp
@@ -42,6 +43,7 @@ build/
 *.tmp
 *.tmp_proj
 *.log
+*.svclog
 *.vspscc
 *.vssscc
 .builds
