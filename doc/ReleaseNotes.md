@@ -1,6 +1,6 @@
 ﻿### 0.7.2
 
- * added .fake/ to gitignore (FAKE cache)
+ * added .fake/* (FAKE cache) and more files to gitignore
    use "cp packages/Yaaf.AdvancedBuilding/scaffold/build/.gitignore ./" in the root project directory to apply the change.
 
 ### 0.7.1
