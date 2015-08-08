@@ -50,6 +50,7 @@ build/
 *.pidb
 *.log
 *.scc
+XmlWriter
 
 # Visual C++ cache files
 ipch/
