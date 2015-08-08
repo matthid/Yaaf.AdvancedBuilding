@@ -163,7 +163,7 @@ $RECYCLE.BIN/
 # Exclude F# project specific directories and files
 # ===================================================
 
-.fake/
+.fake/*
 
 # NuGet Packages Directory
 packages/*
