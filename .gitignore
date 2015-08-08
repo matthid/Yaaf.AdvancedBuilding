@@ -163,6 +163,8 @@ $RECYCLE.BIN/
 # Exclude F# project specific directories and files
 # ===================================================
 
+.fake/*
+
 # NuGet Packages Directory
 packages/*
 !packages/Yaaf.AdvancedBuilding
