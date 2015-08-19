@@ -1,6 +1,14 @@
-﻿### 0.7.2
+﻿### 0.8.0
 
- * added .fake/ to gitignore (FAKE cache)
+ * Support Net Client profiles.
+ * Support more default project layouts out of the box.
+ * Support for MSTest.
+ * Ignore when Visual Studio locks the build directory.
+
+ 
+### 0.7.2
+
+ * added .fake/* (FAKE cache) and more files to gitignore
    use "cp packages/Yaaf.AdvancedBuilding/scaffold/build/.gitignore ./" in the root project directory to apply the change.
 
 ### 0.7.1
