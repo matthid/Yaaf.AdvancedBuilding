@@ -15,6 +15,7 @@ open System.IO
 open System
 
 open Fake
+open Fake.MSTest
 open AssemblyInfoFile
 
 (**
@@ -140,6 +141,7 @@ type BuildConfiguration =
     /// Defaults to "./test/"
     TestDir : string
     SetupNUnit : (NUnitParams -> NUnitParams)
+    SetupMSTest : (MSTestParams -> MSTestParams )
 
     // Documentation generation
     /// Defaults to "./release/documentation/"
@@ -182,6 +184,7 @@ type BuildConfiguration =
       SourceReproUrl = ""
       NugetPackages = []
       SetupNUnit = id
+      SetupMSTest = id
       GeneratedFileList = []
       BuildDir = "./build/"
       OutLibDir = "./release/lib/"

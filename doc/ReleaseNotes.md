@@ -2,6 +2,8 @@
 
  * Support Net Client profiles.
  * Support more default project layouts out of the box.
+ * Support for MSTest.
+ * Ignore when Visual Studio locks the build directory.
 
  
 ### 0.7.2
