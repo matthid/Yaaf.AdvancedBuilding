@@ -53,15 +53,22 @@ type BuildParams =
       UseProjectOutDir = false
       FindSolutionFiles = fun _ -> Seq.empty
       FindProjectFiles = fun (_:BuildParams) ->
-        !! (sprintf "src/source/**/*.fsproj")
-        ++ (sprintf "src/source/**/*.csproj")
+        !! (sprintf "src/**/*.fsproj")
+        ++ (sprintf "src/**/*.csproj")
+        -- (sprintf "src/**/*.Tests.fsproj")
+        -- (sprintf "src/**/*.Tests.csproj")
+        -- (sprintf "src/**/Test.*.fsproj")
+        -- (sprintf "src/**/Test.*.csproj")
         :> _
       FindTestFiles = fun (_:BuildParams) ->
-        !! (sprintf "src/test/**/Test.*.fsproj")
-        ++ (sprintf "src/test/**/Test.*.csproj")
+        !! (sprintf "src/**/*.Tests.fsproj")
+        ++ (sprintf "src/**/*.Tests.csproj")
+        ++ (sprintf "src/**/Test.*.fsproj")
+        ++ (sprintf "src/**/Test.*.csproj")
         :> _
       FindUnitTestDlls = fun (testDir, (_:BuildParams)) ->
         !! (testDir + "/Test.*.dll")
+        ++ (testDir + "/*.Tests.dll")
         :> _ }
   static member WithSolution =
    { BuildParams.Empty with
@@ -77,6 +84,7 @@ type BuildConfiguration =
   { // Metadata
     ProjectName : string
     ProjectSummary : string
+    Company : string
     CopyrightNotice : string
     ProjectDescription : string
     ProjectAuthors : string list
@@ -144,6 +152,7 @@ type BuildConfiguration =
   static member Defaults =
     { ProjectName = ""
       ProjectSummary = ""
+      Company = ""
       CopyrightNotice = ""
       ProjectDescription = ""
       UseNuget = false
@@ -159,12 +168,12 @@ type BuildConfiguration =
       GithubProject = ""
       SetAssemblyFileVersions = (fun config ->
         let info =
-          [ Attribute.Company config.ProjectName
+          [ Attribute.Company config.Company
             Attribute.Product config.ProjectName
             Attribute.Copyright config.CopyrightNotice
             Attribute.Version config.Version
             Attribute.FileVersion config.Version
-            Attribute.InformationalVersion config.Version]
+            Attribute.InformationalVersion config.Version ]
         CreateFSharpAssemblyInfo "./src/SharedAssemblyInfo.fs" info
         CreateCSharpAssemblyInfo "./src/SharedAssemblyInfo.cs" info)
       Version = ""
@@ -203,6 +212,8 @@ type BuildConfiguration =
   member x.FillDefaults () =
     let x =
       { x with
+          Company =
+            if String.IsNullOrEmpty x.Company then x.ProjectName else x.Company
           NugetUrl =
             if String.IsNullOrEmpty x.NugetUrl then sprintf "https://www.nuget.org/packages/%s/" x.ProjectName else x.NugetUrl
           GithubProject = if String.IsNullOrEmpty x.GithubProject then x.ProjectName else x.GithubProject
