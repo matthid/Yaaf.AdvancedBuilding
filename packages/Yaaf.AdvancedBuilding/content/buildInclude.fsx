@@ -379,7 +379,7 @@ MyTarget "VersionBump" (fun _ ->
     let workingDir =
       if not isLocalBuild && buildServer = BuildServer.TeamFoundation then
         let workingDir = "__repository"
-        // We are not in a git repository, because the .git folder is createMissingSymbolFiles
+        // We are not in a git repository, because the .git folder is missing.
         let repro = (sprintf "git@github.com:%s/%s.git" config.GithubUser config.GithubProject)
         CleanDir workingDir
         cloneSingleBranch "" repro workingDir "develop"
