@@ -376,14 +376,16 @@ Target "CheckWindows" (fun _ ->
 )
 
 MyTarget "VersionBump" (fun _ ->
+    let repositoryHelperDir =  "__repository"
     let workingDir =
       if not isLocalBuild && buildServer = BuildServer.TeamFoundation then
-        let workingDir = "__repository"
+        let workingDir = repositoryHelperDir
         // We are not in a git repository, because the .git folder is missing.
         let repro = (sprintf "git@github.com:%s/%s.git" config.GithubUser config.GithubProject)
         CleanDir workingDir
-        cloneSingleBranch "" repro workingDir "develop"
-        fullclean workingDir
+        clone "" repro workingDir
+        checkoutBranch workingDir (Information.getCurrentSHA1("."))
+        fullclean (workingDir @@ "src")
         CopyRecursive "src" (workingDir @@ "src") true |> printfn "%A"
         workingDir
       else ""
@@ -427,6 +429,8 @@ MyTarget "VersionBump" (fun _ ->
       Branches.checkout workingDir true "develop"
       Merge.merge workingDir NoFastForwardFlag "master"
       Branches.pushBranch workingDir "origin" "develop"
+    CleanDir repositoryHelperDir
+    DeleteDir repositoryHelperDir
 )
 
 Target "Release" (fun _ ->
