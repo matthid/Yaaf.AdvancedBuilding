@@ -141,11 +141,25 @@ let buildAll (buildParams:BuildParams) =
     runTests buildParams
     buildParams.AfterTest ()
 
-/// Run the given buildscript with fsi.exe
-let executeFSIWithOutput workingDirectory script args =
+let fakePath = "packages" @@ "FAKE" @@ "tools" @@ "FAKE.exe"
+let fakeStartInfo script workingDirectory args environmentVars =
+    (fun (info: System.Diagnostics.ProcessStartInfo) ->
+        info.FileName <- fakePath
+        info.Arguments <- sprintf "%s --fsiargs -d:FAKE \"%s\"" args script
+        info.WorkingDirectory <- workingDirectory
+        let setVar k v =
+            info.EnvironmentVariables.[k] <- v
+        for (k, v) in environmentVars do
+            setVar k v
+        setVar "MSBuild" msBuildExe
+        setVar "GIT" Git.CommandHelper.gitPath
+        setVar "FSI" fsiPath)
+
+/// Run the given buildscript with FAKE.exe
+let executeFAKEWithOutput workingDirectory script envArgs =
     let exitCode =
         ExecProcessWithLambdas
-            (fsiStartInfo script workingDirectory args)
+            (fakeStartInfo script workingDirectory "" envArgs)
             TimeSpan.MaxValue false ignore ignore
     System.Threading.Thread.Sleep 1000
     exitCode
@@ -153,7 +167,7 @@ let executeFSIWithOutput workingDirectory script args =
 // Documentation
 let buildDocumentationTarget target =
     trace (sprintf "Building documentation (%s), this could take some time, please wait..." target)
-    let exit = executeFSIWithOutput "." "generateDocs.fsx" ["target", target]
+    let exit = executeFAKEWithOutput "." "generateDocs.fsx" ["target", target]
     if exit <> 0 then
         failwith "documentation failed"
     ()
