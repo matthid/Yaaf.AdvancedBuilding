@@ -1,11 +1,16 @@
-﻿### 0.8.0
+﻿### 0.9
+
+ * Update to latest FSharp.Core, FSharp.Compiler.Service and FAKE.
+ * Use FAKE.exe instead of fsi.exe for documentation generation (fixes build when using FAKE 4.x)
+ * Improve for building with TeamFoundation (on-premise and Visual Studio Online)
+
+### 0.8.0
 
  * Support Net Client profiles.
  * Support more default project layouts out of the box.
  * Support for MSTest.
  * Ignore when Visual Studio locks the build directory.
 
- 
 ### 0.7.2
 
  * added .fake/* (FAKE cache) and more files to gitignore
