@@ -1,4 +1,5 @@
 source https://nuget.org/api/v2
+redirects on
 
 // Build
 nuget FAKE
@@ -6,7 +7,7 @@ nuget FSharp.Formatting
 nuget FSharp.Compiler.Service
 
 // Project
-nuget FSharp.Core ~> 3.0
+nuget FSharp.Core
 nuget Mono.Cecil
 
 //Tests
