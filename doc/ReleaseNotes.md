@@ -1,4 +1,8 @@
-﻿### 0.9
+﻿### 0.9.1
+
+ * Delegate PAKET_VERSION environment variable as argument to paket.bootstrapper.exe.
+
+### 0.9
 
  * Update to latest FSharp.Core, FSharp.Compiler.Service and FAKE.
  * Use FAKE.exe instead of fsi.exe for documentation generation (fixes build when using FAKE 4.x)
