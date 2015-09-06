@@ -4,6 +4,7 @@ build_script:
   - cmd: build.cmd
 test: off
 environment:
+  PAKET_VERSION: ""
   matrix:
   - PAKET_VERSION: prerelease
 version: 0.0.1.{build}
