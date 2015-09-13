@@ -4,7 +4,6 @@ redirects on
 // Build
 nuget FAKE
 nuget FSharp.Formatting
-nuget FSharp.Compiler.Service
 
 // Project
 nuget FSharp.Core
