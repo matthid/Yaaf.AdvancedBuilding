@@ -1,4 +1,8 @@
-﻿### 0.9.1
+﻿### 0.9.2
+
+ * Update dependencies.
+
+### 0.9.1
 
  * Delegate PAKET_VERSION environment variable as argument to paket.bootstrapper.exe.
 
