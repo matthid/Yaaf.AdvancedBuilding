@@ -1,4 +1,8 @@
-﻿### 0.9.2
+﻿### 0.9.3-alpha1
+
+ * Update to alpha FSF.
+
+### 0.9.2
 
  * Update dependencies.
 
