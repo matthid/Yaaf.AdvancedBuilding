@@ -6,7 +6,7 @@ open System.Reflection
 [<assembly: AssemblyCopyrightAttribute("Yaaf.AdvancedBuilding Copyright © Matthias Dittrich 2015")>]
 [<assembly: AssemblyVersionAttribute("0.9.3")>]
 [<assembly: AssemblyFileVersionAttribute("0.9.3")>]
-[<assembly: AssemblyInformationalVersionAttribute("0.9.3-alpha2")>]
+[<assembly: AssemblyInformationalVersionAttribute("0.9.3")>]
 do ()
 
 module internal AssemblyVersionInformation =
