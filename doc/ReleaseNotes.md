@@ -1,9 +1,6 @@
-﻿### 0.9.3-alpha2
+﻿### 0.9.3
 
  * Update to latest 2.11.0-alpha2 FSF.
-
-### 0.9.3-alpha1
-
  * Update to alpha FSF.
 
 ### 0.9.2
