@@ -1,4 +1,8 @@
-﻿### 0.9.3
+﻿### 0.10.0
+
+ * Update to latest FSF, FAKE and FCS.
+
+### 0.9.3
 
  * Update to latest 2.11.0-alpha2 FSF.
  * Update to alpha FSF.
