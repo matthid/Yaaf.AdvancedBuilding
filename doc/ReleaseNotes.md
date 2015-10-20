@@ -1,8 +1,4 @@
-﻿### 0.10.1-alpha1
-
- * Disable evaluator for testing.
-
-### 0.10.0
+﻿### 0.10.0
 
  * Update to latest FSF, FAKE and FCS.
 
