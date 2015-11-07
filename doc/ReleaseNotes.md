@@ -1,6 +1,6 @@
-﻿### 0.10.1-alpha1
+﻿### 0.11.0
 
- * Disable evaluator for testing.
+ * Add support for building on F# 4.0 only installations (VS2015 only) and build with F#4 by default.
 
 ### 0.10.0
 
