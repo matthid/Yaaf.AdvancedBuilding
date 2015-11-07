@@ -1,4 +1,8 @@
-﻿### 0.10.0
+﻿### 0.11.0
+
+ * Add support for building on F# 4.0 only installations (VS2015 only) and build with F#4 by default.
+
+### 0.10.0
 
  * Update to latest FSF, FAKE and FCS.
 
