@@ -1,4 +1,8 @@
-﻿### 0.11.0
+﻿### 0.11.1
+
+ * Build reference before regular documentation, fixes https://github.com/matthid/Yaaf.AdvancedBuilding/issues/5
+
+### 0.11.0
 
  * Add support for building on F# 4.0 only installations (VS2015 only) and build with F#4 by default.
 
