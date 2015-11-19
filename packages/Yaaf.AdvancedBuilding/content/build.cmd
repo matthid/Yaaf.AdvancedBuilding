@@ -12,11 +12,15 @@ if exist ".paket/paket.bootstrapper.exe" (
   .paket\paket.bootstrapper.exe %PAKET_VERSION%
   if %ERRORLEVEL% NEQ 0 exit /b %ERRORLEVEL%
 
-  if "%PAKET_UPDATE%" == "y" (
-    echo Running paket update - as requested by PAKET_UPDATE=y
-    .paket\paket.exe update
-    if %ERRORLEVEL% NEQ 0 exit /b %ERRORLEVEL%
-  )
+  if "%PAKET_UPDATE%" == "y" goto PaketUpdate
+  if "%PAKET_UPDATE%" == "true" goto PaketUpdate
+:NoPaketUpdate
+  goto AfterPaketUpdate
+:PaketUpdate
+  echo Running paket update - as requested by PAKET_UPDATE=y
+  .paket\paket.exe update
+  if %ERRORLEVEL% NEQ 0 exit /b %ERRORLEVEL%
+:AfterPaketUpdate
 
   echo restore paket packages
   .paket\paket.exe restore

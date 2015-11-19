@@ -32,7 +32,7 @@ function do_build {
       exit $exit_code
     fi
 
-    if [ "$PAKET_UPDATE" == "y" ]; then
+    if [ "$PAKET_UPDATE" == "y" ] || [ "$PAKET_UPDATE" == "true" ]; then
       echo "run paket update (as requested by PAKET_UPDATE=y)"
       $MONO .paket/paket.exe update
       exit_code=$?
