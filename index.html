@@ -36,7 +36,7 @@
       <div class="row">
         <div class="span9" id="main">
           
-<!-- GENERATED FROM COMMIT: 87d8ea7f4bed5f92a9f6a392c1059fe733fa3533 -->
+<!-- GENERATED FROM COMMIT: f709a3457cfe60a867d42880ac4dddce7c63194c -->
 <h1><a name="Yaaf-AdvancedBuilding" class="anchor" href="#Yaaf-AdvancedBuilding">Yaaf.AdvancedBuilding</a></h1>
 
 <h2><a name="Documentation" class="anchor" href="#Documentation"><a href="https://matthid.github.io/Yaaf.AdvancedBuilding/">Documentation</a></a></h2>
@@ -196,6 +196,12 @@ cp packages/Yaaf.AdvancedBuilding/examples/buildConfig/buildConfig.Yaaf.Advanced
 <p>Now you need to setup the <code>buildConfig.fsx</code> file! 
 Most settings can be taken from your old <code>build.fsx</code> file (which was overwritten above).
 This step is documented in an extra documentation page: <a href="https://matthid.github.io/Yaaf.AdvancedBuilding/buildConfig.html">https://matthid.github.io/Yaaf.AdvancedBuilding/buildConfig.html</a></p>
+
+<h2><a name="More-Features" class="anchor" href="#More-Features">More Features</a></h2>
+
+<p>When PAKET<em>UPDATE=y "paket update" will be run before starting your build, this way you can specify a CI build which is running daily with the latest updates.
+You can lock the paket version with PAKET</em>VERSION.
+You can set PAKET_VERSION to "prerelease" to test with the latest paket.</p>
 
 <h2><a name="Disclaimer" class="anchor" href="#Disclaimer">Disclaimer</a></h2>
 
