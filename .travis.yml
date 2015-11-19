@@ -5,6 +5,8 @@ sudo: false  # use the new container-based Travis infrastructure
 env:
   - PAKET_VERSION=
   - PAKET_VERSION=prerelease
+  - PAKET_UPDATE=
+  - PAKET_UPDATE=y
 
 script: 
   - ./build.sh All
