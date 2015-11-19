@@ -6,7 +6,10 @@ test: off
 environment:
   matrix:
   - PAKET_VERSION: ""
+    PAKET_UPDATE: ""
   - PAKET_VERSION: prerelease
+    PAKET_UPDATE: "y"
+
 version: 0.0.1.{build}
 artifacts:
   - path: bin

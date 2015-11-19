@@ -1,4 +1,8 @@
-﻿### 0.11.1
+﻿### 0.11.2
+
+ * Run 'paket update' before starting the build when PAKET_UPDATE=y
+
+### 0.11.1
 
  * Build reference before regular documentation, fixes https://github.com/matthid/Yaaf.AdvancedBuilding/issues/5
 

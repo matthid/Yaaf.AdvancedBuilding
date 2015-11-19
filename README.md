@@ -133,6 +133,13 @@ Now you need to setup the `buildConfig.fsx` file!
 Most settings can be taken from your old `build.fsx` file (which was overwritten above).
 This step is documented in an extra documentation page: https://matthid.github.io/Yaaf.AdvancedBuilding/buildConfig.html
 
+## More Features
+
+When PAKET_UPDATE=y "paket update" will be run before starting your build, this way you can specify a CI build which is running daily with the latest updates.
+You can lock the paket version with PAKET_VERSION.
+You can set PAKET_VERSION to "prerelease" to test with the latest paket.
+
+
 ## Disclaimer
 
 I use this project for various projects to build (Basically for all of my projects including https://github.com/Antaris/RazorEngine).
