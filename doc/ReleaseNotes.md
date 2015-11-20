@@ -1,4 +1,8 @@
-﻿### 0.11.2
+﻿### 0.11.3
+
+ * Paket update and lock NUnit.Runner and NUnit
+
+### 0.11.2
 
  * Run 'paket update' before starting the build when PAKET_UPDATE=y
 
