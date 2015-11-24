@@ -1,4 +1,8 @@
-﻿### 0.11.3
+﻿### 0.11.4
+
+ * Allow to disable NUnit and MSTest with 'DisableMSTest' and 'DisableNUnit'
+
+### 0.11.3
 
  * Paket update and lock NUnit.Runner and NUnit
 
