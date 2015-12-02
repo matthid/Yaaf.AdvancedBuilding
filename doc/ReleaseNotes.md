@@ -1,4 +1,8 @@
-﻿### 0.11.4
+﻿### 0.11.5
+
+ * Add undocumented way to set arguments for FAKE in the documentation generation (for example `BuildInclude.documentationFAKEArgs <- "-nc"` to disable the cache).
+
+### 0.11.4
 
  * Allow to disable NUnit and MSTest with 'DisableMSTest' and 'DisableNUnit'
 
