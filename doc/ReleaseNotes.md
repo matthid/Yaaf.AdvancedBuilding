@@ -1,4 +1,9 @@
-﻿### 0.11.5
+﻿### 0.11.6-alpha1
+
+ * Update dependencies
+ * Add diagnostics for documentation failure.
+
+### 0.11.5
 
  * Add undocumented way to set arguments for FAKE in the documentation generation (for example `BuildInclude.documentationFAKEArgs <- "-nc"` to disable the cache).
 
