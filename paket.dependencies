@@ -3,7 +3,7 @@ redirects on
 
 // Build
 nuget FAKE
-nuget FSharp.Formatting
+nuget FSharp.Formatting prerelease
 
 // Project
 nuget FSharp.Core
