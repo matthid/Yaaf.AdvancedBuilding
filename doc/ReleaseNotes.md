@@ -1,4 +1,4 @@
-﻿### 0.11.6-alpha1
+﻿### 0.11.6
 
  * Update dependencies
  * Add diagnostics for documentation failure.
