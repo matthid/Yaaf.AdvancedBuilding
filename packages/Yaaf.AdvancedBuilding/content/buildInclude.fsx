@@ -156,25 +156,44 @@ let fakeStartInfo script workingDirectory args environmentVars =
         setVar "GIT" Git.CommandHelper.gitPath
         setVar "FSI" fsiPath)
 
-/// Undocumentated way to disable cache (-nc) for documentation generation
-let mutable documentationFAKEArgs = ""
 
-/// Run the given buildscript with FAKE.exe
-let executeFAKEWithOutput workingDirectory script envArgs =
+/// Run the given startinfo by printing the output (live)
+let executeWithOutput configStartInfo =
     let exitCode =
         ExecProcessWithLambdas
-            (fakeStartInfo script workingDirectory documentationFAKEArgs envArgs)
+            configStartInfo
             TimeSpan.MaxValue false ignore ignore
     System.Threading.Thread.Sleep 1000
     exitCode
 
+/// Run the given startinfo by redirecting the output (live)
+let executeWithRedirect errorF messageF configStartInfo =
+    let exitCode =
+        ExecProcessWithLambdas
+            configStartInfo
+            TimeSpan.MaxValue true errorF messageF
+    System.Threading.Thread.Sleep 1000
+    exitCode
+
+/// Helper to fail when the exitcode is <> 0
+let executeHelper executer traceMsg failMessage configStartInfo =
+    trace traceMsg
+    let exit = executer configStartInfo
+    if exit <> 0 then
+        failwith failMessage
+    ()
+
+let execute = executeHelper executeWithOutput
+
+/// Undocumentated way to disable cache (-nc) for documentation generation
+let mutable documentationFAKEArgs = ""
+
 // Documentation
 let buildDocumentationTarget target =
-    trace (sprintf "Building documentation (%s), this could take some time, please wait..." target)
-    let exit = executeFAKEWithOutput "." "generateDocs.fsx" ["target", target]
-    if exit <> 0 then
-        failwith "documentation failed"
-    ()
+    execute
+      (sprintf "Building documentation (%s), this could take some time, please wait..." target)
+      "generating reference documentation failed"
+      (fakeStartInfo "generateDocs.fsx" "." documentationFAKEArgs ["target", target])
 
 let tryDelete dir =
     try
