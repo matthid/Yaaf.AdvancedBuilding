@@ -48,27 +48,19 @@
 </code></pre></td>
 </tr>
 </table>
-
 <h1><a name="Yaaf-AdvancedBuilding-buildConfig-fsx-configuration" class="anchor" href="#Yaaf-AdvancedBuilding-buildConfig-fsx-configuration">Yaaf.AdvancedBuilding buildConfig.fsx configuration</a></h1>
-
 <p>This file handles the configuration of the Yaaf.AdvancedBuilding build script.</p>
-
 <p>The first step is handled in <code>build.sh</code> and <code>build.cmd</code> by restoring either paket dependencies or bootstrapping a NuGet.exe and
 executing NuGet to resolve all build dependencies (dependencies required for the build to work, for example FAKE).
 For details of paket look into <a href="http://fsprojects.github.io/Paket/">http://fsprojects.github.io/Paket/</a> .</p>
-
 <p>To be able to update <code>build.sh</code> and <code>build.cmd</code> with Yaaf.AdvancedBuilding the <code>build.sh</code> and <code>build.cmd</code> files in the project root directory delegate to
 <code>packages/Yaaf.AdvancedBuilding/content/build.sh</code> and <code>packages/Yaaf.AdvancedBuilding/content/build.cmd</code>, which do the actual work.</p>
-
 <p>When using NuGet instead of paket (or when using both), nuget packages from a <code>packages.config</code> file are restored.
 This only works if there is a NuGet.exe found, you can just drop the <code>downloadNuget.fsx</code> file in your project root and Yaaf.AdvancedBuilding will make sure to
 bootstrap a NuGet.exe into <code>packages/Nuget.CommandLine</code>.</p>
-
 <p>The second step is to invoke FAKE with <code>build.fsx</code> which loads the current <code>buildConfig.fsx</code> file and delegates the work to
 <code>packages/Yaaf.AdvancedBuilding/content/buildInclude.fsx</code>. For details about FAKE look into <a href="http://fsharp.github.com/FAKE">http://fsharp.github.com/FAKE</a> .</p>
-
 <p>In the remainder of this document we will explain the various configuration options for Yaaf.AdvancedBuilding.</p>
-
 <table class="pre"><tr><td class="lines"><pre class="fssnip"><span class="l">1: </span>
 <span class="l">2: </span>
 <span class="l">3: </span>
@@ -83,11 +75,8 @@ bootstrap a NuGet.exe into <code>packages/Nuget.CommandLine</code>.</p>
 </code></pre></td>
 </tr>
 </table>
-
 <h2><a name="Required-config-start" class="anchor" href="#Required-config-start">Required config start</a></h2>
-
 <p>First We need to load some dependencies and open some namespaces.</p>
-
 <table class="pre"><tr><td class="lines"><pre class="fssnip"><span class="l">1: </span>
 <span class="l">2: </span>
 <span class="l">3: </span>
@@ -108,11 +97,8 @@ bootstrap a NuGet.exe into <code>packages/Nuget.CommandLine</code>.</p>
 </code></pre></td>
 </tr>
 </table>
-
 <h2><a name="Main-project-configuration" class="anchor" href="#Main-project-configuration">Main project configuration</a></h2>
-
 <p>Then we need to set some general properties of the project.</p>
-
 <table class="pre"><tr><td class="lines"><pre class="fssnip"><span class="l"> 1: </span>
 <span class="l"> 2: </span>
 <span class="l"> 3: </span>
@@ -159,9 +145,7 @@ bootstrap a NuGet.exe into <code>packages/Nuget.CommandLine</code>.</p>
 </code></pre></td>
 </tr>
 </table>
-
 <p>Setup which nuget packages are created.</p>
-
 <table class="pre"><tr><td class="lines"><pre class="fssnip"><span class="l"> 1: </span>
 <span class="l"> 2: </span>
 <span class="l"> 3: </span>
@@ -212,10 +196,8 @@ bootstrap a NuGet.exe into <code>packages/Nuget.CommandLine</code>.</p>
 </code></pre></td>
 </tr>
 </table>
-
 <p>With <code>UseNuget</code> you can specify if Yaaf.AdvancedBuilding should restore nuget packages
 before running the build (if you only use paket, you either leave it out or use the default setting = false).</p>
-
 <table class="pre"><tr><td class="lines"><pre class="fssnip"><span class="l">1: </span>
 <span class="l">2: </span>
 </pre></td>
@@ -224,13 +206,10 @@ before running the build (if you only use paket, you either leave it out or use 
 </code></pre></td>
 </tr>
 </table>
-
 <h2><a name="The-property" class="anchor" href="#The-property">The <code>GeneratedFileList</code> property</a></h2>
-
 <p>The <code>GeneratedFileList</code> list is used to specify which files are copied over to the release directory.
 This list is also used for documentation generation.
 Defaults to [ x.ProjectName + ".dll"; x.ProjectName + ".xml" ] which is only enough for very simple projects.</p>
-
 <table class="pre"><tr><td class="lines"><pre class="fssnip"><span class="l">1: </span>
 <span class="l">2: </span>
 <span class="l">3: </span>
@@ -241,10 +220,8 @@ Defaults to [ x.ProjectName + ".dll"; x.ProjectName + ".xml" ] which is only eno
 </code></pre></td>
 </tr>
 </table>
-
 <p>You can change which AssemblyInfo files are generated for you.
 On default "./src/SharedAssemblyInfo.fs" and "./src/SharedAssemblyInfo.cs" are created.</p>
-
 <table class="pre"><tr><td class="lines"><pre class="fssnip"><span class="l">1: </span>
 <span class="l">2: </span>
 <span class="l">3: </span>
@@ -267,11 +244,8 @@ On default "./src/SharedAssemblyInfo.fs" and "./src/SharedAssemblyInfo.cs" are c
 </code></pre></td>
 </tr>
 </table>
-
 <h2><a name="Yaaf-AdvancedBuilding-features" class="anchor" href="#Yaaf-AdvancedBuilding-features">Yaaf.AdvancedBuilding features</a></h2>
-
 <p>Setup the builds</p>
-
 <table class="pre"><tr><td class="lines"><pre class="fssnip"><span class="l"> 1: </span>
 <span class="l"> 2: </span>
 <span class="l"> 3: </span>
@@ -304,21 +278,17 @@ On default "./src/SharedAssemblyInfo.fs" and "./src/SharedAssemblyInfo.cs" are c
 </code></pre></td>
 </tr>
 </table>
-
 <p>enable mdb2pdb and pdb2mdb conversation for paket/nuget packages and your package.
 Note that mdb2pdb only works on windows so to get a cross platform debugging experience you:
- - either include the pdb file and can therefore only release on a windows machine
- - include a mdb and tell your users to use mdb2pdb on windows.</p>
-
+- either include the pdb file and can therefore only release on a windows machine
+- include a mdb and tell your users to use mdb2pdb on windows.</p>
 <table class="pre"><tr><td class="lines"><pre class="fssnip"><span class="l">1: </span>
 </pre></td>
 <td class="snippet"><pre class="fssnip highlighted"><code lang="fsharp">    <span class="i">EnableDebugSymbolConversion</span> <span class="o">=</span> <span class="k">false</span>
 </code></pre></td>
 </tr>
 </table>
-
 <p>We include a mdb so we can actually release on linux.</p>
-
 <table class="pre"><tr><td class="lines"><pre class="fssnip"><span class="l">1: </span>
 <span class="l">2: </span>
 </pre></td>
@@ -327,11 +297,8 @@ Note that mdb2pdb only works on windows so to get a cross platform debugging exp
 </code></pre></td>
 </tr>
 </table>
-
 <h2><a name="FAKE-settings" class="anchor" href="#FAKE-settings">FAKE settings</a></h2>
-
 <p>You can setup FAKE variables as well.</p>
-
 <table class="pre"><tr><td class="lines"><pre class="fssnip"><span class="l">1: </span>
 <span class="l">2: </span>
 <span class="l">3: </span>
@@ -342,11 +309,8 @@ Note that mdb2pdb only works on windows so to get a cross platform debugging exp
 </code></pre></td>
 </tr>
 </table>
-
 <h2><a name="Remove-ME" class="anchor" href="#Remove-ME">Remove ME!</a></h2>
-
 <p>This is specific to the Yaaf.AdvancedBuilding project, you can safely remove everything below.</p>
-
 <table class="pre"><tr><td class="lines"><pre class="fssnip"><span class="l">1: </span>
 <span class="l">2: </span>
 <span class="l">3: </span>

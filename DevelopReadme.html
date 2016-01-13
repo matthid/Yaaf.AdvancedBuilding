@@ -37,80 +37,105 @@
         <div class="span9" id="main">
           
 <h1><a name="Yaaf-AdvancedBuilding-build-and-development-documentation" class="anchor" href="#Yaaf-AdvancedBuilding-build-and-development-documentation">Yaaf.AdvancedBuilding build and development documentation</a></h1>
-
 <blockquote>
-  <p>NOTE: This document can be referenced from any project using Yaaf.AdvancedBuilding.</p>
+<p>NOTE: This document can be referenced from any project using Yaaf.AdvancedBuilding.</p>
 </blockquote>
-
 <h2><a name="Building" class="anchor" href="#Building">Building</a></h2>
-
 <p>Open the <code>.sln</code> file or run <code>./build</code>.</p>
-
 <blockquote>
-  <p>NOTE: You can only build the <code>.sln</code> file AFTER doing an initial <code>./build</code> (because dependencies have to be restored first).</p>
+<p>NOTE: You can only build the <code>.sln</code> file AFTER doing an initial <code>./build</code> (because dependencies have to be restored first).</p>
 </blockquote>
-
 <h2><a name="Visual-Studio-Monodevelop" class="anchor" href="#Visual-Studio-Monodevelop">Visual Studio / Monodevelop</a></h2>
-
-<p>As mentioned above you need to <code>build</code> at least once before you can open the 
+<p>As mentioned above you need to <code>build</code> at least once before you can open the
 solution file (<code>src/${ProjectName}.sln</code>) with Visual Studio / Monodevelop.</p>
-
 <p>Just open the solution file and select the build you want to edit in the Configuration-Manager (ie. your Platform).</p>
-
 <h2><a name="The-Project-structure" class="anchor" href="#The-Project-structure">The Project structure:</a></h2>
-
 <blockquote>
-  <p>Note: Projects using Yaaf.AdvancedBuilding can leave out some components or rename them! The following structure represents the default configuration.</p>
+<p>Note: Projects using Yaaf.AdvancedBuilding can leave out some components or rename them! The following structure represents the default configuration.</p>
 </blockquote>
-
 <ul>
-<li><p>/.paket/</p>
-<p>Files for paket: <a href="https://github.com/fsprojects/Paket">https://github.com/fsprojects/Paket</a></p></li>
-<li><p>/build/</p>
-<p>The project assemblies will be build into this folder. This folder can safely be deleted without affecting the build.</p></li>
-<li><p>/doc/</p>
-<p>Project documentation files. This folder contains both development and user documentation.</p></li>
-<li><p>/gh-pages/</p>
-<p>Folder for the documentation branch (can be deleted safely).</p></li>
-<li><p>/lib/</p>
-<p>library dependencies (most of the time not used). Most dependencies are automatically managed by nuget and not in this folder. 
-  Only some internal dependencies and packages not in downloaded automatically are available here. 
-  The git repository should always be "complete" and ready to be build.</p></li>
-<li><p>/packages/</p>
-<p>Dependencies will be downloaded into this folder. 
-  This folder can safely be deleted without affecting the build.</p></li>
-<li><p>/release/</p>
-<p>Place for the build to put the produced results (dll files, docs, nuget packages, ...)</p></li>
-<li><p>/src/</p>
+<li>
+<p>/.paket/</p>
+<p>Files for paket: <a href="https://github.com/fsprojects/Paket">https://github.com/fsprojects/Paket</a></p>
+</li>
+<li>
+<p>/build/</p>
+<p>The project assemblies will be build into this folder. This folder can safely be deleted without affecting the build.</p>
+</li>
+<li>
+<p>/doc/</p>
+<p>Project documentation files. This folder contains both development and user documentation.</p>
+</li>
+<li>
+<p>/gh-pages/</p>
+<p>Folder for the documentation branch (can be deleted safely).</p>
+</li>
+<li>
+<p>/lib/</p>
+<p>library dependencies (most of the time not used). Most dependencies are automatically managed by nuget and not in this folder.
+Only some internal dependencies and packages not in downloaded automatically are available here.
+The git repository should always be "complete" and ready to be build.</p>
+</li>
+<li>
+<p>/packages/</p>
+<p>Dependencies will be downloaded into this folder.
+This folder can safely be deleted without affecting the build.</p>
+</li>
+<li>
+<p>/release/</p>
+<p>Place for the build to put the produced results (dll files, docs, nuget packages, ...)</p>
+</li>
+<li>
+<p>/src/</p>
 <p>The Solution directory for all projects</p>
 <ul>
-<li><p>/src/source/</p>
-<p>The root for all projects (not including unit test projects).
-  Each project should have has a corresponding project with the name <code>Test.${ProjectName}</code> in the test folder.
-  This test project provides unit tests for the project <code>${ProjectName}</code>.</p></li>
-<li><p>/src/test/</p>
-<p>The root for all unit test projects.</p></li>
-</ul></li>
-<li><p>/tmp/</p>
-<p>This folder is ignored by git.</p></li>
-<li><p>/build.cmd, /build.sh, /build.fsx</p>
-<p>Files to directly start a build including unit tests via console (windows &amp; linux).</p></li>
+<li>
+<p>/src/source/</p>
+<table class="pre"><tr><td class="lines"><pre class="fssnip"><span class="l">1: </span>
+<span class="l">2: </span>
+<span class="l">3: </span>
+</pre></td>
+<td class="snippet"><pre class="fssnip highlighted"><code lang="fsharp"><span class="i">The</span> <span class="i">root</span> <span class="k">for</span> <span class="i">all</span> <span class="i">projects</span> (<span onmouseout="hideTip(event, 'fs1', 1)" onmouseover="showTip(event, 'fs1', 1)" class="i">not</span> <span class="i">including</span> <span onmouseout="hideTip(event, 'fs2', 2)" onmouseover="showTip(event, 'fs2', 2)" class="i">unit</span> <span class="i">test</span> <span class="i">projects</span>)<span class="o">.</span>
+<span class="i">Each</span> <span class="i">project</span> <span class="i">should</span> <span class="i">have</span> <span class="i">has</span> <span class="i">a</span> <span class="i">corresponding</span> <span class="i">project</span> <span class="k">with</span> <span class="i">the</span> <span class="i">name</span> <span class="k">`</span><span class="i">Test</span><span class="o">.</span><span class="o">$</span>{<span class="i">ProjectName</span>}<span class="k">`</span> <span class="k">in</span> <span class="i">the</span> <span class="i">test</span> <span class="i">folder</span><span class="o">.</span>
+<span class="i">This</span> <span class="i">test</span> <span class="i">project</span> <span class="i">provides</span> <span onmouseout="hideTip(event, 'fs2', 3)" onmouseover="showTip(event, 'fs2', 3)" class="i">unit</span> <span class="i">tests</span> <span class="k">for</span> <span class="i">the</span> <span class="i">project</span> <span class="k">`</span><span class="o">$</span>{<span class="i">ProjectName</span>}<span class="k">`</span><span class="o">.</span>
+</code></pre></td>
+</tr>
+</table>
+</li>
+<li>
+<p>/src/test/</p>
+<table class="pre"><tr><td class="lines"><pre class="fssnip"><span class="l">1: </span>
+</pre></td>
+<td class="snippet"><pre class="fssnip highlighted"><code lang="fsharp"><span class="i">The</span> <span class="i">root</span> <span class="k">for</span> <span class="i">all</span> <span onmouseout="hideTip(event, 'fs2', 4)" onmouseover="showTip(event, 'fs2', 4)" class="i">unit</span> <span class="i">test</span> <span class="i">projects</span><span class="o">.</span>
+</code></pre></td>
+</tr>
+</table>
+</li>
 </ul>
-
+</li>
+<li>
+<p>/tmp/</p>
+<p>This folder is ignored by git.</p>
+</li>
+<li>
+<p>/build.cmd, /build.sh, /build.fsx</p>
+<p>Files to directly start a build including unit tests via console (windows &amp; linux).</p>
+</li>
+</ul>
 <ul>
-<li><p>/paket.dependencies, /paket.lock</p>
-<p>When those files exist they are used to restore dependencies with paket: <a href="https://github.com/fsprojects/Paket">https://github.com/fsprojects/Paket</a></p></li>
-<li><p>/packages.config</p>
+<li>
+<p>/paket.dependencies, /paket.lock</p>
+<p>When those files exist they are used to restore dependencies with paket: <a href="https://github.com/fsprojects/Paket">https://github.com/fsprojects/Paket</a></p>
+</li>
+<li>
+<p>/packages.config</p>
 <p>When this file exists a <code>nuget.exe</code> is downloaded by the build files (if not already restored through paket) and is used to restore BUILD dependencies.
-  The build dependencies are restored into /packages and without version in the folder-name (so they look like paket folders and you can switch between both methods).</p></li>
+The build dependencies are restored into /packages and without version in the folder-name (so they look like paket folders and you can switch between both methods).</p>
+</li>
 </ul>
-
 <h2><a name="Advanced-Building" class="anchor" href="#Advanced-Building">Advanced Building</a></h2>
-
 <p>The build is done in different steps and you can execute the build until a given step or a single step:</p>
-
 <p>First <code>build.sh</code> and <code>build.cmd</code> restore a <code>nuget.exe</code>, <code>paket.exe</code> or both (depending on the project) to restore build dependencies, then build.fsx is invoked:</p>
-
 <ul>
 <li><code>Clean</code>: cleans the directories (previous builds)</li>
 <li><code>RestorePackages</code>: restores nuget packages</li>
@@ -128,37 +153,27 @@ solution file (<code>src/${ProjectName}.sln</code>) with Visual Studio / Monodev
 <li><code>ReleaseGithubDoc</code>: pushes the documentation to github</li>
 <li><code>Release</code>: a marker like "All"</li>
 </ul>
-
 <p>You can execute all steps until a given point with <code>./build #Step#</code> (replace #Step# with <code>Build_net40</code> to execute <code>Clean</code>, <code>RestorePackages</code>, <code>SetVersions</code>, <code>Build_40</code>)</p>
-
 <p>You can execute a single step with <code>build #Step#_single</code>: For example to build the nuget packages you can just invoke <code>./build NuGet_single</code></p>
-
 <blockquote>
-  <p>Of course you need to have the appropriate dlls in place (otherwise the Nuget package creation will fail); ie have build the project before.</p>
+<p>Of course you need to have the appropriate dlls in place (otherwise the Nuget package creation will fail); ie have build the project before.</p>
 </blockquote>
-
-<p>There is another (hidden) step <code>CleanAll</code> which will clean everything up (even build dependencies and the downloaded Nuget.exe), 
-this step is ONLY needed when BUILD dependencies change AND you use <code>nuget.exe</code> instead of <code>paket.exe</code> to restore them! 
+<p>There is another (hidden) step <code>CleanAll</code> which will clean everything up (even build dependencies and the downloaded Nuget.exe),
+this step is ONLY needed when BUILD dependencies change AND you use <code>nuget.exe</code> instead of <code>paket.exe</code> to restore them!
 <code>git clean -d -x -f</code> is also a good way to do that.</p>
-
 <h2><a name="General-overview-specific-to-Yaaf-AdvancedBuilding" class="anchor" href="#General-overview-specific-to-Yaaf-AdvancedBuilding">General overview specific to Yaaf.AdvancedBuilding:</a></h2>
-
 <h3><a name="Issues-Features-TODOs" class="anchor" href="#Issues-Features-TODOs">Issues / Features / TODOs</a></h3>
-
 <p>New features are accepted via github pull requests (so just fork away right now!):  <a href="https://github.com/matthid/Yaaf.AdvancedBuilding">https://github.com/matthid/Yaaf.AdvancedBuilding</a></p>
-
 <p>Issues and TODOs are tracked on github, see: <a href="https://github.com/matthid/Yaaf.AdvancedBuilding/issues">https://github.com/matthid/Yaaf.AdvancedBuilding/issues</a></p>
-
 <h3><a name="Versioning" class="anchor" href="#Versioning">Versioning:</a></h3>
-
 <p><a href="http://semver.org/">http://semver.org/</a></p>
-
 <h3><a name="High-level-documentation-ordered-by-project" class="anchor" href="#High-level-documentation-ordered-by-project">High level documentation ordered by project.</a></h3>
-
 <ul>
 <li><code>Yaaf.AdvancedBuilding</code>: For now a project to test the building infrastructure, in the future a helper to generate/convert fsproj and csproj files.</li>
 </ul>
 
+<div class="tip" id="fs1">val not : value:bool -&gt; bool<br /><br />Full name: Microsoft.FSharp.Core.Operators.not</div>
+<div class="tip" id="fs2">type unit = Unit<br /><br />Full name: Microsoft.FSharp.Core.unit</div>
 
         </div>
         <div class="span3">

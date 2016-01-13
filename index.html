@@ -36,27 +36,18 @@
       <div class="row">
         <div class="span9" id="main">
           
-<!-- GENERATED FROM COMMIT: d01a86f9e354144e55583f0d32f561a129efa9a4 -->
+<!-- GENERATED FROM COMMIT: 315eacb115b617d171272dc4723692f42465e344 -->
 <h1><a name="Yaaf-AdvancedBuilding" class="anchor" href="#Yaaf-AdvancedBuilding">Yaaf.AdvancedBuilding</a></h1>
-
 <h2><a name="Documentation" class="anchor" href="#Documentation"><a href="https://matthid.github.io/Yaaf.AdvancedBuilding/">Documentation</a></a></h2>
-
 <p><a href="https://gitter.im/matthid/Yaaf?utm_source=badge&amp;utm_medium=badge&amp;utm_campaign=pr-badge&amp;utm_content=badge"><img src="https://badges.gitter.im/Join%20Chat.svg" alt="Join the chat at https://gitter.im/matthid/Yaaf" /></a></p>
-
 <h2><a name="Build-status" class="anchor" href="#Build-status">Build status</a></h2>
-
 <p><strong>Development Branch</strong></p>
-
 <p><a href="https://travis-ci.org/matthid/Yaaf.AdvancedBuilding"><img src="https://travis-ci.org/matthid/Yaaf.AdvancedBuilding.svg?branch=develop" alt="Build Status" /></a>
 <a href="https://ci.appveyor.com/project/matthid/yaaf-511/branch/develop"><img src="https://ci.appveyor.com/api/projects/status/2xitdogybhrpd74o/branch/develop?svg=true" alt="Build status" /></a></p>
-
 <p><strong>Master Branch</strong></p>
-
 <p><a href="https://travis-ci.org/matthid/Yaaf.AdvancedBuilding"><img src="https://travis-ci.org/matthid/Yaaf.AdvancedBuilding.svg?branch=master" alt="Build Status" /></a>
 <a href="https://ci.appveyor.com/project/matthid/yaaf-511/branch/master"><img src="https://ci.appveyor.com/api/projects/status/2xitdogybhrpd74o/branch/master?svg=true" alt="Build status" /></a></p>
-
 <h2><a name="NuGet" class="anchor" href="#NuGet">NuGet</a></h2>
-
 <div class="row">
   <div class="span1"></div>
   <div class="span6">
@@ -67,42 +58,31 @@
   </div>
   <div class="span1"></div>
 </div>
-
 <h2><a name="Why-AdvancedBuilding" class="anchor" href="#Why-AdvancedBuilding">Why AdvancedBuilding?</a></h2>
-
 <p>After setting up some projects with FAKE and Paket I often find the need to edit the <code>build.fsx</code> and add new features.
 And most of the time after adding a feature I wanted that feature on other projects as well.</p>
-
 <p>Because of this I introduced Yaaf.AdvancedBuilding, a nuget package containing a general FAKE build script, which can be configured.
 Whenever I introduce a new feature into the build script I only need to update Yaaf.AdvancedBuilding to be able to use it.</p>
-
-<p>Another pain point is building for multiple targets... 
+<p>Another pain point is building for multiple targets...
 The default FAKE targets defined in Yaaf.AdvancedBuilding can handle multiple targets.
 Basically we use the solution platform configuration to define multiple platforms/targets.
 This makes the build completely executable with xbuild/msbuild and lets you configure everything in
-the project files (Visual Studio) itself. 
-This way you can change the platform from within Visual Studio without the need to load another solution or to restart Visual Studio. 
+the project files (Visual Studio) itself.
+This way you can change the platform from within Visual Studio without the need to load another solution or to restart Visual Studio.
 You can find an example here: <a href="https://github.com/matthid/Yaaf.FSharp.Helper/blob/develop/src/source/Yaaf.FSharp.Helper/Yaaf.FSharp.Helper.fsproj">https://github.com/matthid/Yaaf.FSharp.Helper/blob/develop/src/source/Yaaf.FSharp.Helper/Yaaf.FSharp.Helper.fsproj</a></p>
-
 <p>Features / Design goals:</p>
-
 <ul>
 <li>Your build can be updated (with <code>paket update</code>).</li>
 <li>Extendible with your own FAKE targets / dependencies (as without Yaaf.AdvancedBuilding).</li>
 <li>Additional support for building projects for multiple targets (net40, net45 and portable profiles)</li>
 <li>Simplifies your paket.dependencies file by simplifying all build dependencies to just Yaaf.AdvancedBuilding.</li>
 </ul>
-
 <h2><a name="Quick-intro" class="anchor" href="#Quick-intro">Quick intro</a></h2>
-
 <p>This project can be used to simplify the build process by replacing your build scripts with this nuget package.
 It should especially help/simplify the process of building projects for multiple targets (net40, net45 and portable profiles).</p>
-
 <p>The setup for this is not trivial and having an idea of FAKE (<a href="http://fsharp.github.com/FAKE)">http://fsharp.github.com/FAKE)</a> and paket (<a href="http://fsprojects.github.io/Paket/)">http://fsprojects.github.io/Paket/)</a> helps.
 We assume in this quick intro guide that you are able to setup a simple project with FAKE (without ProjectScaffold).</p>
-
 <p>We also assume that you have a project named <code>Yaaf.Project</code> already setup with <code>FAKE</code> and <code>Paket</code> with the following folder structure:</p>
-
 <table class="pre"><tr><td class="lines"><pre class="fssnip"><span class="l"> 1: </span>
 <span class="l"> 2: </span>
 <span class="l"> 3: </span>
@@ -127,16 +107,12 @@ We assume in this quick intro guide that you are able to setup a simple project 
 </code></pre></td>
 </tr>
 </table>
-
 <blockquote>
-  <p>Note other layouts are possible but this is the recommended layout which requires a minimal configuration later on.
+<p>Note other layouts are possible but this is the recommended layout which requires a minimal configuration later on.
 Paket is also not strictly required! You can get away with a <code>packages.config</code> nuget file and have your dependencies there.</p>
 </blockquote>
-
 <h3><a name="Getting-Yaaf-AdvancedBuilding" class="anchor" href="#Getting-Yaaf-AdvancedBuilding">Getting Yaaf.AdvancedBuilding</a></h3>
-
 <p>Now we first add Yaaf.AdvancedBuilding to our dependencies</p>
-
 <table class="pre"><tr><td class="lines"><pre class="fssnip"><span class="l">1: </span>
 <span class="l">2: </span>
 <span class="l">3: </span>
@@ -147,32 +123,24 @@ Paket is also not strictly required! You can get away with a <code>packages.conf
 </code></pre></td>
 </tr>
 </table>
-
 <blockquote>
-  <p>You can basically remove all other build dependencies now and only keep Yaaf.AdvancedBuilding,
+<p>You can basically remove all other build dependencies now and only keep Yaaf.AdvancedBuilding,
 because Yaaf.AdvancedBuilding will itself depend on all things it needs, and paket will install all of them.
 Paket's <code>internalize</code> feature isn't supported! If you have your own additional build dependencies you need to add them.</p>
 </blockquote>
-
 <p>Now we update our dependencies:</p>
-
 <pre class="line-numbers language-bash"><code class="language-bash">.paket/paket.exe update
 </code></pre>
-
 <blockquote>
-  <p>Note when using NuGet you now need to manually download and extract Yaaf.AdvancedBuilding to <code>./packages/Yaaf.AdvancedBuilding</code>.
+<p>Note when using NuGet you now need to manually download and extract Yaaf.AdvancedBuilding to <code>./packages/Yaaf.AdvancedBuilding</code>.
 You also need to specify all dependencies in <code>packages.config</code> instead of only Yaaf.AdvancedBuilding.</p>
 </blockquote>
-
 <h3><a name="Setting-up-Yaaf-AdvancedBuilding" class="anchor" href="#Setting-up-Yaaf-AdvancedBuilding">Setting up Yaaf.AdvancedBuilding</a></h3>
-
 <blockquote>
-  <p>Note we assume you are using any kind of VCS system, because we will REPLACE some files and then tell you to look into their old versions later on!
+<p>Note we assume you are using any kind of VCS system, because we will REPLACE some files and then tell you to look into their old versions later on!
 please commit/backup any unsaved changes now (excluding the changes from above)!</p>
 </blockquote>
-
 <p>Now you can start setting up the project with:</p>
-
 <pre class="line-numbers language-bash"><code class="language-bash"># delegating build scripts
 cp -r packages/Yaaf.AdvancedBuilding/scaffold/build/* ./
 # Some initial files for your repro 
@@ -190,25 +158,19 @@ cp -r packages/Yaaf.AdvancedBuilding/scaffold/templates/* ./
 # copies an build configuration to your project root
 cp packages/Yaaf.AdvancedBuilding/examples/buildConfig/buildConfig.Yaaf.AdvancedBuilding.fsx ./buildConfig.fsx
 </code></pre>
-
 <h3><a name="Setting-up-the-file" class="anchor" href="#Setting-up-the-file">Setting up the <code>buildConfig.fsx</code> file</a></h3>
-
-<p>Now you need to setup the <code>buildConfig.fsx</code> file! 
+<p>Now you need to setup the <code>buildConfig.fsx</code> file!
 Most settings can be taken from your old <code>build.fsx</code> file (which was overwritten above).
 This step is documented in an extra documentation page: <a href="https://matthid.github.io/Yaaf.AdvancedBuilding/buildConfig.html">https://matthid.github.io/Yaaf.AdvancedBuilding/buildConfig.html</a></p>
-
 <h2><a name="More-Features" class="anchor" href="#More-Features">More Features</a></h2>
-
 <p>When PAKET<em>UPDATE=y "paket update" will be run before starting your build, this way you can specify a CI build which is running daily with the latest updates.
 You can lock the paket version with PAKET</em>VERSION.
 You can set PAKET_VERSION to "prerelease" to test with the latest paket.</p>
-
 <h2><a name="Disclaimer" class="anchor" href="#Disclaimer">Disclaimer</a></h2>
-
 <p>I use this project for various projects to build (Basically for all of my projects including <a href="https://github.com/Antaris/RazorEngine).
 This">https://github.com/Antaris/RazorEngine).
 This</a> means the core features are quite stable while updating.
-However I often use this project to add new (build-)features as kind of a <code>playground</code> project 
+However I often use this project to add new (build-)features as kind of a <code>playground</code> project
 and when they are not as useful as initially thought they will be removed.
 Just join the chat or open an issue if your scripts broke (without any hint in the release notes).</p>
 

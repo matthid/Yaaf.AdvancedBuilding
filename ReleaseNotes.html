@@ -35,237 +35,179 @@
       <div class="row">
         <div class="span9" id="main">
           
+<h3><a name="0-11-7" class="anchor" href="#0-11-7">0.11.7</a></h3>
+<ul>
+<li>Update dependencies.</li>
+<li>Add small helpers to start processes while redirecting their output (live).</li>
+</ul>
 <h3><a name="0-11-6" class="anchor" href="#0-11-6">0.11.6</a></h3>
-
 <ul>
 <li>Update dependencies</li>
 <li>Add diagnostics for documentation failure.</li>
 </ul>
-
 <h3><a name="0-11-5" class="anchor" href="#0-11-5">0.11.5</a></h3>
-
 <ul>
 <li>Add undocumented way to set arguments for FAKE in the documentation generation (for example <code>BuildInclude.documentationFAKEArgs &lt;- "-nc"</code> to disable the cache).</li>
 </ul>
-
 <h3><a name="0-11-4" class="anchor" href="#0-11-4">0.11.4</a></h3>
-
 <ul>
 <li>Allow to disable NUnit and MSTest with 'DisableMSTest' and 'DisableNUnit'</li>
 </ul>
-
 <h3><a name="0-11-3" class="anchor" href="#0-11-3">0.11.3</a></h3>
-
 <ul>
 <li>Paket update and lock NUnit.Runner and NUnit</li>
 </ul>
-
 <h3><a name="0-11-2" class="anchor" href="#0-11-2">0.11.2</a></h3>
-
 <ul>
 <li>Run 'paket update' before starting the build when PAKET_UPDATE=y</li>
 </ul>
-
 <h3><a name="0-11-1" class="anchor" href="#0-11-1">0.11.1</a></h3>
-
 <ul>
 <li>Build reference before regular documentation, fixes <a href="https://github.com/matthid/Yaaf.AdvancedBuilding/issues/5">https://github.com/matthid/Yaaf.AdvancedBuilding/issues/5</a></li>
 </ul>
-
 <h3><a name="0-11-0" class="anchor" href="#0-11-0">0.11.0</a></h3>
-
 <ul>
 <li>Add support for building on F# 4.0 only installations (VS2015 only) and build with F#4 by default.</li>
 </ul>
-
 <h3><a name="0-10-0" class="anchor" href="#0-10-0">0.10.0</a></h3>
-
 <ul>
 <li>Update to latest FSF, FAKE and FCS.</li>
 </ul>
-
 <h3><a name="0-9-3" class="anchor" href="#0-9-3">0.9.3</a></h3>
-
 <ul>
 <li>Update to latest 2.11.0-alpha2 FSF.</li>
 <li>Update to alpha FSF.</li>
 </ul>
-
 <h3><a name="0-9-2" class="anchor" href="#0-9-2">0.9.2</a></h3>
-
 <ul>
 <li>Update dependencies.</li>
 </ul>
-
 <h3><a name="0-9-1" class="anchor" href="#0-9-1">0.9.1</a></h3>
-
 <ul>
 <li>Delegate PAKET_VERSION environment variable as argument to paket.bootstrapper.exe.</li>
 </ul>
-
 <h3><a name="0-9" class="anchor" href="#0-9">0.9</a></h3>
-
 <ul>
 <li>Update to latest FSharp.Core, FSharp.Compiler.Service and FAKE.</li>
 <li>Use FAKE.exe instead of fsi.exe for documentation generation (fixes build when using FAKE 4.x)</li>
 <li>Improve for building with TeamFoundation (on-premise and Visual Studio Online)</li>
 </ul>
-
 <h3><a name="0-8-0" class="anchor" href="#0-8-0">0.8.0</a></h3>
-
 <ul>
 <li>Support Net Client profiles.</li>
 <li>Support more default project layouts out of the box.</li>
 <li>Support for MSTest.</li>
 <li>Ignore when Visual Studio locks the build directory.</li>
 </ul>
-
 <h3><a name="0-7-2" class="anchor" href="#0-7-2">0.7.2</a></h3>
-
 <ul>
-<li>added .fake/* (FAKE cache) and more files to gitignore
-use "cp packages/Yaaf.AdvancedBuilding/scaffold/build/.gitignore ./" in the root project directory to apply the change.</li>
+<li>
+added .fake/* (FAKE cache) and more files to gitignore
+use "cp packages/Yaaf.AdvancedBuilding/scaffold/build/.gitignore ./" in the root project directory to apply the change.
+</li>
 </ul>
-
 <h3><a name="0-7-1" class="anchor" href="#0-7-1">0.7.1</a></h3>
-
 <ul>
-<li>added <em>.svclog and </em>.mdb to the bundled gitignore.
-use "cp packages/Yaaf.AdvancedBuilding/scaffold/build/.gitignore ./" in the root project directory to apply the change.</li>
+<li>
+added <em>.svclog and </em>.mdb to the bundled gitignore.
+use "cp packages/Yaaf.AdvancedBuilding/scaffold/build/.gitignore ./" in the root project directory to apply the change.
+</li>
 </ul>
-
 <h3><a name="0-7-0" class="anchor" href="#0-7-0">0.7.0</a></h3>
-
 <ul>
 <li>Update all dependencies.</li>
 </ul>
-
 <h3><a name="0-6-5" class="anchor" href="#0-6-5">0.6.5</a></h3>
-
 <ul>
 <li>Support for building with F# on mono 4.</li>
 </ul>
-
 <h3><a name="0-6-4" class="anchor" href="#0-6-4">0.6.4</a></h3>
-
 <ul>
 <li>Add "AfterBuild" target to fix an inter-target dependency problem when running "AllDocs".</li>
 </ul>
-
 <h3><a name="0-6-3" class="anchor" href="#0-6-3">0.6.3</a></h3>
-
 <ul>
 <li>Paket update</li>
 <li>Add "WatchDocs" target (currently beta, see <a href="https://github.com/tpetricek/FSharp.Formatting/pull/309)">https://github.com/tpetricek/FSharp.Formatting/pull/309)</a></li>
 </ul>
-
 <h3><a name="0-6-2" class="anchor" href="#0-6-2">0.6.2</a></h3>
-
 <ul>
 <li>Update all deps.</li>
 <li>Enable <code>FsiEvaluator</code> to support <a href="http://tpetricek.github.io/FSharp.Formatting/evaluation.html">http://tpetricek.github.io/FSharp.Formatting/evaluation.html</a></li>
 </ul>
-
 <h3><a name="0-6-1" class="anchor" href="#0-6-1">0.6.1</a></h3>
-
 <ul>
-<li>Combine the documentations steps 
-(slightly increases the time for a "normal" build, but improves the performance for a "release" build.)</li>
+<li>
+Combine the documentations steps 
+(slightly increases the time for a "normal" build, but improves the performance for a "release" build.)
+</li>
 </ul>
-
 <h3><a name="0-6-0" class="anchor" href="#0-6-0">0.6.0</a></h3>
-
 <ul>
 <li>Snippet evaluation support via F# Formatting (disabled until FSF updates).</li>
 <li>Remove project file creation.</li>
 </ul>
-
 <h3><a name="0-5-5" class="anchor" href="#0-5-5">0.5.5</a></h3>
-
 <ul>
 <li>Update to latest FSharp.Formatting / RazorEngine</li>
 </ul>
-
 <h3><a name="0-5-4" class="anchor" href="#0-5-4">0.5.4</a></h3>
-
 <ul>
-<li>Add the possibility to source the build script and execute the "do_build" function afterwards
-This helps when you run into problems with paket and a locked 'build.sh' file.</li>
+<li>
+Add the possibility to source the build script and execute the "do_build" function afterwards
+This helps when you run into problems with paket and a locked 'build.sh' file.
+</li>
 </ul>
-
 <h3><a name="0-5-3" class="anchor" href="#0-5-3">0.5.3</a></h3>
-
 <ul>
 <li>Fix some broken defaults in documentation generation (which leads to broken links).</li>
 </ul>
-
 <h3><a name="0-5-2" class="anchor" href="#0-5-2">0.5.2</a></h3>
-
 <ul>
 <li>You can now disable Github integrations with <code>EnableGithub = false</code> (documentation generation).</li>
 </ul>
-
 <h3><a name="0-5-1" class="anchor" href="#0-5-1">0.5.1</a></h3>
-
 <ul>
 <li>Be more verbose in CopyToRelease.</li>
 <li>You can now specify the used Razor references for the documentation generation via <code>DocRazorReferences</code></li>
 </ul>
-
 <h3><a name="0-5-0" class="anchor" href="#0-5-0">0.5.0</a></h3>
-
 <ul>
 <li>Update to net45 and latest FSharp.Formatting.</li>
 <li>Documentation output is now live.</li>
 <li>Latex generation is disabled (fails on latest FSharp.Formatting)</li>
 </ul>
-
 <h3><a name="0-4-0" class="anchor" href="#0-4-0">0.4.0</a></h3>
-
 <ul>
 <li>Rename NuGet target to NuGetPack and introduce NuGetPush. NuGetPush is executed as last step.</li>
 </ul>
-
 <h3><a name="0-3-6" class="anchor" href="#0-3-6">0.3.6</a></h3>
-
 <ul>
 <li>make sure we are on develop branch when the build is on a build server and yaaf<em>merge</em>master is true.</li>
 </ul>
-
 <h3><a name="0-3-5" class="anchor" href="#0-3-5">0.3.5</a></h3>
-
 <ul>
 <li>Disable questions when running on a build server.</li>
 <li>Add feature to create tags and merge to master.</li>
 </ul>
-
 <h3><a name="0-3-4" class="anchor" href="#0-3-4">0.3.4</a></h3>
-
 <ul>
 <li>Blacklist FSharp.Core and mscorlib in FSharp.Formatting</li>
 <li>Lock dependencies to stabilize build and <code>paket update</code> on users.</li>
 </ul>
-
 <h3><a name="0-3-3" class="anchor" href="#0-3-3">0.3.3</a></h3>
-
 <ul>
 <li>fix incorrectly packaged bash scripts.</li>
 </ul>
-
 <h3><a name="0-3-2" class="anchor" href="#0-3-2">0.3.2</a></h3>
-
 <ul>
 <li>reference all libraries explicitly (prevents that outdated libraries are loaded from GAC instead of the libdir; EntityFramework).</li>
 </ul>
-
 <h3><a name="0-3-1" class="anchor" href="#0-3-1">0.3.1</a></h3>
-
 <ul>
 <li>Handle .dll files without corresponding .xml file in documentation generation.</li>
 </ul>
-
 <h3><a name="0-3-0" class="anchor" href="#0-3-0">0.3.0</a></h3>
-
 <ul>
 <li>Renamed CustomBuildName to PlatformName and set the Platform variable for it.</li>
 <li>We now expect (the simpler) multi platform approach via variable instead of generating files as default.</li>
@@ -274,67 +216,63 @@ This helps when you run into problems with paket and a locked 'build.sh' file.</
 <li>Use FSharp.Core nuget package.</li>
 <li>Added build.targets to make creation of multi platform msbuild files easier.</li>
 </ul>
-
 <h3><a name="0-2-1" class="anchor" href="#0-2-1">0.2.1</a></h3>
-
 <ul>
 <li>Fixed some bundled templates</li>
 <li>remove an Include to Yaaf.FSharp.Scriping (removes a warning)</li>
 </ul>
-
 <h3><a name="0-2-0" class="anchor" href="#0-2-0">0.2.0</a></h3>
-
 <ul>
-<li>BREAKING: Redesigned how <code>buildConfig.fsx</code> has to be written!
+<li>
+BREAKING: Redesigned how <code>buildConfig.fsx</code> has to be written!
 Now you need to implement a BuildConfiguration record type, this helps (in the future)
 that builds don't break when new features are introduced.
 This also allows us to set a lot of defaults for you.
 <ul>
 <li>you need to set <code>buildConfig</code> to a BuildConfiguration instance (all other variables are now ignored).</li>
 <li>You can see the docs or look into <code>buildConfigDef.fsx</code> for a definition.</li>
-<li>You need to update your <code>build.fsx</code> and <code>generateDocs.fsx</code> and add
+<li>
+You need to update your <code>build.fsx</code> and <code>generateDocs.fsx</code> and add
 <code>#load "packages/Yaaf.AdvancedBuilding/content/buildConfigDef.fsx"</code>
-on the top (or use the latest from the package (see Quick-start tutorial)).</li>
-</ul></li>
-<li>Implemented initial project and solution generation.
+on the top (or use the latest from the package (see Quick-start tutorial)).
+</li>
+</ul>
+</li>
+<li>
+Implemented initial project and solution generation.
 <ul>
 <li>Can be enabled with <code>EnableProjectFileCreation</code></li>
-</ul></li>
 </ul>
-
+</li>
+</ul>
 <h3><a name="0-1-4" class="anchor" href="#0-1-4">0.1.4</a></h3>
-
 <ul>
-<li><code>releaseDir</code> Configuration is no longer required.</li>
-<li>BREAKING: You can/must specify <code>outNugetDir</code> after updating!</li>
+<li><p><code>releaseDir</code> Configuration is no longer required.</p></li>
+<li><p>BREAKING: You can/must specify <code>outNugetDir</code> after updating!</p></li>
 <li>fix some broken links in scaffold files.</li>
 <li>add missing generateDocs.fsx scaffold file.</li>
 <li>fix reference templates ending up in the wrong folder.</li>
-<li><p>add chmod +x to default build.sh (because we can't add that to the nuget package)</p>
-<h3><a name="0-1-3" class="anchor" href="#0-1-3">0.1.3</a></h3></li>
+<li>
+<p>add chmod +x to default build.sh (because we can't add that to the nuget package)</p>
+<h3><a name="0-1-3" class="anchor" href="#0-1-3">0.1.3</a></h3>
+</li>
 <li>add build.fsx as well.</li>
 <li>fixed some problems with use_nuget=false.</li>
 <li>added some files to the nuget package starting with a dot (nuget removed them previously).</li>
 </ul>
-
 <h3><a name="0-1-2" class="anchor" href="#0-1-2">0.1.2</a></h3>
-
 <ul>
 <li>a CONTRIBUTION.md file is now assumed in project dir (instead of doc/Contributing.md)</li>
 <li>we assume a LICENSE.md now</li>
 <li>added some scaffolding files to the nuget package</li>
 <li>NuGet is now build on ./build All (as test on CI and to allow users to use them internally, its pretty fast anyway)</li>
 </ul>
-
 <h3><a name="0-1-1" class="anchor" href="#0-1-1">0.1.1</a></h3>
-
 <ul>
 <li>Fix invalid backward slash on linux.</li>
 <li>Don't ask for task and branch push (use "git flow" and push manually!)</li>
 </ul>
-
 <h3><a name="0-1-0" class="anchor" href="#0-1-0">0.1.0</a></h3>
-
 <ul>
 <li>Initial release</li>
 </ul>
