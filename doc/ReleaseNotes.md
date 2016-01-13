@@ -1,4 +1,9 @@
-﻿### 0.11.6
+﻿### 0.11.7
+
+ * Update dependencies.
+ * Add small helpers to start processes while redirecting their output (live).
+
+### 0.11.6
 
  * Update dependencies
  * Add diagnostics for documentation failure.
