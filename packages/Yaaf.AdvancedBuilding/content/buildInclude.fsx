@@ -439,19 +439,28 @@ MyTarget "VersionBump" (fun _ ->
       with e -> trace (sprintf "deletion of master branch failed %O" e)
       Branches.checkout workingDir false "origin/master"
       Branches.checkout workingDir true "master"
-      Merge.merge workingDir NoFastForwardFlag "develop"
-
-      Branches.pushBranch workingDir "origin" "master"
+      try Merge.merge workingDir NoFastForwardFlag "develop"
+      with e ->
+        trace (sprintf "merging of develop into master failed: %O" e)
+        trace (sprintf "Try 'git checkout develop && git pull origin master && git checkout master && git pull origin master && git merge develop && git push origin master' locally and repeat the release process!")
+        reraise()
+        
       //try Branches.deleteTag "" config.Version
       //with e -> trace (sprintf "deletion of tag %s failed %O" config.Version e)
       Branches.tag workingDir config.Version
-      Branches.pushTag workingDir "origin" config.Version
       try Branches.deleteBranch workingDir true "develop"
       with e -> trace (sprintf "deletion of develop branch failed %O" e)
       Branches.checkout workingDir false "origin/develop"
       Branches.checkout workingDir true "develop"
-      Merge.merge workingDir NoFastForwardFlag "master"
+      try Merge.merge workingDir NoFastForwardFlag "master"
+      with e ->
+        trace (sprintf "merging of master into develop failed: %O" e)
+        trace (sprintf "Try 'git checkout master && git pull origin master && git checkout develop && git pull origin master && git merge master && git push origin develop' locally and repeat the release process!")
+        reraise()
+
+      Branches.pushTag workingDir "origin" config.Version
       Branches.pushBranch workingDir "origin" "develop"
+      Branches.pushBranch workingDir "origin" "master"
     CleanDir repositoryHelperDir
     DeleteDir repositoryHelperDir
 )
