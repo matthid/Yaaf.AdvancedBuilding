@@ -458,9 +458,9 @@ MyTarget "VersionBump" (fun _ ->
         trace (sprintf "Try 'git checkout master && git pull origin master && git checkout develop && git pull origin master && git merge master && git push origin develop' locally and repeat the release process!")
         reraise()
 
+      Branches.pushTag workingDir "origin" config.Version
       Branches.pushBranch workingDir "origin" "develop"
       Branches.pushBranch workingDir "origin" "master"
-      Branches.pushTag workingDir "origin" config.Version
     CleanDir repositoryHelperDir
     DeleteDir repositoryHelperDir
 )
