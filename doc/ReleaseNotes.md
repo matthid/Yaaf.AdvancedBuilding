@@ -1,4 +1,9 @@
-﻿### 0.11.7
+﻿### 0.11.8
+
+ * Only push branches when the merging succeeds.
+ * Improve error message when merging fails with concrete steps to try locally.
+
+### 0.11.7
 
  * Update dependencies.
  * Add small helpers to start processes while redirecting their output (live).
