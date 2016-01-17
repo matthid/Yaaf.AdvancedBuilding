@@ -15,6 +15,7 @@ open System.IO
 open System
 
 open Fake
+open Fake.Testing.NUnit3
 open Fake.MSTest
 open AssemblyInfoFile
 
@@ -80,6 +81,16 @@ type BuildParams =
       FindProjectFiles = fun _ -> Seq.empty
       FindTestFiles = fun _ -> Seq.empty }
 
+/// see http://tpetricek.github.io/FSharp.Formatting/diagnostics.html
+type FSharpFormattingLogging =
+  /// Disable all logging. F# Formatting will not print anything to the console and it will also not produce a log file (this is not recomended, but you might need this if you want to suppress all output).
+  | DisableFSFLogging
+  /// Enables detailed logging to a file FSharp.Formatting.svclog and keeps printing of basic information to console too.
+  | AllFSFLogging
+  /// Enables detailed logging to a file FSharp.Formatting.svclog but disables printing of basic information to console.
+  | FileOnlyFSFLogging
+  /// Any other value (default) - Print basic information to console and do not produce a detailed log file.
+  | ConsoleOnlyFSFLogging
 
 type BuildConfiguration =
   { // Metadata
@@ -144,6 +155,9 @@ type BuildConfiguration =
     DisableNUnit : bool
     SetupNUnit : (NUnitParams -> NUnitParams)
 
+    DisableNUnit3 : bool
+    SetupNUnit3 : (NUnit3Params -> NUnit3Params)
+
     DisableMSTest : bool
     SetupMSTest : (MSTestParams -> MSTestParams)
 
@@ -152,6 +166,7 @@ type BuildConfiguration =
     OutDocDir : string
     /// Defaults to "./doc/templates/"
     DocTemplatesDir : string
+    DocLogging : FSharpFormattingLogging
     LayoutRoots : string list
     /// Specify the list of references used for (razor) documentation generation.
     DocRazorReferences : string list option }
@@ -172,6 +187,7 @@ type BuildConfiguration =
       PageAuthor = ""
       GithubUser = ""
       GithubProject = ""
+      DocLogging = AllFSFLogging
       SetAssemblyFileVersions = (fun config ->
         let info =
           [ Attribute.Company config.Company
@@ -189,6 +205,8 @@ type BuildConfiguration =
       NugetPackages = []
       DisableNUnit = false
       SetupNUnit = id
+      DisableNUnit3 = false
+      SetupNUnit3 = id
       DisableMSTest = isLinux
       SetupMSTest = id
       GeneratedFileList = []

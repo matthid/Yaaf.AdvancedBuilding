@@ -17,6 +17,7 @@ open BuildConfigDef
 let config = BuildConfig.buildConfig.FillDefaults()
 
 #load @"../../FSharp.Formatting/FSharp.Formatting.fsx"
+#r "System.Web"
 
 open System.Collections.Generic
 open System.IO
