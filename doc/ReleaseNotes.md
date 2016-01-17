@@ -1,4 +1,10 @@
-﻿### 0.11.8
+﻿### 0.12.0
+
+ * NUnit3 Support
+ * Enable FSF Logging be default
+ * Update to FAKE supporting F# warnings in the build script.
+
+### 0.11.8
 
  * Only push branches when the merging succeeds.
  * Improve error message when merging fails with concrete steps to try locally.

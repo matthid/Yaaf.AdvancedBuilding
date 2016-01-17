@@ -35,6 +35,7 @@ open System.IO
 open System
 
 open Fake
+open Fake.Testing.NUnit3
 open Fake.Git
 open Fake.MSTest
 open Fake.FSharpFormatting
@@ -102,29 +103,64 @@ let buildSolution = buildWithFiles "BuildSolution-Output: " config.BuildDir (fun
 let buildApp = buildWithFiles "AppBuild-Output: " config.BuildDir (fun buildParams -> buildParams.FindProjectFiles buildParams)
 let buildTests = buildWithFiles "TestBuild-Output: " config.TestDir (fun buildParams -> buildParams.FindTestFiles buildParams)
 
+exception NUnitNotFoundException of string
+
 let runTests (buildParams:BuildParams) =
     let testDir = config.TestDir @@ buildParams.SimpleBuildName
     let logs = System.IO.Path.Combine(testDir, "logs")
     System.IO.Directory.CreateDirectory(logs) |> ignore
-    let files = buildParams.FindUnitTestDlls (testDir, buildParams)
+    let files = buildParams.FindUnitTestDlls (testDir, buildParams) |> Seq.cache
     if files |> Seq.isEmpty then
       traceError (sprintf "NO test found in %s" testDir)
     else
-      if not config.DisableNUnit then
+      let legacyNunitRun =
+        if not config.DisableNUnit then
+          try
+            files
+              |> NUnit (fun p ->
+                  let setupValue =
+                    {p with
+                      ProcessModel =
+                          // Because the default nunit-console.exe.config doesn't use .net 4...
+                          if isMono then NUnitProcessModel.SingleProcessModel else NUnitProcessModel.DefaultProcessModel
+                      WorkingDir = testDir
+                      StopOnError = true
+                      TimeOut = System.TimeSpan.FromMinutes 30.0
+                      Framework = "4.0"
+                      DisableShadowCopy = true
+                      OutputFile = "logs/TestResults.xml" } |> config.SetupNUnit
+                  let tool = setupValue.ToolPath @@ setupValue.ToolName
+                  if File.Exists tool |> not then
+                    raise <| NUnitNotFoundException (sprintf "The path to the nunit runner (%s) was not found!\nIt might be because you updated NUnit and they changed the path to the executable.\nEither downgrade NUnit again or use the new API (if already available)." tool)
+                  setupValue)
+            true
+          with
+          | NUnitNotFoundException s ->
+            traceEndTask "NUnit" (files |> separated ", ") // Workaround for https://github.com/fsharp/FAKE/issues/1079
+            let msg = sprintf "NUNIT COULD NOT BE RUN, because it was not found. Please disable NUnit in your buildConfigDef.fsx with 'DisableNUnit = true'.\n\nDetails: %s" s
+            if not config.DisableNUnit3 && File.Exists Fake.Testing.NUnit3.NUnit3Defaults.ToolPath then
+              traceFAKE "%s\n\nThis is a warning only because we will be running NUnit3 as well" msg
+            else failwith msg
+            false
+        else false
+      if not legacyNunitRun && not config.DisableNUnit3 then
         files
-          |> NUnit (fun p ->
-              {p with
-                  //NUnitParams.WorkingDir = working
-                  //ExcludeCategory = if isMono then "VBNET" else ""
+          |> NUnit3 (fun p ->
+              let setupValue =
+                {p with
                   ProcessModel =
                       // Because the default nunit-console.exe.config doesn't use .net 4...
-                      if isMono then NUnitProcessModel.SingleProcessModel else NUnitProcessModel.DefaultProcessModel
+                      if isMono then NUnit3ProcessModel.SingleProcessModel else NUnit3ProcessModel.DefaultProcessModel
                   WorkingDir = testDir
                   StopOnError = true
                   TimeOut = System.TimeSpan.FromMinutes 30.0
-                  Framework = "4.0"
-                  DisableShadowCopy = true;
-                  OutputFile = "logs/TestResults.xml" } |> config.SetupNUnit)
+                  Framework = if isMono then NUnit3Runtime.Mono40 else NUnit3Runtime.Net45
+                  ShadowCopy = false
+                  OutputDir = "logs" } |> config.SetupNUnit3
+              let tool = setupValue.ToolPath
+              if File.Exists tool |> not then
+                failwithf "The path to the nunit runner (%s) was not found!\nIt might be because you updated NUnit and they changed the path to the executable.\nEither downgrade NUnit again or use the new API (if already available)." tool
+              setupValue)
 
       if not config.DisableMSTest then
         files
@@ -190,10 +226,16 @@ let mutable documentationFAKEArgs = ""
 
 // Documentation
 let buildDocumentationTarget target =
+    let loggingValue =
+      match config.DocLogging with
+      | DisableFSFLogging -> "NONE"
+      | AllFSFLogging -> "ALL"
+      | FileOnlyFSFLogging -> "FILE_ONLY"
+      | ConsoleOnlyFSFLogging -> "CONSOLE_ONLY"
     execute
       (sprintf "Building documentation (%s), this could take some time, please wait..." target)
       "generating reference documentation failed"
-      (fakeStartInfo "generateDocs.fsx" "." documentationFAKEArgs ["target", target])
+      (fakeStartInfo "generateDocs.fsx" "." documentationFAKEArgs ["target", target; "FSHARP_FORMATTING_LOG", loggingValue])
 
 let tryDelete dir =
     try
