@@ -1,4 +1,8 @@
-﻿### 0.12.0
+﻿### 0.12.1
+
+ * Paket update.
+
+### 0.12.0
 
  * NUnit3 Support
  * Enable FSF Logging be default
