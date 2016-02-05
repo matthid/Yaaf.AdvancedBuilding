@@ -1,4 +1,8 @@
-﻿### 0.12.2
+﻿### 0.12.3
+
+ * Update Dependencies.
+
+### 0.12.2
 
  * Update FAKE.
 
