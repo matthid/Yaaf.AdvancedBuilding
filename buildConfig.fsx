@@ -104,7 +104,7 @@ With `UseNuget` you can specify if Yaaf.AdvancedBuilding should restore nuget pa
 before running the build (if you only use paket, you either leave it out or use the default setting = false).
 *)
     // We must restore to get a Razor3 and Razor2 (paket can only handle one)
-    UseNuget = true
+    UseNuget = false
 (**
 ## The `GeneratedFileList` property
 
