@@ -76,6 +76,34 @@ let buildConfig =
 (**
 Setup which nuget packages are created.
 *)
+    //NugetVersionPackages = fun config ->
+    //  [ { NuGetPackage.Empty with
+    //        FileName = "Yaaf.AdvancedBuilding.nuspec"
+    //        ConfigFun = fun p ->
+    //          { p with
+    //              Version = config.Version
+    //              NoDefaultExcludes = true
+    //              ReleaseNotes = toLines release.Notes
+    //              Dependencies =
+    //                [ "FSharp.Formatting"
+    //                  // "FSharp.Compiler.Service" included in FAKE
+    //                  "FSharpVSPowerTools.Core"
+    //                  // "Mono.Cecil" included in FAKE
+    //                  "FAKE" ]
+    //                  |> List.map (fun name -> name, (GetPackageVersion "packages" name |> RequireExactly)) }}
+    //    { NuGetPackage.Empty with
+    //        FileName = "Yaaf.AdvancedBuilding.Library.nuspec"
+    //        ConfigFun = fun p ->
+    //          { p with
+    //              Version = config.Version
+    //              Project = config.ProjectName + ".Library"
+    //              NoDefaultExcludes = true
+    //              ReleaseNotes = toLines release.Notes
+    //              Dependencies =
+    //                [ "Mono.Cecil"
+    //                  "FSharp.Core" ]
+    //                  |> List.map (fun name -> name, (GetPackageVersion "packages" name)) } }
+    //  ]
     NugetPackages =
       [ "Yaaf.AdvancedBuilding.nuspec", (fun config p ->
           { p with

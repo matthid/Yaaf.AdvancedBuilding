@@ -1,6 +1,7 @@
-﻿### 0.12.4-alpha1
+﻿### 0.13.0
 
- * Test release (=0.12.3)
+ * Propper support for tagging and releasing multiple nuget packages (and uploading ony changed versions).
+ * Support for multiple tags (if a repository manages multiple packages and only a single one changed its version).
 
 ### 0.12.3
 
