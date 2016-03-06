@@ -356,6 +356,7 @@ let rec private publish parameters =
     tracefn "%s %s in WorkingDir: %s Trials left: %d" parameters.ToolPath (replaceAccessKey parameters.AccessKey args)
         (FullName parameters.WorkingDir) parameters.PublishTrials
     try
+      try
         let result =
             ExecProcess (fun info ->
                 info.FileName <- parameters.ToolPath
@@ -363,14 +364,21 @@ let rec private publish parameters =
                 info.Arguments <- args) parameters.TimeOut
         enableProcessTracing <- tracing
         if result <> 0 then failwithf "Error during NuGet push. %s %s" parameters.ToolPath args
-    with exn ->
-        if parameters.PublishTrials > 0 then publish { parameters with PublishTrials = parameters.PublishTrials - 1 }
+        true
+      with exn ->
+        let existsError = exn.Message.Contains("already exists and cannot be modified")
+        if existsError then
+          trace exn.Message
+          false
         else
-          (if exn.InnerException <> null then exn.Message + "\r\n" + exn.InnerException.Message
-           else exn.Message)
-          |> replaceAccessKey parameters.AccessKey
-          |> failwith
-    traceEndTask "MyNuGetPublish" nuspec
+          if parameters.PublishTrials > 0 then publish { parameters with PublishTrials = parameters.PublishTrials - 1 }
+          else
+            (if not (isNull exn.InnerException) then exn.Message + "\r\n" + exn.InnerException.Message
+             else exn.Message)
+            |> replaceAccessKey parameters.AccessKey
+            |> failwith
+    finally
+      traceEndTask "MyNuGetPublish" nuspec
 
 let packSetup version config p =
   { p with
@@ -394,11 +402,22 @@ MyTarget "NuGetPack" (fun _ ->
 )
 
 MyTarget "NuGetPush" (fun _ ->
-    for package in config.AllNugetPackages do
-      let packSetup = packSetup package.Version config
-      let parameters = NuGetDefaults() |> (fun p -> { packSetup p with Publish = true }) |> package.ConfigFun
-      // This allows us to specify packages which we do not want to push...
-      if hasBuildParam "nugetkey" && parameters.Publish then publish parameters
+    let packagePushed =
+      config.AllNugetPackages 
+      |> List.map (fun package ->
+        try
+          let packSetup = packSetup package.Version config
+          let parameters = NuGetDefaults() |> (fun p -> { packSetup p with Publish = true }) |> package.ConfigFun
+          // This allows us to specify packages which we do not want to push...
+          if hasBuildParam "nugetkey" && parameters.Publish then publish parameters
+          else true
+        with e -> 
+          trace (sprintf "Could not push package '%s': %O" (if isNull package.Name then "{null}" else package.Name) e)
+          false)
+      |> List.exists id
+
+    if not packagePushed then
+      failwithf "No package could be pushed!"
 )
 
 // Documentation 

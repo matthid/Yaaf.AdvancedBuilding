@@ -1,4 +1,8 @@
-﻿### 0.13.0
+﻿### 0.13.1
+
+ * Ignore already existing packages as long as at least one could be pushed
+
+### 0.13.0
 
  * Propper support for tagging and releasing multiple nuget packages (and uploading ony changed versions).
  * Support for multiple tags (if a repository manages multiple packages and only a single one changed its version).
