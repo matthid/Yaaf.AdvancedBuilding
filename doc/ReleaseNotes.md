@@ -1,4 +1,8 @@
-﻿### 0.13.1
+﻿### 0.13.2
+
+ * When a package version is set we assume it is a special versioned package and create a tag even if it is equal to the current version (otherwise it is error prone).
+
+### 0.13.1
 
  * Ignore already existing packages as long as at least one could be pushed
 

@@ -276,7 +276,7 @@ type BuildConfiguration =
   member x.GetPackageByName name =
     x.AllNugetPackages |> Seq.find (fun p -> p.Name = name)
   member x.SpecialVersionPackages =
-    x.AllNugetPackages |> List.filter (fun p -> not (isNull p.Version) && p.Version <> x.Version)
+    x.AllNugetPackages |> List.filter (fun p -> not (isNull p.Version))
   member x.VersionInfoLine =
     let packages = x.SpecialVersionPackages
     if packages.Length = 0 then
@@ -284,10 +284,18 @@ type BuildConfiguration =
     else
       sprintf "%s (%s)" x.Version (String.Join(", ", packages |> Seq.map (fun p -> p.VersionLine)))
   member x.CheckValid() =
+    match x.AllNugetPackages |> Seq.tryFind (fun p -> isNull p.FileName) with
+    | Some p ->
+      failwithf "found a package with a FileName of null: %A" p
+    | None -> ()
     let packages = x.SpecialVersionPackages
     match packages |> Seq.tryFind (fun p -> isNull p.Name) with
     | Some p ->
-      failwithf "package '%s' has a version different to '%s' ('%s') but SimpleName and TagPrefix are both null!" p.FileName x.Version p.Version
+      failwithf "package '%s' has a version '%s' but SimpleName and TagPrefix are both null!" p.FileName p.Version
+    | None -> ()
+    match x.AllNugetPackages |> Seq.tryFind (fun p -> isNull p.Version && not (isNull p.TagPrefix)) with
+    | Some p ->
+      failwithf "package '%s' has a TagPrefix set but it's version is not set (eg it is null)" p.FileName
     | None -> ()
 
   member x.FillDefaults () =
