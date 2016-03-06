@@ -169,8 +169,64 @@ bootstrap a NuGet.exe into <code>packages/Nuget.CommandLine</code>.</p>
 <span class="l">21: </span>
 <span class="l">22: </span>
 <span class="l">23: </span>
+<span class="l">24: </span>
+<span class="l">25: </span>
+<span class="l">26: </span>
+<span class="l">27: </span>
+<span class="l">28: </span>
+<span class="l">29: </span>
+<span class="l">30: </span>
+<span class="l">31: </span>
+<span class="l">32: </span>
+<span class="l">33: </span>
+<span class="l">34: </span>
+<span class="l">35: </span>
+<span class="l">36: </span>
+<span class="l">37: </span>
+<span class="l">38: </span>
+<span class="l">39: </span>
+<span class="l">40: </span>
+<span class="l">41: </span>
+<span class="l">42: </span>
+<span class="l">43: </span>
+<span class="l">44: </span>
+<span class="l">45: </span>
+<span class="l">46: </span>
+<span class="l">47: </span>
+<span class="l">48: </span>
+<span class="l">49: </span>
+<span class="l">50: </span>
+<span class="l">51: </span>
 </pre></td>
-<td class="snippet"><pre class="fssnip highlighted"><code lang="fsharp">    <span class="i">NugetPackages</span> <span class="o">=</span>
+<td class="snippet"><pre class="fssnip highlighted"><code lang="fsharp">    <span class="c">//NugetVersionPackages = fun config -&gt;</span>
+    <span class="c">//  [ { NuGetPackage.Empty with</span>
+    <span class="c">//        FileName = &quot;Yaaf.AdvancedBuilding.nuspec&quot;</span>
+    <span class="c">//        ConfigFun = fun p -&gt;</span>
+    <span class="c">//          { p with</span>
+    <span class="c">//              Version = config.Version</span>
+    <span class="c">//              NoDefaultExcludes = true</span>
+    <span class="c">//              ReleaseNotes = toLines release.Notes</span>
+    <span class="c">//              Dependencies =</span>
+    <span class="c">//                [ &quot;FSharp.Formatting&quot;</span>
+    <span class="c">//                  // &quot;FSharp.Compiler.Service&quot; included in FAKE</span>
+    <span class="c">//                  &quot;FSharpVSPowerTools.Core&quot;</span>
+    <span class="c">//                  // &quot;Mono.Cecil&quot; included in FAKE</span>
+    <span class="c">//                  &quot;FAKE&quot; ]</span>
+    <span class="c">//                  |&gt; List.map (fun name -&gt; name, (GetPackageVersion &quot;packages&quot; name |&gt; RequireExactly)) }}</span>
+    <span class="c">//    { NuGetPackage.Empty with</span>
+    <span class="c">//        FileName = &quot;Yaaf.AdvancedBuilding.Library.nuspec&quot;</span>
+    <span class="c">//        ConfigFun = fun p -&gt;</span>
+    <span class="c">//          { p with</span>
+    <span class="c">//              Version = config.Version</span>
+    <span class="c">//              Project = config.ProjectName + &quot;.Library&quot;</span>
+    <span class="c">//              NoDefaultExcludes = true</span>
+    <span class="c">//              ReleaseNotes = toLines release.Notes</span>
+    <span class="c">//              Dependencies =</span>
+    <span class="c">//                [ &quot;Mono.Cecil&quot;</span>
+    <span class="c">//                  &quot;FSharp.Core&quot; ]</span>
+    <span class="c">//                  |&gt; List.map (fun name -&gt; name, (GetPackageVersion &quot;packages&quot; name)) } }</span>
+    <span class="c">//  ]</span>
+    <span class="i">NugetPackages</span> <span class="o">=</span>
       [ <span class="s">&quot;Yaaf.AdvancedBuilding.nuspec&quot;</span>, (<span class="k">fun</span> <span class="i">config</span> <span class="i">p</span> <span class="k">-&gt;</span>
           { <span class="i">p</span> <span class="k">with</span>
               <span class="i">Version</span> <span class="o">=</span> <span class="i">config</span><span class="o">.</span><span class="i">Version</span>
