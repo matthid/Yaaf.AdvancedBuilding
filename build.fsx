@@ -49,6 +49,7 @@ namespace MyNamespace {
     |> Array.filter (fun a -> not a.IsDynamic && not (isNull a.Location))
     |> Array.map (fun a -> a.Location)
   p.ReferencedAssemblies.AddRange(refs) 
+  Console.OutputEncoding <- System.Text.Encoding.GetEncoding(1200)
   let results = prov.CompileAssemblyFromSource(p, [| source |])
   if isNull results.Errors |> not && results.Errors.HasErrors then
     printfn "Results: %A" results
