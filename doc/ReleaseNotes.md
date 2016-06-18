@@ -1,4 +1,8 @@
-﻿### 0.13.3
+﻿### 0.14.0
+
+ * Update dependencies.
+
+### 0.13.3
 
  * Be compatible with nuget v3 by defaulting to nuget url.
 
