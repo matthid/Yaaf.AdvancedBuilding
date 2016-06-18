@@ -18,7 +18,20 @@ let config = BuildConfig.buildConfig.FillDefaults()
 
 #load @"../../FSharp.Formatting/FSharp.Formatting.fsx"
 #r "System.Web"
-
+module Logging = FSharp.Formatting.Common.Log
+type TraceOptions = System.Diagnostics.TraceOptions
+let setupListener listener =
+  [ FSharp.Formatting.Common.Log.source
+    Yaaf.FSharp.Scripting.Log.source ]
+  |> Seq.iter (fun source ->
+      source.Listeners.Clear()
+      source.Switch.Level <- System.Diagnostics.SourceLevels.All
+      Logging.AddListener listener source)
+do  
+    Logging.ConsoleListener()
+    |> Logging.SetupListener TraceOptions.None System.Diagnostics.SourceLevels.All
+    |> setupListener
+  
 open System.Collections.Generic
 open System.IO
 open System.Web
@@ -34,6 +47,7 @@ open FSharp.MetadataFormat
 
 open RazorEngine.Compilation
 
+  
 let commitHash = lazy Information.getCurrentSHA1(".")
 
 // Documentation
