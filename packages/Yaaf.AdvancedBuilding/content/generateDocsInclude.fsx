@@ -196,6 +196,7 @@ let buildAllDocumentation outDocDir website_root =
       processDocumentationFiles OutputKind.Html
       processDocumentationFiles OutputKind.Latex
     with e ->
+      printf "(DIAGNOSTICS) Error: %O" e
       printAssemblies "(DIAGNOSTICS) Documentation failed"
       reraise()
     
