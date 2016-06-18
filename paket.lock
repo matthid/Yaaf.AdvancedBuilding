@@ -1,14 +1,13 @@
 REDIRECTS: ON
 NUGET
   remote: https://www.nuget.org/api/v2
-  specs:
-    FAKE (4.28.0)
+    FAKE (4.28)
     FSharp.Compiler.Service (2.0.0.6)
     FSharp.Core (4.0.0.1)
-    FSharp.Formatting (2.14.4)
+    FSharp.Formatting (2.14.5-alpha1)
       FSharp.Compiler.Service (2.0.0.6)
-      FSharpVSPowerTools.Core (>= 2.3.0 < 2.4.0)
-    FSharpVSPowerTools.Core (2.3.0)
+      FSharpVSPowerTools.Core (>= 2.3 < 2.4)
+    FSharpVSPowerTools.Core (2.3)
       FSharp.Compiler.Service (>= 2.0.0.3)
     Mono.Cecil (0.9.6.1)
     NuGet.CommandLine (3.4.3)

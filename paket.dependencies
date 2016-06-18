@@ -3,7 +3,7 @@ redirects on
 
 // Build
 nuget FAKE
-nuget FSharp.Formatting
+nuget FSharp.Formatting == 2.14.5-alpha1
 
 // Project
 nuget FSharp.Core
