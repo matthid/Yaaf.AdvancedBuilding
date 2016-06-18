@@ -1,4 +1,8 @@
-﻿### 0.13.2
+﻿### 0.13.3
+
+ * Be compatible with nuget v3 by defaulting to nuget url.
+
+### 0.13.2
 
  * When a package version is set we assume it is a special versioned package and create a tag even if it is equal to the current version (otherwise it is error prone).
 
