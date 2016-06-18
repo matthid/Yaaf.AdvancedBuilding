@@ -19,6 +19,8 @@ open Microsoft.CSharp
 open Microsoft.CSharp.RuntimeBinder
 
 Target "Travis" (fun _ ->
+  printfn "Codepage: %d" Console.OutputEncoding.CodePage
+
   use prov = new CSharpCodeProvider()
   let source = @"
 using Fake;
@@ -52,16 +54,9 @@ namespace MyNamespace {
     printfn "Results: %A" results
     for e in results.Errors do
       printfn " - %s: (%d, %d) %s" e.ErrorNumber e.Line e.Column e.ErrorText
-      for encoding in System.Text.Encoding.GetEncodings () do
-        let enc = encoding.GetEncoding()
-        try
-          let b= System.Text.Encoding.UTF8.GetBytes(e.ErrorText)
-          printfn "Maybe '%s': %s" encoding.DisplayName (enc.GetString(b))
-        with e -> printf "'%s' didn't work" encoding.DisplayName
-        try
-          let b= enc.GetBytes(e.ErrorText)
-          printfn "Maybe reverse '%s': %s" encoding.DisplayName (System.Text.Encoding.UTF8.GetString(b))
-        with e -> printf "reverse '%s' didn't work" encoding.DisplayName
+      let enc = System.Text.Encoding.GetEncoding(1200)
+      let b = enc.GetBytes(e.ErrorText)
+      printfn "Decoded: %s" (System.Text.Encoding.UTF8.GetString b)
 
     printfn "Native return value: %d" results.NativeCompilerReturnValue
     for m in results.Output do
