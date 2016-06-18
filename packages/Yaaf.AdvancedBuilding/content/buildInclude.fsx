@@ -349,8 +349,8 @@ let rec private publish parameters =
     let tracing = enableProcessTracing
     enableProcessTracing <- false
     let source =
-        if isNullOrEmpty parameters.PublishUrl then ""
-        else sprintf "-s %s" parameters.PublishUrl
+        let uri = if isNullOrEmpty parameters.PublishUrl then "https://www.nuget.org/api/v2/package" else parameters.PublishUrl
+        else sprintf "-s %s" uri
 
     let args = sprintf "push \"%s\" %s %s" (parameters.OutputPath @@ nuspec) parameters.AccessKey source
     tracefn "%s %s in WorkingDir: %s Trials left: %d" parameters.ToolPath (replaceAccessKey parameters.AccessKey args)
