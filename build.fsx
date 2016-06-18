@@ -53,8 +53,12 @@ namespace MyNamespace {
     for e in results.Errors do
       printfn " - %s: (%d, %d) %s" e.ErrorNumber e.Line e.Column e.ErrorText
       for encoding in System.Text.Encoding.GetEncodings () do
+        let enc = encoding.GetEncoding()
         let b= System.Text.Encoding.UTF8.GetBytes(e.ErrorText)
-        printfn "Maybe %s: %s" encoding.DisplayName (encoding.GetEncoding().GetString(b))
+        printfn "Maybe %s: %s" encoding.DisplayName (enc.GetString(b))
+        let b= enc.GetBytes(e.ErrorText)
+        printfn "MaybeR %s: %s" encoding.DisplayName (System.Text.Encoding.UTF8.GetString(b))
+
     printfn "Native return value: %d" results.NativeCompilerReturnValue
     for m in results.Output do
       printfn "Message: %s" m
