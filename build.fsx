@@ -57,7 +57,8 @@ namespace MyNamespace {
       printfn "Message: %s" m
     for ref in refs do
       printfn "Reference: %s" ref
-
+    printfn "ResultAssembly: %s" results.PathToAssembly
+    printfn "Exists: %s" (if File.Exists results.PathToAssembly then "true" else "false")
     failwith "Compilation failed"
   else 
     printfn "Success"
