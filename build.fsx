@@ -42,15 +42,23 @@ namespace MyNamespace {
   let tempDir = p.TempFiles.TempDir
   let assemblyName = Path.Combine(tempDir, String.Format("{0}.dll", "MyNamespace"))
   p.TempFiles.AddFile(assemblyName, true)
-  p.ReferencedAssemblies.AddRange(
+  let refs =
     AppDomain.CurrentDomain.GetAssemblies()
     |> Array.filter (fun a -> not a.IsDynamic && not (isNull a.Location))
-    |> Array.map (fun a -> a.Location)) 
+    |> Array.map (fun a -> a.Location)
+  p.ReferencedAssemblies.AddRange(refs) 
   let results = prov.CompileAssemblyFromSource(p, [| source |])
   if isNull results.Errors |> not && results.Errors.HasErrors then
     printfn "Results: %A" results
     for e in results.Errors do
       printfn " - %s: (%d, %d) %s" e.ErrorNumber e.Line e.Column e.ErrorText
+    printfn "Native return value: %d" results.NativeCompilerReturnValue
+    for m in results.Output do
+      printfn "Message: %s" m
+    for ref in refs do
+      printfn "Reference: %s" ref
+
+    failwith "Compilation failed"
   else 
     printfn "Success"
 )
