@@ -21,6 +21,7 @@ open Microsoft.CSharp.RuntimeBinder
 Target "Travis" (fun _ ->
   use prov = new CSharpCodeProvider()
   let source = @"
+using Fake;
 namespace MyNamespace {
   public class MyClass {
     public static string MyMethod () { return ""data""; }
@@ -40,7 +41,11 @@ namespace MyNamespace {
   
   let tempDir = p.TempFiles.TempDir
   let assemblyName = Path.Combine(tempDir, String.Format("{0}.dll", "MyNamespace"))
-  p.TempFiles.AddFile(assemblyName, true);
+  p.TempFiles.AddFile(assemblyName, true)
+  p.ReferencedAssemblies.AddRange(
+    AppDomain.CurrentDomain.GetAssemblies()
+    |> Array.filter (fun a -> not a.IsDynamic && not (isNull a.Location))
+    |> Array.map (fun a -> a.Location)) 
   let results = prov.CompileAssemblyFromSource(p, [| source |])
   if isNull results.Errors |> not && results.Errors.HasErrors then
     printfn "Results: %A" results

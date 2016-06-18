@@ -101,7 +101,7 @@ module MsBuildHelper =
     doc.Descendants(xname "Project").Descendants(xname "ItemGroup").Elements()
     |> Seq.choose (fun e ->
         let includeAttribute = e.Attribute(XName.Get "Include")
-        if includeAttribute = null then failwith "expected Include attribute on: %A" e
+        if includeAttribute = null then failwithf "expected Include attribute on: %A" e
         let includeValue = includeAttribute.Value
         let getElemValue elemName =
             e.Elements(xname elemName) |> Seq.tryPick (fun elem -> Some elem.Value)
