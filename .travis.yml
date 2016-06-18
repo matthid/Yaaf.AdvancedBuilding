@@ -9,7 +9,7 @@ env:
     PAKET_UPDATE=y
 
 script: 
-  - ./build.sh All
+  - ./build.sh Travis
 
 notifications:
   webhooks:

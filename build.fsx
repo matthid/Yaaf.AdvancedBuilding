@@ -18,7 +18,7 @@ open System.CodeDom.Compiler
 open Microsoft.CSharp
 open Microsoft.CSharp.RuntimeBinder
 
-Target "Debug" (fun _ ->
+Target "Travis" (fun _ ->
   use prov = new CSharpCodeProvider()
   let source = @"
 namespace MyNamespace {
@@ -51,4 +51,4 @@ namespace MyNamespace {
 )
 
 // start build
-RunTargetOrDefault "Debug"
+RunTargetOrDefault "All"
