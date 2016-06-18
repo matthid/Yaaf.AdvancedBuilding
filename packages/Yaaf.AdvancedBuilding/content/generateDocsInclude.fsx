@@ -32,6 +32,11 @@ do
     |> Logging.SetupListener TraceOptions.None System.Diagnostics.SourceLevels.All
     |> setupListener
   
+    printfn "CultureInfo.CurrentCulture: %O" System.Globalization.CultureInfo.CurrentCulture
+    printfn "Thread.CurrentCulture: %O" System.Threading.Thread.CurrentThread.CurrentCulture
+    System.Threading.Thread.CurrentThread.CurrentCulture <- System.Globalization.CultureInfo.InvariantCulture
+    System.Threading.Thread.CurrentThread.CurrentUICulture <- System.Globalization.CultureInfo.InvariantCulture
+
 open System.Collections.Generic
 open System.IO
 open System.Web
