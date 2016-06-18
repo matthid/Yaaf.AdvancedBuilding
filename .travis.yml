@@ -1,6 +1,8 @@
 language: csharp
 
 sudo: false  # use the new container-based Travis infrastructure
+mono:
+  - 4.2.3
 
 env:
   - PAKET_VERSION=
