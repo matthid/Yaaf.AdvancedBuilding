@@ -8,7 +8,6 @@
 
 open Fake
 let config = BuildInclude.config
-// Define your FAKE targets here
 
 // start build
 RunTargetOrDefault "All"
