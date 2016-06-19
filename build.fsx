@@ -7,6 +7,7 @@
 #load "packages/Yaaf.AdvancedBuilding/content/buildInclude.fsx"
 
 open Fake
+
 let config = BuildInclude.config
 
 // start build
