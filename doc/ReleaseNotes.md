@@ -1,7 +1,8 @@
 ﻿### 0.14.0
 
  * Update dependencies.
-
+ * Fix mono version because of https://bugzilla.xamarin.com/show_bug.cgi?id=41979
+ 
 ### 0.13.3
 
  * Be compatible with nuget v3 by defaulting to nuget url.
