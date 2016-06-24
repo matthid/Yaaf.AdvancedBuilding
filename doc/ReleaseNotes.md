@@ -1,4 +1,8 @@
-﻿### 0.14.0
+﻿### 0.14.1
+
+ * Fix invalid paths in nuspec.
+
+### 0.14.0
 
  * Update dependencies.
  * Fix mono version because of https://bugzilla.xamarin.com/show_bug.cgi?id=41979
