@@ -18,8 +18,8 @@
     @dependencies@
   </metadata>
   <files>
-    <file src="release/lib/net45/Yaaf.AdvancedBuilding.dll" target="tools\Yaaf.AdvancedBuilding.dll" />
-    <file src="release/lib/net45/Yaaf.AdvancedBuilding.xml" target="tools\Yaaf.AdvancedBuilding.xml" />
+    <file src="release/lib/net45/Yaaf.AdvancedBuilding.dll" target="tools/Yaaf.AdvancedBuilding.dll" />
+    <file src="release/lib/net45/Yaaf.AdvancedBuilding.xml" target="tools/Yaaf.AdvancedBuilding.xml" />
     <file src="packages/Yaaf.AdvancedBuilding/content/build.cmd" target="content/build.cmd" />
     <file src="packages/Yaaf.AdvancedBuilding/content/build.sh" target="content/build.sh" />
     <file src="packages/Yaaf.AdvancedBuilding/content/buildInclude.fsx" target="content/buildInclude.fsx" />
@@ -29,54 +29,54 @@
     <file src="packages/Yaaf.AdvancedBuilding/content/build.targets" target="content/build.targets" />
 
     <!-- Example files -->
-    <file src="buildConfig.fsx" target="examples\buildConfig\buildConfig.Yaaf.AdvancedBuilding.fsx" />
+    <file src="buildConfig.fsx" target="examples/buildConfig/buildConfig.Yaaf.AdvancedBuilding.fsx" />
 
     <!-- Files only required first time -->
-    <file src="LICENSE.md" target="scaffold\initial\LICENSE.md" />
-    <file src="CONTRIBUTING.md" target="scaffold\initial\CONTRIBUTING.md" />
-    <file src="README.md" target="scaffold\initial\README.md" />
-    <file src="paket.dependencies" target="scaffold\initial\paket.dependencies" />
-    <file src=".travis.yml" target="scaffold\initial\.travis.yml" />
-    <file src="appveyor.yml" target="scaffold\initial\appveyor.yml" />
-    <file src="doc/DevelopReadme.md" target="scaffold\initial\doc\DevelopReadme.md" />
-    <file src="doc/ReleaseNotes.md" target="scaffold\initial\doc\ReleaseNotes.md" />
+    <file src="LICENSE.md" target="scaffold/initial/LICENSE.md" />
+    <file src="CONTRIBUTING.md" target="scaffold/initial/CONTRIBUTING.md" />
+    <file src="README.md" target="scaffold/initial/README.md" />
+    <file src="paket.dependencies" target="scaffold/initial/paket.dependencies" />
+    <file src=".travis.yml" target="scaffold/initial/.travis.yml" />
+    <file src="appveyor.yml" target="scaffold/initial/appveyor.yml" />
+    <file src="doc/DevelopReadme.md" target="scaffold/initial/doc/DevelopReadme.md" />
+    <file src="doc/ReleaseNotes.md" target="scaffold/initial/doc/ReleaseNotes.md" />
 
     <!-- Build Files that can be replaced anytime -->
-    <file src="build.cmd" target="scaffold\build\build.cmd" />
-    <file src="build.sh" target="scaffold\build\build.sh" />
-    <file src="build.fsx" target="scaffold\build\build.fsx" />
-    <file src=".gitignore" target="scaffold\build\.gitignore" />
-    <file src=".gitattributes" target="scaffold\build\.gitattributes" />
-    <file src="src/.gitignore" target="scaffold\build\src\.gitignore" />
-    <file src="downloadNuget.fsx" target="scaffold\build\downloadNuget.fsx" />
-    <file src="generateDocs.fsx" target="scaffold\build\generateDocs.fsx" />
+    <file src="build.cmd" target="scaffold/build/build.cmd" />
+    <file src="build.sh" target="scaffold/build/build.sh" />
+    <file src="build.fsx" target="scaffold/build/build.fsx" />
+    <file src=".gitignore" target="scaffold/build/.gitignore" />
+    <file src=".gitattributes" target="scaffold/build/.gitattributes" />
+    <file src="src/.gitignore" target="scaffold/build/src/.gitignore" />
+    <file src="downloadNuget.fsx" target="scaffold/build/downloadNuget.fsx" />
+    <file src="generateDocs.fsx" target="scaffold/build/generateDocs.fsx" />
 
     <!-- Required when using NuGet -->
-    <file src="src/nuget.config" target="scaffold\nuget\src\nuget.config" />
-    <file src="src/.nuget/NuGet.Config" target="scaffold\nuget\src\.nuget\NuGet.Config" />
-    <file src="src/.nuget/NuGet.targets" target="scaffold\nuget\src\.nuget\NuGet.targets" />
+    <file src="src/nuget.config" target="scaffold/nuget/src/nuget.config" />
+    <file src="src/.nuget/NuGet.Config" target="scaffold/nuget/src/.nuget/NuGet.Config" />
+    <file src="src/.nuget/NuGet.targets" target="scaffold/nuget/src/.nuget/NuGet.targets" />
 
     <!-- documentation templates -->
-    <file src="doc/templates/docpage.cshtml" target="scaffold\templates\doc\templates\docpage.cshtml" />
-    <file src="doc/templates/docpage-index.cshtml" target="scaffold\templates\doc\templates\docpage-index.cshtml" />
-    <file src="doc/templates/template.cshtml" target="scaffold\templates\doc\templates\template.cshtml" />
-    <file src="doc/templates/template-color.tex" target="scaffold\templates\doc\templates\template-color.tex" />
-    <file src="doc/templates/template-math.tex" target="scaffold\templates\doc\templates\template-math.tex" />
-    <file src="doc/templates/reference/module.cshtml" target="scaffold\templates\doc\templates\reference\module.cshtml" />
-    <file src="doc/templates/reference/namespaces.cshtml" target="scaffold\templates\doc\templates\reference\namespaces.cshtml" />
-    <file src="doc/templates/reference/part-members.cshtml" target="scaffold\templates\doc\templates\reference\part-members.cshtml" />
-    <file src="doc/templates/reference/part-nested.cshtml" target="scaffold\templates\doc\templates\reference\part-nested.cshtml" />
-    <file src="doc/templates/reference/type.cshtml" target="scaffold\templates\doc\templates\reference\type.cshtml" />
+    <file src="doc/templates/docpage.cshtml" target="scaffold/templates/doc/templates/docpage.cshtml" />
+    <file src="doc/templates/docpage-index.cshtml" target="scaffold/templates/doc/templates/docpage-index.cshtml" />
+    <file src="doc/templates/template.cshtml" target="scaffold/templates/doc/templates/template.cshtml" />
+    <file src="doc/templates/template-color.tex" target="scaffold/templates/doc/templates/template-color.tex" />
+    <file src="doc/templates/template-math.tex" target="scaffold/templates/doc/templates/template-math.tex" />
+    <file src="doc/templates/reference/module.cshtml" target="scaffold/templates/doc/templates/reference/module.cshtml" />
+    <file src="doc/templates/reference/namespaces.cshtml" target="scaffold/templates/doc/templates/reference/namespaces.cshtml" />
+    <file src="doc/templates/reference/part-members.cshtml" target="scaffold/templates/doc/templates/reference/part-members.cshtml" />
+    <file src="doc/templates/reference/part-nested.cshtml" target="scaffold/templates/doc/templates/reference/part-nested.cshtml" />
+    <file src="doc/templates/reference/type.cshtml" target="scaffold/templates/doc/templates/reference/type.cshtml" />
 
     <!-- content files -->
-    <file src="doc/content/prism.css" target="scaffold\content\doc\content\prism.css" />
-    <file src="doc/content/prism.js" target="scaffold\content\doc\content\prism.js" />
-    <file src="doc/content/style.css" target="scaffold\content\doc\content\style.css" />
-    <file src="doc/content/tips.js" target="scaffold\content\doc\content\tips.js" />
-    <file src="doc/content/img/back_to_top.png" target="scaffold\content\doc\content\img\back_to_top.png" />
-    <file src="doc/content/img/github.png" target="scaffold\content\doc\content\img\github.png" />
-    <file src="doc/content/img/github-blue.png" target="scaffold\content\doc\content\img\github-blue.png" />
-    <file src="doc/content/img/logo.png" target="scaffold\content\doc\content\img\logo.png" />
-    <file src="doc/content/img/logo-template.pdn" target="scaffold\content\doc\content\img\logo-template.pdn" />
+    <file src="doc/content/prism.css" target="scaffold/content/doc/content/prism.css" />
+    <file src="doc/content/prism.js" target="scaffold/content/doc/content/prism.js" />
+    <file src="doc/content/style.css" target="scaffold/content/doc/content/style.css" />
+    <file src="doc/content/tips.js" target="scaffold/content/doc/content/tips.js" />
+    <file src="doc/content/img/back_to_top.png" target="scaffold/content/doc/content/img/back_to_top.png" />
+    <file src="doc/content/img/github.png" target="scaffold/content/doc/content/img/github.png" />
+    <file src="doc/content/img/github-blue.png" target="scaffold/content/doc/content/img/github-blue.png" />
+    <file src="doc/content/img/logo.png" target="scaffold/content/doc/content/img/logo.png" />
+    <file src="doc/content/img/logo-template.pdn" target="scaffold/content/doc/content/img/logo-template.pdn" />
   </files>
 </package>
